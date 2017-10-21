@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace MobileApp.Models
     {
         public Token() { }
 
+        [PrimaryKey]
+        [AutoIncrement]
         public int Id { get; set; }
         public string access_token { get; set; }
         public string error_description { get; set; }

@@ -26,7 +26,7 @@ namespace MobileApp.Views
             Lbl_Password.TextColor = Constants.mainTextColor;
             ActivitySpinner.IsVisible = false;
             LoginIcon.HeightRequest = Constants.logoHeight;
-
+            
             Entry_Username.Completed += (sender, e) => Entry_Password.Focus();
             Entry_Password.Completed += (sender, e) => SignInProcedure(sender, e); 
         }
@@ -37,9 +37,11 @@ namespace MobileApp.Views
             if (user.CheckInformation())
             {
                 DisplayAlert("Login", "Login Success", "Ok");
+                App.UserDatabase.SaveUser(user);
             }
             else
             {
+                App.UserDatabase.GetUser();
                 DisplayAlert("Login", "Login Not Correct", "Empty username or password." , "Ok");
             }
         }

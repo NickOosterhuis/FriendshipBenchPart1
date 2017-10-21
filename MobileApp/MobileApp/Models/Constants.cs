@@ -11,9 +11,11 @@ namespace MobileApp.Models
     {
         public static bool isDev = true;
 
-        public static Color backroundColor = Color.FromRgb(58, 153, 215);
+        public static Color backroundColor = Color.White;
 
-        public static Color mainTextColor = Color.White;
+        public static Color mainTextColor = Color.Black;
+
+        public static Color AccentTextColor = Color.Yellow;
 
         public static int logoHeight = 120; 
     }
