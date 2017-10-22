@@ -13,6 +13,7 @@ namespace MobileApp.Droid.Data
         {
             var sqlFileName = "TestDB.db3";
             string documentPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+            System.Console.WriteLine(documentPath);
             var path = Path.Combine(documentPath, sqlFileName);
             var conn = new SQLite.SQLiteConnection(path);
 
