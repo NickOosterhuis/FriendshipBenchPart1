@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Views;
+using System;
 
 using Xamarin.Forms;
 
@@ -8,11 +9,15 @@ namespace MobileApp
     {
         public MainPage()
         {
-            Page itemsPage, aboutPage = null;
+            Page itemsPage, aboutPage, signInPage = null;
 
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
+                    signInPage = new NavigationPage(new SignInPage())
+                    {
+                        Title = "Sign In"
+                    };
                     itemsPage = new NavigationPage(new ItemsPage())
                     {
                         Title = "Browse"
@@ -26,11 +31,14 @@ namespace MobileApp
                     aboutPage.Icon = "tab_about.png";
                     break;
                 default:
+                    signInPage = new SignInPage()
+                    {
+                        Title = "Sign In"
+                    };
                     itemsPage = new ItemsPage()
                     {
                         Title = "Browse"
                     };
-
                     aboutPage = new AboutPage()
                     {
                         Title = "About"
@@ -38,9 +46,10 @@ namespace MobileApp
                     break;
             }
 
+            Children.Add(signInPage);
             Children.Add(itemsPage);
             Children.Add(aboutPage);
-
+            
             Title = Children[0].Title;
         }
 

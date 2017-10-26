@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Views;
+using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,9 +14,9 @@ namespace MobileApp
             InitializeComponent();
 
             if (Device.RuntimePlatform == Device.iOS)
-                MainPage = new MainPage();
+                MainPage = new SignInPage();
             else
-                MainPage = new NavigationPage(new MainPage());
+                MainPage = new NavigationPage(new SignInPage());
         }
     }
 }
