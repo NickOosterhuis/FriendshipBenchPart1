@@ -65,39 +65,44 @@ namespace MobileApp.Views
 
             signInButton.Clicked += async (object sender, EventArgs e) =>
             {
-                Login(new User { Email = email.Text, Password = password.Text });
+               await Login(new User { Email = email.Text, Password = password.Text });
             };
 
         }
 
-       public async void Login(User user)
+       public async Task Login(User user)
         {
-            var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(user);                      
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = new HttpClient
+            {
+                MaxResponseContentBufferSize = 256000
+            };
 
-            var response = new HttpResponseMessage(); 
+            var json = JsonConvert.SerializeObject(user);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var uri = new Uri(string.Format(Constants.loginUrl, string.Empty));
+
+            HttpResponseMessage result = null; 
 
             try
             {
-                response = await client.PostAsync("http://localhost:54618/api/account", content);
+               result = await client.PostAsync(uri, content);
             }
             catch (Exception e)
             {
                 Debug.WriteLine("HTTP ERROR: " + e.Message);
-                Debug.WriteLine("SEND RESPONSE: " + response);
+                Debug.WriteLine("SEND RESPONSE: " + result);
                 Debug.WriteLine("SEND CONTENT: " + content);
                 await DisplayAlert("ERROR", e.Message , "Cancel");
             }
 
-            if (response.IsSuccessStatusCode)
+            if (result.IsSuccessStatusCode)
             {
                 Debug.WriteLine(@" User Successfully logged in");
             }
             else
             {
                 Debug.WriteLine("Er is iets fout gegaan :(");
-                Debug.WriteLine(response.Headers);
+                Debug.WriteLine(result.Headers);
             }  
         }
     }
