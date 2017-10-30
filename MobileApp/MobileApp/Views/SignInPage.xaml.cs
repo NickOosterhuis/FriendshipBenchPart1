@@ -80,12 +80,14 @@ namespace MobileApp.Views
 
             try
             {
-                response = await client.PostAsync(Constants.loginUrl, content);
+                response = await client.PostAsync("http://localhost:54618/api/account", content);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                await DisplayAlert("ERROR", e.Message , "Cancel");
                 Debug.WriteLine("HTTP ERROR: " + e.Message);
+                Debug.WriteLine("SEND RESPONSE: " + response);
+                Debug.WriteLine("SEND CONTENT: " + content);
+                await DisplayAlert("ERROR", e.Message , "Cancel");
             }
 
             if (response.IsSuccessStatusCode)
