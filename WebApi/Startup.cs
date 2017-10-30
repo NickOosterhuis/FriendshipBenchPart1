@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using WebApi.Contexts;
 
@@ -32,11 +33,10 @@ namespace WebApi
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserDBContext>();
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;                     
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //});
+            services.AddSwaggerGen(c =>
+           {
+               c.SwaggerDoc("v1", new Info { Title = "WebApi", Version = "v1" });
+           });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -96,6 +96,11 @@ namespace WebApi
                 ValidAudience = audience
             };
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
+            });
             app.UseAuthentication();
             app.UseMvc();
         }

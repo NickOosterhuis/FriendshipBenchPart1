@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MobileApp.Models;
+using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,20 +8,25 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace MobileApp.Views
-{
+{    
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SignInPage : ContentPage
     {
+        public Entry email;
+        public Entry password;
+        
         public SignInPage()
         {
-            var email = new Entry
+            email = new Entry
             {
                 Placeholder = "Email"
             };
 
-            var password = new Entry
+            password = new Entry
             {
                 Placeholder = "Password",
                 IsPassword = true
@@ -34,7 +41,9 @@ namespace MobileApp.Views
             {
                 Text = "Register"
             };
-                
+
+            
+
             Content = new StackLayout
             {
                 Padding = 30,
@@ -54,6 +63,40 @@ namespace MobileApp.Views
                 Navigation.PushAsync(new RegisterPage());
             };
 
+            signInButton.Clicked += async (object sender, EventArgs e) =>
+            {
+                Login(new User { Email = email.Text, Password = password.Text });
+            };
+
+        }
+
+       public async void Login(User user)
+        {
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(user);                      
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = new HttpResponseMessage(); 
+
+            try
+            {
+                response = await client.PostAsync(Constants.loginUrl, content);
+            }
+            catch(Exception e)
+            {
+                await DisplayAlert("ERROR", e.Message , "Cancel");
+                Debug.WriteLine("HTTP ERROR: " + e.Message);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine(@" User Successfully logged in");
+            }
+            else
+            {
+                Debug.WriteLine("Er is iets fout gegaan :(");
+                Debug.WriteLine(response.Headers);
+            }  
         }
     }
 }
