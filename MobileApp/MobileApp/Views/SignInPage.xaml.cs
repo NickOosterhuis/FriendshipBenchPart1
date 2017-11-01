@@ -65,44 +65,40 @@ namespace MobileApp.Views
 
             signInButton.Clicked += async (object sender, EventArgs e) =>
             {
-               await Login(new User { Email = email.Text, Password = password.Text });
+                Login(new User { Email = email.Text, Password = password.Text });
             };
 
         }
 
-       public async Task Login(User user)
+       public async void Login(User user)
         {
-            var client = new HttpClient
-            {
-                MaxResponseContentBufferSize = 256000
-            };
-
+            var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);
+      
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var uri = new Uri(string.Format(Constants.loginUrl, string.Empty));
+            string myContent = await content.ReadAsStringAsync();
 
-            HttpResponseMessage result = null; 
-
+            var response = new HttpResponseMessage(); 
+            
             try
             {
-               result = await client.PostAsync(uri, content);
+                response = await client.PostAsync(Constants.loginUrl, content);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Debug.WriteLine("HTTP ERROR: " + e.Message);
-                Debug.WriteLine("SEND RESPONSE: " + result);
-                Debug.WriteLine("SEND CONTENT: " + content);
                 await DisplayAlert("ERROR", e.Message , "Cancel");
+                Debug.WriteLine("HTTP ERROR: " + e.Message);
             }
 
-            if (result.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine(@" User Successfully logged in");
+                Debug.WriteLine(myContent);
             }
             else
             {
                 Debug.WriteLine("Er is iets fout gegaan :(");
-                Debug.WriteLine(result.Headers);
+                Debug.WriteLine(response.Headers);
             }  
         }
     }
