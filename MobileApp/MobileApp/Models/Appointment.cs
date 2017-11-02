@@ -14,7 +14,7 @@ namespace MobileApp.Models
 
         public bool Accepted { get; set; }
 
-        public int BenchID { get; set; }
+        public string BenchLocation { get; set; }
 
         public int ClientID { get; set; }
 

@@ -4,10 +4,17 @@
              x:Class="MobileApp.Views.AppointmentsPage"
              Title="Appointments">
     <ScrollView>
-        <ListView x:Name="AppointmentsList" IsGroupingEnabled="True" GroupDisplayBinding="{Binding Key}" GroupShortNameBinding="{Binding Key}">
+        <ListView x:Name="AppointmentsList" 
+                  IsPullToRefreshEnabled="true"
+                  RefreshCommand="{Binding RefreshCommand}"
+                  IsRefreshing="{Binding IsRefreshing}"
+                  ItemSelected="OnItemSelected" 
+                  IsGroupingEnabled="True" 
+                  GroupDisplayBinding="{Binding Key}" 
+                  GroupShortNameBinding="{Binding Key}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding DateTime}" Detail="{Binding HealthworkerName}"/>
+                        <TextCell Text="{Binding DateTime}" Detail="{Binding BenchLocation}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
