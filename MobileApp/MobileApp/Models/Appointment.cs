@@ -24,5 +24,10 @@ namespace MobileApp.Models
         {
             get { return string.Format("{0}, {1}", Date, Time); }
         }
+
+        public string AcceptStatus
+        {
+            get { return Accepted ? "Accepted" : "Awaiting response"; }
+        }
     }
 }
