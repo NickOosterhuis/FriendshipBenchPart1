@@ -16,6 +16,8 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SignInPage : ContentPage
     {
+        public Picker MenuItem;
+
         public Entry email;
         public Entry password;
         
