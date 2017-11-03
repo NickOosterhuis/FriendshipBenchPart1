@@ -15,8 +15,8 @@ namespace MobileApp.Views
         Label label;
         public Home2()
         {
-            InitializeComponent();
 
+            InitializeComponent();
             Label header = new Label
             {
                 Text = "Welkom !",
@@ -70,6 +70,11 @@ namespace MobileApp.Views
                     button,
                 }
             };
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
 
         void OnButtonClicked(object sender, EventArgs e)

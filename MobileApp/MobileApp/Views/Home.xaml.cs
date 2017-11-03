@@ -16,7 +16,6 @@ namespace MobileApp.Views
         public Home()
         {
             InitializeComponent();
-
             Label header = new Label
             {
                 Text = "Welkom !",
@@ -61,7 +60,12 @@ namespace MobileApp.Views
             };
         }
 
-            void OnButtonClicked(object sender, EventArgs e)
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        void OnButtonClicked(object sender, EventArgs e)
             {
                 Navigation.PushAsync(new Home2());
             }
