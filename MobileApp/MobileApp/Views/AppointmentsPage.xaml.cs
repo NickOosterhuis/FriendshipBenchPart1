@@ -44,11 +44,19 @@ namespace MobileApp.Views
             allAppointments.Add(new Appointment { Date = "02-11-2017", Time = "14:00", Accepted = true, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
             allAppointments.Add(new Appointment { Date = "06-12-2017", Time = "15:45", Accepted = true, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Boonstra" });
             allAppointments.Add(new Appointment { Date = "12-10-2018", Time = "10:00", Accepted = true, Bench = bench2, ClientID = 1, HealthworkerName = "Dr. Boonstra" });
-            allAppointments.Add(new Appointment { Date = "25-02-2018", Time = "11:30", Accepted = false, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
+            allAppointments.Add(new Appointment { Date = "25-02-2017", Time = "14:30", Accepted = false, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
+            allAppointments.Add(new Appointment { Date = "25-02-2017", Time = "11:30", Accepted = false, Bench = bench2, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
 
-            // Group the appointments by status.
+            GroupAppointments();
+        }
+
+        // Group appointments by their status.
+        private void GroupAppointments()
+        {
+            // Group the appointments by their status.
             var orderedAppointments =
                 allAppointments.OrderBy(a => a.Date)
+                .ThenBy(a => a.Time)
                 .GroupBy(a => a.AcceptStatus)
                 .Select(a => new ObservableGroupCollection<string, Appointment>(a))
                 .ToList();
