@@ -9,12 +9,12 @@ using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+
     public partial class Home : ContentPage
     {
         Label label;
-            public Home()
-            {
+        public Home()
+        {
             InitializeComponent();
 
             Label header = new Label
@@ -22,7 +22,7 @@ namespace MobileApp.Views
                 Text = "Welkom !",
                 Font = Font.BoldSystemFontOfSize(35),
                 HorizontalOptions = LayoutOptions.Center
-             };
+            };
 
             Label text = new Label
             {
@@ -37,34 +37,34 @@ namespace MobileApp.Views
             };
 
             Button button = new Button
-                {
-                    Text = "Continue",
-                    Font = Font.SystemFontOfSize(NamedSize.Large),
-                    BorderWidth = 1,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.CenterAndExpand
-                };
-                button.Clicked += OnButtonClicked;
+            {
+                Text = "Continue",
+                Font = Font.SystemFontOfSize(NamedSize.Large),
+                BorderWidth = 1,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+            button.Clicked += OnButtonClicked;
 
-                // Accomodate iPhone status bar.
-                this.Padding = new Thickness(10, Device.OnPlatform(20, 0, 0), 10, 5);
+            // Accomodate iPhone status bar.
+            this.Padding = new Thickness(10, Device.OnPlatform(20, 0, 0), 10, 5);
 
-                // Build the page.
-                this.Content = new StackLayout
+            // Build the page.
+            this.Content = new StackLayout
+            {
+                Children =
                 {
-                    Children =
-                    {
-                        header,
-                        text,
-                        button,
-                    }
-                };
-            }
+                    header,
+                    text,
+                    button,
+                }
+            };
+        }
 
             void OnButtonClicked(object sender, EventArgs e)
             {
                 Navigation.PushAsync(new Home2());
-            }   
-        }
-
+            }
     }
+}
+
