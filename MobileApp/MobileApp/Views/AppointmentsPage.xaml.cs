@@ -38,7 +38,7 @@ namespace MobileApp.Views
         // Fetch all the appointments and make a list of it.
         private async Task FetchAppointments()
         {
-            Bench bench1 = new Bench { Streetname = "Teststraat", Housenumber = "2", District = "Districttest", Province = "Testprovince" };
+            Bench bench1 = new Bench { ID = 2, Streetname = "Teststraat", Housenumber = "2", District = "Districttest", Province = "Testprovince" };
 
             // Send a GET request to the API.
             var client = new HttpClient();

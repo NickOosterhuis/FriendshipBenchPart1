@@ -1,4 +1,5 @@
 ﻿using MobileApp.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,9 @@ namespace MobileApp.Views
             bool accepted = !appointment.Accepted;
             String alertTitle = accepted ? "Appointment accepted" : "Appointment canceled";
             String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
+
+            string jsonAppointment = JsonConvert.SerializeObject(appointment);
+
             DisplayAlert(alertTitle, alertMessage, "Okay");
         }
     }
