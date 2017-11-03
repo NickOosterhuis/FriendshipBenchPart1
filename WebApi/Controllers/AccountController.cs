@@ -9,19 +9,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Models;
+using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly JWTSettings _options;
 
         public AccountController(
-          UserManager<IdentityUser> userManager,
-          SignInManager<IdentityUser> signInManager,
+          UserManager<User> userManager,
+          SignInManager<User> signInManager,
           IOptions<JWTSettings> optionsAccessor)
         {
             _userManager = userManager;
@@ -30,11 +31,21 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] Credentials Credentials)
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel Credentials)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Credentials.Email, Email = Credentials.Email };
+                var user = new User {
+                    UserName = Credentials.Email,
+                    Email = Credentials.Email,
+                    FirstName = Credentials.FirstName,
+                    LastName = Credentials.LastName,
+                    Gender = Credentials.LastName,
+                    BirthDay = Credentials.BirthDay, 
+                    Adress = Credentials.Adress,
+                    Province = Credentials.Province,
+                    District = Credentials.District,
+                };
                 var result = await _userManager.CreateAsync(user, Credentials.Password);
                 if (result.Succeeded)
                 {
@@ -48,6 +59,28 @@ namespace WebApi.Controllers
                 return Errors(result);
 
             }
+            return Error("Unexpected error");
+        }
+
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn([FromBody] LoginViewModel Credentials)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                    return new JsonResult(new Dictionary<string, object>
+                    {
+                        { "access_token", GetAccessToken(Credentials.Email) },
+                        { "id_token", GetIdToken(user) }
+                    });
+                }
+
+                return new JsonResult("Unable to sign in") { StatusCode = 401 };
+            }
+
             return Error("Unexpected error");
         }
 
@@ -108,28 +141,6 @@ namespace WebApi.Controllers
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan diff = date.ToUniversalTime() - origin;
             return Math.Floor(diff.TotalSeconds);
-        }
-
-        [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromBody] Credentials Credentials)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
-                if (result.Succeeded)
-                {
-                    var user = await _userManager.FindByEmailAsync(Credentials.Email);
-                    return new JsonResult(new Dictionary<string, object>
-                    {
-                        { "access_token", GetAccessToken(Credentials.Email) },
-                        { "id_token", GetIdToken(user) }
-                    });
-                }
-
-                return new JsonResult("Unable to sign in") { StatusCode = 401 };
-            }
-
-            return Error("Unexpected error");
         }
     }
 }
