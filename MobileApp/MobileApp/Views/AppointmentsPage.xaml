@@ -14,7 +14,7 @@
                   GroupShortNameBinding="{Binding Key}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding DateTime}" Detail="{Binding BenchLocation}"/>
+                        <TextCell Text="{Binding DateTime}" Detail="{Binding Bench.Location}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
