@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MobileApp.Models
+namespace WebApi.Models
 {
     public class Appointment
     {
-        public int ID { get; set; }
+        [Key]
+        public int Id { get; set; }
+
         public string Date { get; set; }
 
         public string Time { get; set; }
@@ -20,15 +22,5 @@ namespace MobileApp.Models
         public int ClientID { get; set; }
 
         public string HealthworkerName { get; set; }
-
-        public string DateTime
-        {
-            get { return string.Format("{0}, {1}", Date, Time); }
-        }
-
-        public string AcceptStatus
-        {
-            get { return Accepted ? "Accepted" : "Awaiting response"; }
-        }
     }
 }

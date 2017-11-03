@@ -1,5 +1,6 @@
 ﻿using MobileApp.Models;
 using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace MobileApp.Views
 {
@@ -29,25 +33,49 @@ namespace MobileApp.Views
             BindingContext = this;
             FetchAppointments();
             InitializeComponent();
-            AppointmentsList.ItemsSource = groupedAppointments;
         }
 
         // Fetch all the appointments and make a list of it.
         private async Task FetchAppointments()
         {
-            // TODO: Send an API GET request.
-
-            // Fill a list with all the appointments.
-            allAppointments = new ObservableCollection<Appointment>();
             Bench bench1 = new Bench { Streetname = "Teststraat", Housenumber = "2", District = "Districttest", Province = "Testprovince" };
-            Bench bench2 = new Bench { Streetname = "Larikslaan", Housenumber = "3", District = "Marum", Province = "Groningen" };
-            allAppointments.Add(new Appointment { Date = "02-11-2017", Time = "14:00", Accepted = true, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
-            allAppointments.Add(new Appointment { Date = "06-12-2017", Time = "15:45", Accepted = true, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Boonstra" });
-            allAppointments.Add(new Appointment { Date = "12-10-2018", Time = "10:00", Accepted = true, Bench = bench2, ClientID = 1, HealthworkerName = "Dr. Boonstra" });
-            allAppointments.Add(new Appointment { Date = "25-02-2017", Time = "14:30", Accepted = false, Bench = bench1, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
-            allAppointments.Add(new Appointment { Date = "25-02-2017", Time = "11:30", Accepted = false, Bench = bench2, ClientID = 1, HealthworkerName = "Dr. Blaauw" });
 
+            // Send a GET request to the API.
+            var client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(Constants.getAppointmentsUrl);
+
+            // If the request was succesfull, add appointments to the list. If not, let the user know.
+            if (response.IsSuccessStatusCode)
+            {
+                // Convert the API response into a JSON object.
+                List<Appointment> appointmentModels = new List<Appointment>();
+                String json = await response.Content.ReadAsStringAsync();
+                dynamic convertedJson = JsonConvert.DeserializeObject(json);
+
+                // Loop through all the appointments in the JSON object and create appointment objects.
+                foreach (var appointment in convertedJson)
+                {
+                    appointmentModels.Add(new Appointment
+                    {
+                        ID = (int)appointment.id,
+                        Date = (string)appointment.date,
+                        Time = (string)appointment.time,
+                        Accepted = (bool)appointment.accepted,
+                        ClientID = (int)appointment.clientID,
+                        HealthworkerName = (string)appointment.healthworkerName,
+                        Bench = bench1
+                    });  
+                }
+                allAppointments = new ObservableCollection<Appointment>(appointmentModels);
+            }
+            else
+            {
+                DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
+            }
+
+            // Group and update the list.
             GroupAppointments();
+            AppointmentsList.ItemsSource = groupedAppointments;
         }
 
         // Group appointments by their status.
@@ -91,12 +119,10 @@ namespace MobileApp.Views
     public class ObservableGroupCollection<S, T> : ObservableCollection<T>
     {
         private readonly S _key;
-
         public ObservableGroupCollection(IGrouping<S, T> group) : base(group)
         {
             _key = group.Key;
         }
-
         public S Key
         {
             get { return _key; }
