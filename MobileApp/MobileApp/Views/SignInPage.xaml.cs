@@ -71,7 +71,7 @@ namespace MobileApp.Views
         }
 
        public async Task Login(User user)
-        {
+       {
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);
       

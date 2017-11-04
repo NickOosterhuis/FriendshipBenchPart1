@@ -30,7 +30,7 @@ namespace WebApi.Controllers
             _options = optionsAccessor.Value;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel Credentials)
         {
             if (ModelState.IsValid)

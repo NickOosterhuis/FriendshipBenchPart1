@@ -1,6 +1,10 @@
-﻿using System;
+﻿using MobileApp.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,21 +40,47 @@ namespace MobileApp.Views
                 IsPassword = true,
             };
 
+            var confirmPassword = new Entry
+            {
+                Placeholder = "Confirm Password",
+                IsPassword = true,
+            };
+
+            var firstname = new Entry
+            {
+                Placeholder = "First Name",
+            };
+
+            var lastname = new Entry
+            {
+                Placeholder = "Last Name",
+            };
+
             var address = new Entry
             {
-                Placeholder = "Street name"
+                Placeholder = "Address"
             };
 
-            var housenumber = new Entry
+            var district = new Entry
             {
-                Placeholder = "House number",
-                Keyboard = Keyboard.Numeric
+                Placeholder = "District"
             };
 
-            var zipcode = new Entry
+            var province = new Entry
             {
-                Placeholder = "Zipcode"
+                Placeholder = "Province"
             };
+
+            //var housenumber = new Entry
+            //{
+            //    Placeholder = "House number",
+            //    Keyboard = Keyboard.Numeric
+            //};
+
+            //var zipcode = new Entry
+            //{
+            //    Placeholder = "Zipcode"
+            //};
 
             Picker genderPicker = new Picker
             {
@@ -91,17 +121,71 @@ namespace MobileApp.Views
                     new Label {Text = "Register", FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
                     email,
                     password,
-                    address,
-                    housenumber,
-                    zipcode,
+                    confirmPassword,
+                    firstname,
+                    lastname,
                     genderPicker,
                     birthdayLabel,
                     birhtDay,
+                    address,
+                    province, 
+                    district,
                     registerButton
                 }
             };
 
             Content = new ScrollView { Content = stack }; 
+
+            registerButton.Clicked += async (object sender, EventArgs e) =>
+            {
+                await Register(new User
+                {
+                    Email = email.Text,
+                    Password = password.Text,
+                    ConfirmPassword = confirmPassword.Text,
+                    Adress = address.Text,
+                    BirthDay = birhtDay.Date,
+                    Province = province.Text,
+                    District = district.Text,
+                    Gender = genderPicker.SelectedItem.ToString(), 
+                    FirstName = firstname.Text,
+                    LastName = lastname.Text, 
+                });
+            };
         }
-    }
+        public async Task Register(User user)
+        {
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(user);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string readableContent = await content.ReadAsStringAsync();
+
+            var response = new HttpResponseMessage();
+
+            try
+            {
+                response = await client.PostAsync(Constants.registerUrl, content);
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("ERROR", e.Message, "Cancel");
+                Debug.WriteLine("HTTP ERROR: " + e.Message);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine(@" User Successfully registered in");
+                Debug.WriteLine(readableContent);
+                await Navigation.PushAsync(new AboutPage());
+            }
+            else
+            {
+                await DisplayAlert("Invalid login", "The username or password is incorrect.", "Cancel");
+                Debug.WriteLine("Er is iets fout gegaan :(");
+                Debug.WriteLine(response.Headers);
+            }
+        }
+    
+}
 }
