@@ -12,5 +12,7 @@ namespace WebApi.Contexts
         public DbSet<ClientUser> Client {get; set;}
 
         public DbSet<HealthWorkerUser> HealthWorker { get; set; }
+
+        public DbSet<User> User { get; set; }
     }
 }

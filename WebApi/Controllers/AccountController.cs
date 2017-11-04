@@ -31,6 +31,7 @@ namespace WebApi.Controllers
             _options = optionsAccessor.Value;
         }
 
+        //POST /api/account/register/client
         [AllowAnonymous]
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
@@ -65,6 +66,7 @@ namespace WebApi.Controllers
             return Error("Unexpected error");
         }
 
+        //POST /api/account/register/healthworker
         [Authorize]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
@@ -96,6 +98,7 @@ namespace WebApi.Controllers
             return Error("Unexpected error");
         }
 
+        //POST /api/account/signin
         [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] LoginViewModel Credentials)
@@ -118,6 +121,47 @@ namespace WebApi.Controllers
 
             return Error("Unexpected error");
         }
+
+        //POST /api/account/signout
+        [Authorize]
+        [HttpPost("signout")]
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+
+            return new JsonResult("User is Logged out");
+        }
+
+        //GET api/account/user
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetClientUsers()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var userId = user.Id; 
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        //GET api/account/healthworker/{id}
+        [Authorize]
+        [HttpGet("healthworker/{id}")]
+        public async Task<IActionResult> GetHealthWorkerUsers(Guid guid)
+        {
+            return null; 
+        }
+
+
 
         private string GetIdToken(User user)
         {
