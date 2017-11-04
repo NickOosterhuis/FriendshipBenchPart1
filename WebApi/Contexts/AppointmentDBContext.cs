@@ -15,6 +15,8 @@ namespace WebApi.Contexts
 
         public virtual DbSet<Appointment> Appointments { get; set; }
 
+        public virtual DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
+
 
     }
 }

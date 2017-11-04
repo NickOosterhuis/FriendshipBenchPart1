@@ -24,7 +24,18 @@ namespace MobileApp.Views
             ToggleStatusButton.Clicked += (object sender, EventArgs e) => {
                 UpdateAppointmentStatus(appointment);
             };
-            ToggleStatusButton.Text = appointment.Accepted ? "Cancel appointment" : "Accept appointment";
+            if(appointment.Status.Id == 1)
+            {
+                ToggleStatusButton.Text = "Accept appointment";
+            }
+            else if(appointment.Status.Id == 2)
+            {
+                ToggleStatusButton.Text = "Cancel appointment";
+            }
+            else if (appointment.Status.Id == 2)
+            {
+                ToggleStatusButton.Text = "Accept appointment";
+            }
         }
 
         // Update the status of an appointment.
@@ -33,13 +44,13 @@ namespace MobileApp.Views
             // TODO: Send an API POST request and update the view.
 
             // Display an alert.
-            bool accepted = !appointment.Accepted;
-            String alertTitle = accepted ? "Appointment accepted" : "Appointment canceled";
-            String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
+            //bool accepted = !appointment.Accepted;
+            //String alertTitle = accepted ? "Appointment accepted" : "Appointment canceled";
+            //String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
 
-            string jsonAppointment = JsonConvert.SerializeObject(appointment);
+            //string jsonAppointment = JsonConvert.SerializeObject(appointment);
 
-            DisplayAlert(alertTitle, alertMessage, "Okay");
+            //DisplayAlert(alertTitle, alertMessage, "Okay");
         }
     }
 }

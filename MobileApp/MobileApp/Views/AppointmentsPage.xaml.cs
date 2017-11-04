@@ -38,8 +38,6 @@ namespace MobileApp.Views
         // Fetch all the appointments and make a list of it.
         private async Task FetchAppointments()
         {
-            Bench bench1 = new Bench { ID = 2, Streetname = "Teststraat", Housenumber = "2", District = "Districttest", Province = "Testprovince" };
-
             // Send a GET request to the API.
             var client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(Constants.getAppointmentsUrl);
@@ -48,25 +46,24 @@ namespace MobileApp.Views
             if (response.IsSuccessStatusCode)
             {
                 // Convert the API response into a JSON object.
-                List<Appointment> appointmentModels = new List<Appointment>();
+                allAppointments = new ObservableCollection<Appointment>();
                 String json = await response.Content.ReadAsStringAsync();
                 dynamic convertedJson = JsonConvert.DeserializeObject(json);
 
                 // Loop through all the appointments in the JSON object and create appointment objects.
                 foreach (var appointment in convertedJson)
                 {
-                    appointmentModels.Add(new Appointment
+                    allAppointments.Add(new Appointment
                     {
-                        ID = (int)appointment.id,
+                        Id = (int)appointment.id,
                         Date = (string)appointment.date,
                         Time = (string)appointment.time,
-                        Accepted = (bool)appointment.accepted,
-                        ClientID = (int)appointment.clientID,
+                        Status = new AppointmentStatus { Id = (int)appointment.status.id, Name = (string)appointment.status.name },
+                        Bench = new Bench { Id = (int)appointment.bench.id, Streetname = (string)appointment.bench.streetname, Housenumber = (string)appointment.bench.housenumber, Province = (string)appointment.bench.province, District = (string)appointment.bench.district },
+                        ClientId = (int)appointment.clientId,
                         HealthworkerName = (string)appointment.healthworkerName,
-                        Bench = bench1
-                    });  
+                    }); 
                 }
-                allAppointments = new ObservableCollection<Appointment>(appointmentModels);
             }
             else
             {
@@ -85,7 +82,7 @@ namespace MobileApp.Views
             var orderedAppointments =
                 allAppointments.OrderBy(a => a.Date)
                 .ThenBy(a => a.Time)
-                .GroupBy(a => a.AcceptStatus)
+                .GroupBy(a => a.Status.Name)
                 .Select(a => new ObservableGroupCollection<string, Appointment>(a))
                 .ToList();
 

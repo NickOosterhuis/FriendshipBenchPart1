@@ -15,11 +15,11 @@ namespace WebApi.Models
 
         public string Time { get; set; }
 
-        public bool Accepted { get; set; }
+        public int StatusId { get; set; }
 
-        public Bench Bench { get; set; }
+        public int BenchId { get; set; }
 
-        public int ClientID { get; set; }
+        public int ClientId { get; set; }
 
         public string HealthworkerName { get; set; }
     }
