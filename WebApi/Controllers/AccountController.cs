@@ -33,7 +33,7 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("register/client")]
-        public async Task<IActionResult> RegisterClient([FromBody] RegisterViewModel Credentials)
+        public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace WebApi.Controllers
 
         [Authorize]
         [HttpPost("register/healthworker")]
-        public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterViewModel Credentials)
+        public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
             if (ModelState.IsValid)
             {
