@@ -14,7 +14,7 @@
                 <Label Text="{Binding HealthworkerName, StringFormat='You and {0}'}" />
                 <Label Text="Status:" FontAttributes="Bold"/>
                 <Label Text="{Binding Status.Name}" />
-                <Button x:Name="ToggleStatusButton"/>
+                <StackLayout x:Name="ButtonSpace" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

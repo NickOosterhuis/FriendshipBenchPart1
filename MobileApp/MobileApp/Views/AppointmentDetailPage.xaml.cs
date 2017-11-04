@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,37 +22,66 @@ namespace MobileApp.Views
             BindingContext = appointment;
             InitializeComponent();
 
-            // Set the values for the status button.
-            ToggleStatusButton.Clicked += (object sender, EventArgs e) => {
-                UpdateAppointmentStatus(appointment);
+            // Create a accept and a cancel button.
+            Button acceptButton = new Button { Text = "Accept the appointment" };
+            Button cancelButton = new Button { Text = "Cancel the appointment" };
+
+            // Add listeners to these buttons.
+            acceptButton.Clicked += (object sender, EventArgs e) => {
+                UpdateAppointmentStatusAsync(appointment, true);
             };
-            if(appointment.Status.Id == 1)
+            cancelButton.Clicked += (object sender, EventArgs e) => {
+                UpdateAppointmentStatusAsync(appointment, false);
+            };
+
+            // If the appointment is waiting for response, show an accept and a cancel button.
+            if (appointment.Status.Id == 1)
             {
-                ToggleStatusButton.Text = "Accept appointment";
+                ButtonSpace.Children.Add(acceptButton);
+                ButtonSpace.Children.Add(cancelButton);
             }
-            else if(appointment.Status.Id == 2)
-            {
-                ToggleStatusButton.Text = "Cancel appointment";
-            }
+            // If the appointment has been accepted, show a cancel button.
             else if (appointment.Status.Id == 2)
             {
-                ToggleStatusButton.Text = "Accept appointment";
+                ButtonSpace.Children.Add(cancelButton);
             }
         }
 
         // Update the status of an appointment.
-        private void UpdateAppointmentStatus(Appointment appointment)
+        private async Task UpdateAppointmentStatusAsync(Appointment appointment, bool accepted)
         {
-            // TODO: Send an API POST request and update the view.
+            // Create a model that will be sent to update through the API
+            int statusId = accepted ? 2 : 3;
+            AppointmentViewModel viewModel = new AppointmentViewModel
+            {
+                Id = appointment.Id,
+                Date = appointment.Date,
+                Time = appointment.Time,
+                StatusId = statusId,
+                BenchId = appointment.Bench.Id,
+                HealthworkerName = appointment.HealthworkerName,
+            };
 
-            // Display an alert.
-            //bool accepted = !appointment.Accepted;
-            //String alertTitle = accepted ? "Appointment accepted" : "Appointment canceled";
-            //String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
+            // Do a PUT request.
+            var client = new HttpClient();
+            string json = JsonConvert.SerializeObject(viewModel);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = new HttpResponseMessage();
+            response = await client.PutAsync(Constants.appointmentsUrl + "/" + appointment.Id, content);
 
-            //string jsonAppointment = JsonConvert.SerializeObject(appointment);
+            if (response.IsSuccessStatusCode)
+            {
+                // Display a succesfull alert.
+                String alertTitle = accepted ? "Appointment accepted" : "Appointment canceled";
+                String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
+                DisplayAlert(alertTitle, alertMessage, "Okay");
+            } 
+            else
+            {
+                // Display an error.
+                DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
+            }
 
-            //DisplayAlert(alertTitle, alertMessage, "Okay");
         }
     }
 }

@@ -31,8 +31,14 @@ namespace MobileApp.Views
         public AppointmentsPage()
         {
             BindingContext = this;
-            FetchAppointments();
             InitializeComponent();
+        }
+
+        // Refresh the list with appointments when the user opens this page.
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            FetchAppointments();
         }
 
         // Fetch all the appointments and make a list of it.
@@ -40,7 +46,7 @@ namespace MobileApp.Views
         {
             // Send a GET request to the API.
             var client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(Constants.getAppointmentsUrl);
+            HttpResponseMessage response = await client.GetAsync(Constants.appointmentsUrl);
 
             // If the request was succesfull, add appointments to the list. If not, let the user know.
             if (response.IsSuccessStatusCode)
@@ -110,7 +116,6 @@ namespace MobileApp.Views
             }
         }
     }
-
 
     // The class for a ObserverableGroupCollection.
     public class ObservableGroupCollection<S, T> : ObservableCollection<T>
