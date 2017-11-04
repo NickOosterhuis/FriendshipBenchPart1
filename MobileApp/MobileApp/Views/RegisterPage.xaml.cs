@@ -44,19 +44,19 @@ namespace MobileApp.Views
             {
                 Placeholder = "Confirm Password",
                 IsPassword = true,
-            };
+            };                   
 
-            var firstname = new Entry
+            var firstName = new Entry
             {
                 Placeholder = "First Name",
             };
 
-            var lastname = new Entry
+            var lastName = new Entry
             {
                 Placeholder = "Last Name",
             };
 
-            var address = new Entry
+            var streetName = new Entry
             {
                 Placeholder = "Address"
             };
@@ -71,16 +71,10 @@ namespace MobileApp.Views
                 Placeholder = "Province"
             };
 
-            //var housenumber = new Entry
-            //{
-            //    Placeholder = "House number",
-            //    Keyboard = Keyboard.Numeric
-            //};
-
-            //var zipcode = new Entry
-            //{
-            //    Placeholder = "Zipcode"
-            //};
+            var houseNumber = new Entry
+            {
+                Placeholder = "House number"                
+            };
 
             Picker genderPicker = new Picker
             {
@@ -122,12 +116,13 @@ namespace MobileApp.Views
                     email,
                     password,
                     confirmPassword,
-                    firstname,
-                    lastname,
+                    firstName,
+                    lastName,
                     genderPicker,
                     birthdayLabel,
                     birhtDay,
-                    address,
+                    streetName,
+                    houseNumber,
                     province, 
                     district,
                     registerButton
@@ -138,22 +133,28 @@ namespace MobileApp.Views
 
             registerButton.Clicked += async (object sender, EventArgs e) =>
             {
-                await Register(new User
+                if (!password.Text.Equals(confirmPassword.Text))
+                {
+                    await DisplayAlert("Error", "Confirm password doesn't match password", "Cencel");
+                }
+
+                await Register(new ClientUser
                 {
                     Email = email.Text,
                     Password = password.Text,
                     ConfirmPassword = confirmPassword.Text,
-                    Adress = address.Text,
+                    StreetName = streetName.Text,
+                    HouseNumber = houseNumber.Text,
                     BirthDay = birhtDay.Date,
                     Province = province.Text,
                     District = district.Text,
                     Gender = genderPicker.SelectedItem.ToString(), 
-                    FirstName = firstname.Text,
-                    LastName = lastname.Text, 
+                    FirstName = firstName.Text,
+                    LastName = lastName.Text, 
                 });
             };
         }
-        public async Task Register(User user)
+        public async Task Register(ClientUser user)
         {
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);

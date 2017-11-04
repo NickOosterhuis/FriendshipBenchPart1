@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MobileApp.Models
 {
-    public class User
+    public class ClientUser
     {
         public string Email { get; set; }
 
@@ -23,7 +23,9 @@ namespace MobileApp.Models
 
         public DateTime BirthDay { get; set; }
 
-        public string Adress { get; set; }
+        public string StreetName { get; set; }
+
+        public string HouseNumber { get; set; }
 
         public string Province { get; set; }
 

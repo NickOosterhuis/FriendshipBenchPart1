@@ -44,8 +44,13 @@ namespace WebApi.ViewModels
 
         [Required]
         [MaxLength(100, ErrorMessage = "Address can't be longer than 100 characters")]
-        [Display(Name = "Streetname and housenumber")]
-        public string Adress { get; set; }
+        [Display(Name = "Street")]
+        public string StreetName { get; set; }
+
+        [Required]
+        [MaxLength(10, ErrorMessage = "Address can't be longer than 100 characters")]
+        [Display(Name = "Housenumber")]
+        public string HouseNumber { get; set; }
 
         [Required]
         [MaxLength(100, ErrorMessage = "Address can't be longer than 100 characters")]
