@@ -26,17 +26,44 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //JWT Token settings 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
 
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
+            // secretKey contains a secret passphrase only your server knows
+            var secretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
+            var issuer = Configuration.GetSection("JWTSettings:Issuer").Value;
+            var audience = Configuration.GetSection("JWTSettings:Audience").Value;
+            var signingKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(secretKey));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
 
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = true,
+                ValidIssuer = issuer,
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = true,
+                ValidAudience = audience
+            };
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = tokenValidationParameters;
+                });
+
+            //sql connection
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
+                .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
+
+            //identity service
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserDBContext>();
 
+            //swagger
             services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new Info { Title = "WebApi", Version = "v1" });
@@ -80,26 +107,7 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // secretKey contains a secret passphrase only your server knows
-            var secretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
-            var issuer = Configuration.GetSection("JWTSettings:Issuer").Value;
-            var audience = Configuration.GetSection("JWTSettings:Audience").Value;
-            var signingKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(secretKey));
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-
-                // Validate the JWT Issuer (iss) claim
-                ValidateIssuer = true,
-                ValidIssuer = issuer,
-
-                // Validate the JWT Audience (aud) claim
-                ValidateAudience = true,
-                ValidAudience = audience
-            };
-
+                   
             app.UseSwagger();
             app.UseSwaggerUI(c => 
             {

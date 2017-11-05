@@ -65,19 +65,21 @@ namespace MobileApp.Views
 
             signInButton.Clicked += async (object sender, EventArgs e) =>
             {
-                Login(new User { Email = email.Text, Password = password.Text });
+                await Login(new User { Email = email.Text, Password = password.Text });
             };
 
         }
 
-       public async void Login(User user)
+       public async Task Login(User user)
         {
             var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(user);                      
+            var json = JsonConvert.SerializeObject(user);
+      
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string readableContent = await content.ReadAsStringAsync();
 
             var response = new HttpResponseMessage(); 
-
+            
             try
             {
                 response = await client.PostAsync(Constants.loginUrl, content);
@@ -91,9 +93,12 @@ namespace MobileApp.Views
             if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine(@" User Successfully logged in");
+                Debug.WriteLine(readableContent);
+                await Navigation.PushAsync(new AboutPage());
             }
             else
             {
+                await DisplayAlert("Invalid login", "The username or password is incorrect.", "Cancel");
                 Debug.WriteLine("Er is iets fout gegaan :(");
                 Debug.WriteLine(response.Headers);
             }  
