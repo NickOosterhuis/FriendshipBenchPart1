@@ -13,8 +13,8 @@
                 <Label Text="Who:" FontAttributes="Bold"/>
                 <Label Text="{Binding HealthworkerName, StringFormat='You and {0}'}" />
                 <Label Text="Status:" FontAttributes="Bold"/>
-                <Label Text="{Binding AcceptStatus}" />
-                <Button x:Name="ToggleStatusButton"/>
+                <Label Text="{Binding Status.Name}" />
+                <StackLayout x:Name="ButtonSpace" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

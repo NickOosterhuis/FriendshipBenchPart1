@@ -24,22 +24,24 @@ namespace WebApi.Controllers
 
         // GET: api/Appointments
         [HttpGet]
-        public IEnumerable<Appointment> GetAppointments()
+        public IEnumerable<AppointmentGetViewModel> GetAppointments()
         {
-            //List<AppointmentGetViewModel> appointments = new List<AppointmentGetViewModel>();
-            //foreach(Appointment appointment in _context.Appointments)
-            //{
-             //   appointments.Add(new AppointmentGetViewModel
-            //    {
-            //        ID = appointment.Id,
-            //        Date = appointment.Date,
-            //        Time = appointment.Time,
-            //        ClientID = appointment.ClientID,
-            //        HealthworkerName = appointment.HealthworkerName
-            //    });
-            //}
+            List<AppointmentGetViewModel> appointments = new List<AppointmentGetViewModel>();
+            foreach(Appointment appointment in _context.Appointments)
+            {
+                appointments.Add(new AppointmentGetViewModel
+                {
+                    Id = appointment.Id,
+                    Date = appointment.Date,
+                    Time = appointment.Time,
+                    Status = _context.AppointmentStatuses.Find(appointment.StatusId),
+                    Bench = _context.Benches.Find(appointment.BenchId),
+                    ClientId = appointment.ClientId,
+                    HealthworkerName = appointment.HealthworkerName
+                });
+            }
 
-            return _context.Appointments;
+            return appointments;
         }
 
         // GET: api/Appointments/5
@@ -58,7 +60,18 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(appointment);
+            AppointmentGetViewModel viewModel = new AppointmentGetViewModel
+            {
+                Id = appointment.Id,
+                Date = appointment.Date,
+                Time = appointment.Time,
+                Status = _context.AppointmentStatuses.Find(appointment.StatusId),
+                Bench = _context.Benches.Find(appointment.BenchId),
+                ClientId = appointment.ClientId,
+                HealthworkerName = appointment.HealthworkerName
+            };
+
+            return Ok(viewModel);
         }
 
         // PUT: api/Appointments/5
@@ -109,9 +122,9 @@ namespace WebApi.Controllers
             {
               Date = appointmentViewModel.Date,
               Time = appointmentViewModel.Time,
-              Accepted = appointmentViewModel.Accepted,
-              Bench = _context.Benches.Find(appointmentViewModel.BenchId),
-              ClientID = appointmentViewModel.ClientID,
+              StatusId = 1,
+              BenchId = appointmentViewModel.BenchId,
+              ClientId = appointmentViewModel.ClientId,
               HealthworkerName = appointmentViewModel.HealthworkerName
             };
 

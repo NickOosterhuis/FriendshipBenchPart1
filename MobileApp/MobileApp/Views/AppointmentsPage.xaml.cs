@@ -31,42 +31,45 @@ namespace MobileApp.Views
         public AppointmentsPage()
         {
             BindingContext = this;
-            FetchAppointments();
             InitializeComponent();
+        }
+
+        // Refresh the list with appointments when the user opens this page.
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            FetchAppointments();
         }
 
         // Fetch all the appointments and make a list of it.
         private async Task FetchAppointments()
         {
-            Bench bench1 = new Bench { ID = 2, Streetname = "Teststraat", Housenumber = "2", District = "Districttest", Province = "Testprovince" };
-
             // Send a GET request to the API.
             var client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(Constants.getAppointmentsUrl);
+            HttpResponseMessage response = await client.GetAsync(Constants.appointmentsUrl);
 
             // If the request was succesfull, add appointments to the list. If not, let the user know.
             if (response.IsSuccessStatusCode)
             {
                 // Convert the API response into a JSON object.
-                List<Appointment> appointmentModels = new List<Appointment>();
+                allAppointments = new ObservableCollection<Appointment>();
                 String json = await response.Content.ReadAsStringAsync();
                 dynamic convertedJson = JsonConvert.DeserializeObject(json);
 
                 // Loop through all the appointments in the JSON object and create appointment objects.
                 foreach (var appointment in convertedJson)
                 {
-                    appointmentModels.Add(new Appointment
+                    allAppointments.Add(new Appointment
                     {
-                        ID = (int)appointment.id,
+                        Id = (int)appointment.id,
                         Date = (string)appointment.date,
                         Time = (string)appointment.time,
-                        Accepted = (bool)appointment.accepted,
-                        ClientID = (int)appointment.clientID,
+                        Status = new AppointmentStatus { Id = (int)appointment.status.id, Name = (string)appointment.status.name },
+                        Bench = new Bench { Id = (int)appointment.bench.id, Streetname = (string)appointment.bench.streetname, Housenumber = (string)appointment.bench.housenumber, Province = (string)appointment.bench.province, District = (string)appointment.bench.district },
+                        ClientId = (int)appointment.clientId,
                         HealthworkerName = (string)appointment.healthworkerName,
-                        Bench = bench1
-                    });  
+                    }); 
                 }
-                allAppointments = new ObservableCollection<Appointment>(appointmentModels);
             }
             else
             {
@@ -83,9 +86,10 @@ namespace MobileApp.Views
         {
             // Group the appointments by their status.
             var orderedAppointments =
-                allAppointments.OrderBy(a => a.Date)
+                allAppointments.OrderBy(a => a.Status.Id)
+                .ThenBy(a => a.Date)
                 .ThenBy(a => a.Time)
-                .GroupBy(a => a.AcceptStatus)
+                .GroupBy(a => a.Status.Name)
                 .Select(a => new ObservableGroupCollection<string, Appointment>(a))
                 .ToList();
 
@@ -96,7 +100,8 @@ namespace MobileApp.Views
         // Show the appointment details when an item has been selected.
         private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Navigation.PushAsync(new AppointmentDetailPage((Appointment) e.SelectedItem));           
+            Appointment selectedAppointment = (Appointment)e.SelectedItem;
+            Navigation.PushAsync(new AppointmentDetailPage(selectedAppointment.Id));           
         }
 
         // Refresh the list with appointments when a 'pull-to-refresh' has been performed.
@@ -113,7 +118,6 @@ namespace MobileApp.Views
             }
         }
     }
-
 
     // The class for a ObserverableGroupCollection.
     public class ObservableGroupCollection<S, T> : ObservableCollection<T>
