@@ -60,7 +60,18 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(appointment);
+            AppointmentGetViewModel viewModel = new AppointmentGetViewModel
+            {
+                Id = appointment.Id,
+                Date = appointment.Date,
+                Time = appointment.Time,
+                Status = _context.AppointmentStatuses.Find(appointment.StatusId),
+                Bench = _context.Benches.Find(appointment.BenchId),
+                ClientId = appointment.ClientId,
+                HealthworkerName = appointment.HealthworkerName
+            };
+
+            return Ok(viewModel);
         }
 
         // PUT: api/Appointments/5

@@ -86,7 +86,8 @@ namespace MobileApp.Views
         {
             // Group the appointments by their status.
             var orderedAppointments =
-                allAppointments.OrderBy(a => a.Date)
+                allAppointments.OrderBy(a => a.Status.Id)
+                .ThenBy(a => a.Date)
                 .ThenBy(a => a.Time)
                 .GroupBy(a => a.Status.Name)
                 .Select(a => new ObservableGroupCollection<string, Appointment>(a))
@@ -99,7 +100,8 @@ namespace MobileApp.Views
         // Show the appointment details when an item has been selected.
         private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Navigation.PushAsync(new AppointmentDetailPage((Appointment) e.SelectedItem));           
+            Appointment selectedAppointment = (Appointment)e.SelectedItem;
+            Navigation.PushAsync(new AppointmentDetailPage(selectedAppointment.Id));           
         }
 
         // Refresh the list with appointments when a 'pull-to-refresh' has been performed.

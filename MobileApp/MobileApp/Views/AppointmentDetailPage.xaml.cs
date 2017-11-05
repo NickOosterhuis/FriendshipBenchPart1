@@ -16,11 +16,57 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AppointmentDetailPage : ContentPage
     {
+        Appointment appointment;
+        int appointmentId;
+
         // Initialize the page.
-        public AppointmentDetailPage(Appointment appointment)
+        public AppointmentDetailPage(int appointmentId)
         {
-            BindingContext = appointment;
+            this.appointmentId = appointmentId;
+            FetchAppointment();
             InitializeComponent();
+        }
+
+        // Fetch the appointment.
+        private async Task FetchAppointment()
+        {
+            // Send a GET request to the API.
+            var client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(Constants.appointmentsUrl + "/" + appointmentId);
+
+            // If the request was succesfull, create a new appointment object
+            if (response.IsSuccessStatusCode)
+            {
+                // Convert the API response into a JSON object.
+                String json = await response.Content.ReadAsStringAsync();
+                dynamic convertedJson = JsonConvert.DeserializeObject(json);
+
+                // Create a new object from the appointments.
+                appointment = new Appointment
+                {
+                    Id = (int)convertedJson.id,
+                    Date = (string)convertedJson.date,
+                    Time = (string)convertedJson.time,
+                    Status = new AppointmentStatus { Id = (int)convertedJson.status.id, Name = (string)convertedJson.status.name },
+                    Bench = new Bench { Id = (int)convertedJson.bench.id, Streetname = (string)convertedJson.bench.streetname, Housenumber = (string)convertedJson.bench.housenumber, Province = (string)convertedJson.bench.province, District = (string)convertedJson.bench.district },
+                    ClientId = (int)convertedJson.clientId,
+                    HealthworkerName = (string)convertedJson.healthworkerName,
+                };
+            }
+            else
+            {
+                DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
+            }
+
+            BindingContext = appointment;
+            UpdateButtons();
+        }
+
+        // Show the right buttons for this appointment.
+        private void UpdateButtons()
+        {
+            // Remove existing buttons.
+            ButtonSpace.Children.Clear();
 
             // Create a accept and a cancel button.
             Button acceptButton = new Button { Text = "Accept the appointment" };
@@ -75,6 +121,7 @@ namespace MobileApp.Views
                 String alertTitle = accepted ? "Appointment accepted" : "Appointment canceled";
                 String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
                 DisplayAlert(alertTitle, alertMessage, "Okay");
+                FetchAppointment();
             } 
             else
             {
