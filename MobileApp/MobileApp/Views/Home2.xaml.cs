@@ -17,6 +17,7 @@ namespace MobileApp.Views
         {
 
             InitializeComponent();
+
             Label header = new Label
             {
                 Text = "Welkom !",
@@ -43,7 +44,7 @@ namespace MobileApp.Views
                 TextColor = Color.Black,
                 HorizontalTextAlignment = TextAlignment.Center,
                 HorizontalOptions = LayoutOptions.Center
-                   
+
             };
 
             Button button = new Button
@@ -70,11 +71,6 @@ namespace MobileApp.Views
                     button,
                 }
             };
-        }
-
-        private void InitializeComponent()
-        {
-            throw new NotImplementedException();
         }
 
         void OnButtonClicked(object sender, EventArgs e)

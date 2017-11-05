@@ -9,13 +9,14 @@ using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Views
 {
-
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Home : ContentPage
     {
         Label label;
         public Home()
         {
             InitializeComponent();
+
             Label header = new Label
             {
                 Text = "Welkom !",
@@ -60,15 +61,10 @@ namespace MobileApp.Views
             };
         }
 
-        private void InitializeComponent()
-        {
-            throw new NotImplementedException();
-        }
 
         void OnButtonClicked(object sender, EventArgs e)
-            {
-                Navigation.PushAsync(new Home2());
-            }
+        {
+            Navigation.PushAsync(new Home2());
+        }
     }
 }
-
