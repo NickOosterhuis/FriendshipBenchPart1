@@ -96,7 +96,7 @@ namespace MobileApp.Views
             {
                 Debug.WriteLine(@" User Successfully logged in");
                 Debug.WriteLine(readableContent);
-                await Navigation.PushAsync(new AboutPage());
+                await Navigation.PushAsync(new LandingPage());
             }
             else
             {
