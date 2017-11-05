@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using WebApi.Contexts;
+using WebApi.Models;
 
 namespace WebApi
 {
@@ -29,6 +30,9 @@ namespace WebApi
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
+
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserDBContext>();
