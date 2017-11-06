@@ -12,10 +12,10 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+		<StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
 			<StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-				<ContentView Padding="0,40,0,40" VerticalOptions="FillAndExpand">
-					<Image Source="xamarin_logo.png" VerticalOptions="Center" HeightRequest="64" />
+				<ContentView VerticalOptions="FillAndExpand">
+                    <Image Source="friendship_bench_logo.png" VerticalOptions="Center" WidthRequest="150"/>
 				</ContentView>
 			</StackLayout>
 		</StackLayout>
@@ -25,39 +25,16 @@
 					<Label.FormattedText>
 						<FormattedString>
 							<FormattedString.Spans>
-								<Span Text="AppName" FontAttributes="Bold" FontSize="22" />
+								<Span Text="The Friendship Bench" FontAttributes="Bold" FontSize="22" />
 								<Span Text=" " />
 								<Span Text="1.0" ForegroundColor="{StaticResource LightTextColor}" />
 							</FormattedString.Spans>
 						</FormattedString>
 					</Label.FormattedText>
 				</Label>
-				<Label>
-					<Label.FormattedText>
-						<FormattedString>
-							<FormattedString.Spans>
-								<Span Text="Moi eem bie onze friendship bench app" />
-								<Span Text=" " />
-								<Span Text="Woist ja wel" FontAttributes="Bold" />
-								<Span Text="." />
-							</FormattedString.Spans>
-						</FormattedString>
-					</Label.FormattedText>
-				</Label>
-				<Label>
-					<Label.FormattedText>
-						<FormattedString>
-							<FormattedString.Spans>
-								<Span Text="It shares code with its" />
-								<Span Text=" " />
-								<Span Text="iOS, Android, and Windows" FontAttributes="Bold" />
-								<Span Text=" " />
-								<Span Text="versions." />
-							</FormattedString.Spans>
-						</FormattedString>
-					</Label.FormattedText>
-				</Label>
-				<Button Margin="0,10,0,0" Text="Learn more" Command="{Binding OpenWebCommand}" BackgroundColor="{StaticResource Primary}" TextColor="White" />
+                <Label>We try to reach out to people in Zimbabwe who are in need of help. Think about people who suffer from mental disorders, unwanted pregnancies or anything else that comes with (mental) problems.</Label>
+                <Label>We work with a SSQ-14, a question list which can determine if you are in need of help. Later on, you will receive more information about this question list. But first, let's login or create an account!</Label>
+                <Button Margin="0,10,0,0" Text="More information" Command="{Binding OpenWebCommand}" Style="{StaticResource PrimaryButton}"/>
 			</StackLayout>
 		</ScrollView>
 	</Grid>

@@ -5,12 +5,23 @@
             <Color x:Key="Primary">#ffb400</Color>
             <Color x:Key="PrimaryDark">#c68500</Color>
             <Color x:Key="Accent">#ffb400</Color>
+            <Color x:Key="HeadingTextColor">#4d4d4d</Color>
             <Color x:Key="LightBackgroundColor">#FAFAFA</Color>
             <Color x:Key="DarkBackgroundColor">#C0C0C0</Color>
             <Color x:Key="MediumGrayTextColor">#4d4d4d</Color>
             <Color x:Key="LightTextColor">#999999</Color>
 
+            <Style x:Key="LabelPageHeadingStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{StaticResource HeadingTextColor}" />
+            </Style>
 
+            <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"></Setter>
+                <Setter Property="TextColor" Value="White"></Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -17,57 +17,18 @@ namespace MobileApp.Views
     public partial class SignInPage : ContentPage
     {
         public Picker MenuItem;
-
-        public Entry email;
-        public Entry password;
         
         public SignInPage()
         {
-            email = new Entry
-            {
-                Placeholder = "Email"
-            };
-
-            password = new Entry
-            {
-                Placeholder = "Password",
-                IsPassword = true
-            };
-
-            var signInButton = new Button
-            {
-                Text = "Sign In"
-            };
-
-            var registerButton = new Button
-            {
-                Text = "Register"
-            };
-
-            
-
-            Content = new StackLayout
-            {
-                Padding = 30,
-                Spacing = 10,
-                Children =
-                {
-                    new Label {Text = "Sign in", FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
-                    email,
-                    password,
-                    signInButton,
-                    registerButton
-                }
-            };
-
-            registerButton.Clicked += (object sender, EventArgs e) =>
+            InitializeComponent();
+            RegisterButton.Clicked += (object sender, EventArgs e) =>
             {
                 Navigation.PushAsync(new RegisterPage());
             };
 
-            signInButton.Clicked += async (object sender, EventArgs e) =>
+            SignInButton.Clicked += async (object sender, EventArgs e) =>
             {
-                await Login(new ClientUser { Email = email.Text, Password = password.Text });
+                await Login(new ClientUser { Email = Email.Text, Password = Password.Text });
             };
 
         }

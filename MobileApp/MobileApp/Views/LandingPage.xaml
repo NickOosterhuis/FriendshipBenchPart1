@@ -11,8 +11,6 @@
         <ContentPage Padding="10" Title="MasterPage">
             <ContentPage.Content>
                 <StackLayout Margin="5, 30, 5, 5">
-                    <Label Text="Master Page">
-                    </Label>
 
                     <Button Text="About" Clicked="About_Clicked"></Button>
                     <Button Text="Appointments" Clicked="Appointments_Clicked"></Button>
