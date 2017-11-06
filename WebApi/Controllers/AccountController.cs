@@ -152,17 +152,6 @@ namespace WebApi.Controllers
 
             return Ok(user);
         }
-               
-
-        //GET api/account/healthworker/{id}
-        [Authorize]
-        [HttpGet("healthworker/{id}")]
-        public async Task<IActionResult> GetHealthWorkerUsers(Guid guid)
-        {
-            return null; 
-        }
-
-
 
         private string GetIdToken(User user)
         {
