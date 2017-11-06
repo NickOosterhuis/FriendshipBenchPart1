@@ -58,6 +58,9 @@
     <Compile Include="Views\AppointmentsPage.xaml.cs">
       <DependentUpon>AppointmentsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditUserPage.xaml.cs">
+      <DependentUpon>EditUserPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Home2.xaml.cs">
       <DependentUpon>Home2.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,9 @@
     </Compile>
     <Compile Include="Views\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Signout.xaml.cs">
+      <DependentUpon>Signout.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +180,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\LandingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditUserPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Signout.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

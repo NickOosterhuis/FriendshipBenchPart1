@@ -19,6 +19,7 @@
                     <Button Text="Profile" Clicked="Profile_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="BlueViolet"></Button>
                     <Button Text="Messages" Clicked="Messages_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="CadetBlue"></Button>
                     <Button Text="Questionnaire" Clicked="Questionnaire_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="SkyBlue"></Button>
+                    <Button Text="Logout" Clicked="Logout_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="SkyBlue"></Button>
 
                 </StackLayout>
 

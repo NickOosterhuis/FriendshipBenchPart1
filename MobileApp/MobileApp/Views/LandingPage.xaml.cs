@@ -30,7 +30,7 @@ namespace MobileApp.Views
 
         private void Profile_Clicked(object sender, EventArgs e)
         {
-
+            Detail = new NavigationPage(new EditUserPage());
         }
 
         private void Messages_Clicked(object sender, EventArgs e)
@@ -41,6 +41,11 @@ namespace MobileApp.Views
         private void Questionnaire_Clicked(object sender, EventArgs e)
         {
 
+        }
+
+        private void Logout_Clicked(object sender, EventArgs e)
+        {
+            Detail = new NavigationPage(new Signout());
         }
     }
 }
