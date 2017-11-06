@@ -1,6 +1,7 @@
 ﻿using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -30,30 +31,33 @@ namespace WebApi.Controllers
             _options = optionsAccessor.Value;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel Credentials)
+        //POST /api/account/register/client
+        [AllowAnonymous]
+        [HttpPost("register/client")]
+        public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
             if (ModelState.IsValid)
             {
-                var user = new User {
+                var client = new ClientUser {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
                     FirstName = Credentials.FirstName,
                     LastName = Credentials.LastName,
                     Gender = Credentials.LastName,
                     BirthDay = Credentials.BirthDay, 
-                    Adress = Credentials.Adress,
+                    StreetName = Credentials.StreetName,
+                    HouseNumber = Credentials.HouseNumber,
                     Province = Credentials.Province,
                     District = Credentials.District,
                 };
-                var result = await _userManager.CreateAsync(user, Credentials.Password);
+                var result = await _userManager.CreateAsync(client, Credentials.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(client, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
           {
             { "access_token", GetAccessToken(Credentials.Email) },
-            { "id_token", GetIdToken(user) }
+            { "id_token", GetIdToken(client) }
           });
                 }
                 return Errors(result);
@@ -62,6 +66,40 @@ namespace WebApi.Controllers
             return Error("Unexpected error");
         }
 
+        //POST /api/account/register/healthworker
+        [Authorize]
+        [HttpPost("register/healthworker")]
+        public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
+        {
+            if (ModelState.IsValid)
+            {
+                var healthWorker = new HealthWorkerUser
+                {
+                    UserName = Credentials.Email,
+                    Email = Credentials.Email,
+                    FirstName = Credentials.FirstName,
+                    LastName = Credentials.LastName,
+                    Gender = Credentials.LastName,
+                    BirthDay = Credentials.BirthDay,
+                };
+                var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(healthWorker, isPersistent: false);
+                    return new JsonResult(new Dictionary<string, object>
+          {
+            { "access_token", GetAccessToken(Credentials.Email) },
+            { "id_token", GetIdToken(healthWorker) }
+          });
+                }
+                return Errors(result);
+
+            }
+            return Error("Unexpected error");
+        }
+
+        //POST /api/account/signin
+        [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] LoginViewModel Credentials)
         {
@@ -84,7 +122,48 @@ namespace WebApi.Controllers
             return Error("Unexpected error");
         }
 
-        private string GetIdToken(IdentityUser user)
+        //POST /api/account/signout
+        [Authorize]
+        [HttpPost("signout")]
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+
+            return new JsonResult("User is Logged out");
+        }
+
+        //GET api/account/user
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetClientUsers()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var userId = user.Id; 
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        //GET api/account/healthworker/{id}
+        [Authorize]
+        [HttpGet("healthworker/{id}")]
+        public async Task<IActionResult> GetHealthWorkerUsers(Guid guid)
+        {
+            return null; 
+        }
+
+
+
+        private string GetIdToken(User user)
         {
             var payload = new Dictionary<string, object>
       {

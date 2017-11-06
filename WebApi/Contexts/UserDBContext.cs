@@ -9,5 +9,10 @@ namespace WebApi.Contexts
     {
         public UserDBContext(DbContextOptions<UserDBContext> options) : base(options) { }
 
+        public DbSet<ClientUser> Client {get; set;}
+
+        public DbSet<HealthWorkerUser> HealthWorker { get; set; }
+
+        public DbSet<User> User { get; set; }
     }
 }
