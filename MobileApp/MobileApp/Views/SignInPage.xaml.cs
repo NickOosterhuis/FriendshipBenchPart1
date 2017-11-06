@@ -16,6 +16,8 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SignInPage : ContentPage
     {
+        public Picker MenuItem;
+
         public Entry email;
         public Entry password;
         
@@ -94,7 +96,7 @@ namespace MobileApp.Views
             {
                 Debug.WriteLine(@" User Successfully logged in");
                 Debug.WriteLine(readableContent);
-                await Navigation.PushAsync(new AboutPage());
+                await Navigation.PushAsync(new LandingPage());
             }
             else
             {
