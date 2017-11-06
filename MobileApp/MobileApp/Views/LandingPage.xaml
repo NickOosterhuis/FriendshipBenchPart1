@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.LandingPage"
+                  Title="MasterPage"
+                               NavigationPage.HasNavigationBar="False" 
+             NavigationPage.HasBackButton="False">
+
+
+    <MasterDetailPage.Master>
+        <ContentPage Padding="10" Title="MasterPage">
+            <ContentPage.Content>
+                <StackLayout Margin="5, 30, 5, 5">
+                    <Label Text="Master Page">
+                    </Label>
+
+                    <Button Text="About" Clicked="About_Clicked" BorderWidth="3" BorderRadius="1" BackgroundColor="White" BorderColor="Blue"></Button>
+                    <Button Text="Appointments" Clicked="Appointments_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="AliceBlue"></Button>
+                    <Button Text="Profile" Clicked="Profile_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="BlueViolet"></Button>
+                    <Button Text="Messages" Clicked="Messages_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="CadetBlue"></Button>
+                    <Button Text="Questionnaire" Clicked="Questionnaire_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="SkyBlue"></Button>
+
+                </StackLayout>
+
+            </ContentPage.Content>
+        </ContentPage>
+    </MasterDetailPage.Master>
+
+    <MasterDetailPage.Detail>
+        <ContentPage Padding="10" Title="Detail Page">
+            <ContentPage.Content>
+                <StackLayout Margin="5, 30, 5, 5">
+                    <Label Text="Detail Page">
+
+                    </Label>
+                </StackLayout>
+
+            </ContentPage.Content>
+        </ContentPage>
+    </MasterDetailPage.Detail>
+
+</MasterDetailPage>

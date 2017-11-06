@@ -15,12 +15,5 @@ namespace WebApi.Models
         public string Gender { get; set; }
 
         public DateTime BirthDay { get; set; }
-
-        public string Adress { get; set; }
-
-        public string Province { get; set; }
-
-        public string District { get; set; }
-
     }
 }
