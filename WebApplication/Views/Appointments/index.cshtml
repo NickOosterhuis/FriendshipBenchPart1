@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Appointments</h2>
+
+<div ng-app="appointments" ng-controller="appointmentCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <table>
+        <thead>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Bench Location</th>
+            <th>Healthworker</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="appointment in appointments">
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.time }}</td>
+                <td>{{ appointment.status.name }}</td>
+                <td>{{ appointment.bench.streetname + " " + appointment.bench.housenumber + ", " + appointment.bench.province + ", " + appointment.bench.district }}</td>
+                <td>{{ appointment.healthworkerName }}</td>
+
+            </tr>
+        </tbody>
+    </table>
+<script>
+    //module
+    var app = angular.module('appointments', []);
+
+    //controller
+    app.controller('appointmentCtrl', function ($scope, $http) {
+        $http.get('http://127.0.0.1:54618/api/Appointments')
+            .then(function (response) {
+                //first function handles succes
+                $scope.appointments = response.data;
+            }, function (response) {
+                //second function handles error
+                $scope.appointments = "something went wrong!";
+
+            });
+    });
+</script>
+

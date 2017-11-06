@@ -26,6 +26,10 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //configure cors
+            services.AddCors();
+
             //JWT Token settings 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
 
@@ -107,7 +111,10 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-                   
+
+            app.UseCors(builder =>
+            builder.WithOrigins("https://localhost:44314"));
+
             app.UseSwagger();
             app.UseSwaggerUI(c => 
             {
