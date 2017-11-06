@@ -21,11 +21,13 @@ namespace MobileApp.Views
         private void About_Clicked(object sender, EventArgs e)
         {
             Detail = new NavigationPage(new AboutPage());
+            IsPresented = false;
         }
 
         private void Appointments_Clicked(object sender, EventArgs e)
         {
             Detail = new NavigationPage(new AppointmentsPage());
+            IsPresented = false;
         }
 
         private void Profile_Clicked(object sender, EventArgs e)

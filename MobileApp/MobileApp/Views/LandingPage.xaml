@@ -8,15 +8,14 @@
 
 
     <MasterDetailPage.Master>
-        <ContentPage Padding="10" Title="MasterPage">
+        <ContentPage Title="MasterPage">
             <ContentPage.Content>
-                <StackLayout Margin="5, 30, 5, 5">
-
-                    <Button Text="About" Clicked="About_Clicked"></Button>
-                    <Button Text="Appointments" Clicked="Appointments_Clicked"></Button>
-                    <Button Text="Profile" Clicked="Profile_Clicked"></Button>
-                    <Button Text="Messages" Clicked="Messages_Clicked"></Button>
+                <StackLayout x:Name="NavigationLayout" Margin="0, 30, 0, 0">
                     <Button Text="Questionnaire" Clicked="Questionnaire_Clicked"></Button>
+                    <Button Text="Appointments" Clicked="Appointments_Clicked"></Button>
+                    <Button Text="Messages" Clicked="Messages_Clicked"></Button>
+                    <Button Text="Profile" Clicked="Profile_Clicked"></Button>
+                    <Button Text="About" Clicked="About_Clicked"></Button>
 
                 </StackLayout>
 
