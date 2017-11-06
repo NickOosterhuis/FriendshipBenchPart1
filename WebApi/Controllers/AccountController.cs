@@ -135,7 +135,7 @@ namespace WebApi.Controllers
         //GET api/account/user
         [Authorize]
         [HttpGet("user")]
-        public async Task<IActionResult> GetClientUsers()
+        public async Task<IActionResult> GetLoggedInUser()
         {
             if (!ModelState.IsValid)
             {
@@ -152,6 +152,7 @@ namespace WebApi.Controllers
 
             return Ok(user);
         }
+               
 
         //GET api/account/healthworker/{id}
         [Authorize]

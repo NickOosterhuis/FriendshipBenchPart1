@@ -132,10 +132,10 @@ namespace MobileApp.Views
 
             registerButton.Clicked += async (object sender, EventArgs e) =>
             {
-                if (!password.Text.Equals(confirmPassword.Text))
-                {
-                    await DisplayAlert("Error", "Confirm password doesn't match password", "Cencel");
-                }
+                //if (!password.Text.Equals(confirmPassword.Text))
+                //{
+                //    await DisplayAlert("Error", "Confirm password doesn't match password", "Cencel");
+                //}
 
                 await Register(new ClientUser
                 {
