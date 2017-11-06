@@ -15,7 +15,7 @@ namespace MobileApp.Views
 		public LandingPage ()
 		{
 			InitializeComponent ();
-            DisplayAlert("Hello", "Swipe right to open the menu", "Got it!");
+            Detail = new NavigationPage(new AboutPage());
         }
 
         private void About_Clicked(object sender, EventArgs e)

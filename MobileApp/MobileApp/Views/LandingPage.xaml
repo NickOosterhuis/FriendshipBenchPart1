@@ -14,11 +14,11 @@
                     <Label Text="Master Page">
                     </Label>
 
-                    <Button Text="About" Clicked="About_Clicked" BorderWidth="3" BorderRadius="1" BackgroundColor="White" BorderColor="Blue"></Button>
-                    <Button Text="Appointments" Clicked="Appointments_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="AliceBlue"></Button>
-                    <Button Text="Profile" Clicked="Profile_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="BlueViolet"></Button>
-                    <Button Text="Messages" Clicked="Messages_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="CadetBlue"></Button>
-                    <Button Text="Questionnaire" Clicked="Questionnaire_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="SkyBlue"></Button>
+                    <Button Text="About" Clicked="About_Clicked"></Button>
+                    <Button Text="Appointments" Clicked="Appointments_Clicked"></Button>
+                    <Button Text="Profile" Clicked="Profile_Clicked"></Button>
+                    <Button Text="Messages" Clicked="Messages_Clicked"></Button>
+                    <Button Text="Questionnaire" Clicked="Questionnaire_Clicked"></Button>
 
                 </StackLayout>
 
