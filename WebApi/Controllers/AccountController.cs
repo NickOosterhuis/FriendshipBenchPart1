@@ -43,7 +43,7 @@ namespace WebApi.Controllers
                     Email = Credentials.Email,
                     FirstName = Credentials.FirstName,
                     LastName = Credentials.LastName,
-                    Gender = Credentials.LastName,
+                    Gender = Credentials.Gender,
                     BirthDay = Credentials.BirthDay, 
                     StreetName = Credentials.StreetName,
                     HouseNumber = Credentials.HouseNumber,
@@ -79,7 +79,7 @@ namespace WebApi.Controllers
                     Email = Credentials.Email,
                     FirstName = Credentials.FirstName,
                     LastName = Credentials.LastName,
-                    Gender = Credentials.LastName,
+                    Gender = Credentials.Gender,
                     BirthDay = Credentials.BirthDay,
                 };
                 var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);

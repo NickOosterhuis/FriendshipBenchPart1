@@ -23,17 +23,17 @@ namespace WebApi.ViewModels
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [MaxLength(100, ErrorMessage = "Address can't be longer than 100 characters")]
+        [MaxLength(100, ErrorMessage = "First name can't be longer than 100 characters")]
         [Display(Name = "First name")]
         public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(100, ErrorMessage = "Address can't be longer than 100 characters")]
+        [MaxLength(100, ErrorMessage = "Last name can't be longer than 100 characters")]
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
         [Required]
-        [MaxLength(20, ErrorMessage = "Address can't be longer than 20 characters")]
+        [MaxLength(20, ErrorMessage = "Gender can't be longer than 20 characters")]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
