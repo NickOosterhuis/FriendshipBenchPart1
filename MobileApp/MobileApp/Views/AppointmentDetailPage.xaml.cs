@@ -78,7 +78,6 @@ namespace MobileApp.Views
             };
             acceptButton.BackgroundColor = (Color)Application.Current.Resources["Primary"];
             acceptButton.TextColor = Color.White;
-            //acceptButton.Image = ImageSource.FromFile("check.png");
             cancelButton.Clicked += (object sender, EventArgs e) => {
                 UpdateAppointmentStatusAsync(appointment, false);
             };

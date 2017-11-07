@@ -10,15 +10,13 @@
     <MasterDetailPage.Master>
         <ContentPage Title="MasterPage">
             <ContentPage.Content>
-                <StackLayout x:Name="NavigationLayout" Margin="0, 30, 0, 0">
-                    <Button Text="Questionnaire" Clicked="Questionnaire_Clicked"></Button>
-                    <Button Text="Appointments" Clicked="Appointments_Clicked"></Button>
-                    <Button Text="Messages" Clicked="Messages_Clicked"></Button>
-                    <Button Text="Profile" Clicked="Profile_Clicked"></Button>
-                    <Button Text="About" Clicked="About_Clicked"></Button>
-
-                </StackLayout>
-
+                <ListView x:Name="NavigationList">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ImageCell Text="{Binding Name}" ImageSource="{Binding Icon}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </ContentPage.Content>
         </ContentPage>
     </MasterDetailPage.Master>
