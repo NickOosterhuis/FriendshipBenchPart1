@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -143,17 +142,18 @@ namespace MobileApp.Views
                     Email = email.Text,
                     Password = password.Text,
                     ConfirmPassword = confirmPassword.Text,
+                    FirstName = firstName.Text,
+                    LastName = lastName.Text,
+                    Gender = genderPicker.SelectedItem.ToString(),
+                    BirthDay = birhtDay.Date,
                     StreetName = streetName.Text,
                     HouseNumber = houseNumber.Text,
-                    BirthDay = birhtDay.Date,
                     Province = province.Text,
-                    District = district.Text,
-                    Gender = genderPicker.SelectedItem.ToString(), 
-                    FirstName = firstName.Text,
-                    LastName = lastName.Text, 
+                    District = district.Text,              
                 });
             };
         }
+
         public async Task Register(ClientUser user)
         {
             var client = new HttpClient();
