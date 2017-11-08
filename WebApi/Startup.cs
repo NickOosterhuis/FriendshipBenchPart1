@@ -114,7 +114,9 @@ namespace WebApi
             }
 
             app.UseCors(builder =>
-            builder.WithOrigins("https://localhost:44314"));
+            builder.WithOrigins("https://localhost:44314")
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseSwagger();
             app.UseSwaggerUI(c => 
