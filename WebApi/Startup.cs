@@ -59,7 +59,7 @@ namespace WebApi
                 .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
-            
+
             //identity service
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserDBContext>();
@@ -94,9 +94,12 @@ namespace WebApi
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath = "/api/account/signin"; 
+                options.LoginPath = "/api/account/signin";
                 options.SlidingExpiration = true;
             });
+
+            //
+
 
             services.AddMvc();
         }
@@ -108,9 +111,16 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-                   
+
+            //Access control error fix for web application
+            app.UseCors(builder =>
+            builder.WithOrigins("https://localhost:44314")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
+
             app.UseSwagger();
-            app.UseSwaggerUI(c => 
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
             });
