@@ -11,9 +11,10 @@ using WebApi.Contexts;
 namespace WebApi.Migrations.QuestionnaireDB
 {
     [DbContext(typeof(QuestionnaireDBContext))]
-    partial class QuestionnaireDBContextModelSnapshot : ModelSnapshot
+    [Migration("20171106160109_FixedDanboProblem")]
+    partial class FixedDanboProblem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

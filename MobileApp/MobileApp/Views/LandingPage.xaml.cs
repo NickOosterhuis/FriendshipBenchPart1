@@ -40,7 +40,7 @@ namespace MobileApp.Views
 
         private void Questionnaire_Clicked(object sender, EventArgs e)
         {
-
+            Detail = new NavigationPage(new MainQuestionnaire());
         }
     }
 }
