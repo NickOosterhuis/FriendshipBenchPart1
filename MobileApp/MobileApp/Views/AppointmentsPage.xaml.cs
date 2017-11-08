@@ -65,12 +65,11 @@ namespace MobileApp.Views
                     allAppointments.Add(new Appointment
                     {
                         Id = (int)appointment.id,
-                        Date = (string)appointment.date,
-                        Time = (string)appointment.time,
+                        Time = (DateTime)appointment.time,
                         Status = new AppointmentStatus { Id = (int)appointment.status.id, Name = (string)appointment.status.name },
                         Bench = new Bench { Id = (int)appointment.bench.id, Streetname = (string)appointment.bench.streetname, Housenumber = (string)appointment.bench.housenumber, Province = (string)appointment.bench.province, District = (string)appointment.bench.district },
                         ClientId = (string)appointment.clientId,
-                        Healthworker = new Healthworker { Id = (string)appointment.healthworker.id, Firstname = (string)appointment.healthworker.firstname, Lastname = (string)appointment.healthworker.lastname, Birthday = (string)appointment.healthworker.birthday, Gender = (string)appointment.healthworker.gender, Email = (string)appointment.healthworker.email }
+                        Healthworker = new Healthworker { Id = (string)appointment.healthworker.id, Firstname = (string)appointment.healthworker.firstname, Lastname = (string)appointment.healthworker.lastname, Birthday = (DateTime)appointment.healthworker.birthday, Gender = (string)appointment.healthworker.gender, Email = (string)appointment.healthworker.email }
                     }); 
                 }
             }
@@ -90,7 +89,6 @@ namespace MobileApp.Views
             // Group the appointments by their status.
             var orderedAppointments =
                 allAppointments.OrderBy(a => a.Status.Id)
-                .ThenBy(a => a.Date)
                 .ThenBy(a => a.Time)
                 .GroupBy(a => a.Status.Name)
                 .Select(a => new ObservableGroupCollection<string, Appointment>(a))

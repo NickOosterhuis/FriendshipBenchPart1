@@ -1,4 +1,5 @@
-﻿using WebApi.Models;
+﻿using System;
+using WebApi.Models;
 
 namespace WebApi.ViewModels
 {
@@ -6,9 +7,7 @@ namespace WebApi.ViewModels
     {
         public int Id { get; set; }
 
-        public string Date { get; set; }
-
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         public AppointmentStatus Status { get; set; }
 

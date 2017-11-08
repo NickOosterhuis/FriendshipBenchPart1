@@ -35,7 +35,6 @@ namespace WebApi.Controllers
                 appointments.Add(new AppointmentGetViewModel
                 {
                     Id = appointment.Id,
-                    Date = appointment.Date,
                     Time = appointment.Time,
                     Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                     Bench = _context.Benches.Find(appointment.BenchId),
@@ -67,7 +66,6 @@ namespace WebApi.Controllers
             AppointmentGetViewModel viewModel = new AppointmentGetViewModel
             {
                 Id = appointment.Id,
-                Date = appointment.Date,
                 Time = appointment.Time,
                 Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                 Bench = _context.Benches.Find(appointment.BenchId),
@@ -124,7 +122,6 @@ namespace WebApi.Controllers
 
             var appointment = new Appointment()
             {
-              Date = appointmentViewModel.Date,
               Time = appointmentViewModel.Time,
               StatusId = 1,
               BenchId = appointmentViewModel.BenchId,

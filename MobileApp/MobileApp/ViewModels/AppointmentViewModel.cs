@@ -10,16 +10,14 @@ namespace MobileApp.Models
     {
         public int Id { get; set; }
 
-        public string Date { get; set; }
-
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         public int StatusId { get; set; }
 
         public int BenchId { get; set; }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
 
-        public string HealthworkerName { get; set; }
+        public string HealthworkerId { get; set; }
     }
 }

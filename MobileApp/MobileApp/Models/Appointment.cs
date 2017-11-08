@@ -10,9 +10,7 @@ namespace MobileApp.Models
     {
         public int Id { get; set; }
 
-        public string Date { get; set; }
-
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         public AppointmentStatus Status { get; set; }
 
@@ -24,7 +22,7 @@ namespace MobileApp.Models
 
         public string DateTime
         {
-            get { return string.Format("{0}, {1}", Date, Time); }
-        }
+            get { return String.Format("{0:dd/MM/yyyy, hh:mm tt}", Time); }
+            }
     }
 }

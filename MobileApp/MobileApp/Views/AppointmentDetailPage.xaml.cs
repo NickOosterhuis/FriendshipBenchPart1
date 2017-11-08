@@ -45,12 +45,11 @@ namespace MobileApp.Views
                 appointment = new Appointment
                 {
                     Id = (int)convertedJson.id,
-                    Date = (string)convertedJson.date,
-                    Time = (string)convertedJson.time,
+                    Time = (DateTime)convertedJson.time,
                     Status = new AppointmentStatus { Id = (int)convertedJson.status.id, Name = (string)convertedJson.status.name },
                     Bench = new Bench { Id = (int)convertedJson.bench.id, Streetname = (string)convertedJson.bench.streetname, Housenumber = (string)convertedJson.bench.housenumber, Province = (string)convertedJson.bench.province, District = (string)convertedJson.bench.district },
                     ClientId = (string)convertedJson.clientId,
-                    Healthworker = new Healthworker { Id = (string)convertedJson.healthworker.id, Firstname = (string)convertedJson.healthworker.firstname, Lastname = (string)convertedJson.healthworker.lastname, Birthday = (string)convertedJson.healthworker.birthday, Gender = (string)convertedJson.healthworker.gender, Email = (string)convertedJson.healthworker.email }
+                    Healthworker = new Healthworker { Id = (string)convertedJson.healthworker.id, Firstname = (string)convertedJson.healthworker.firstname, Lastname = (string)convertedJson.healthworker.lastname, Birthday = (DateTime)convertedJson.healthworker.birthday, Gender = (string)convertedJson.healthworker.gender, Email = (string)convertedJson.healthworker.email }
                 };
             }
             else
@@ -103,11 +102,10 @@ namespace MobileApp.Views
             AppointmentViewModel viewModel = new AppointmentViewModel
             {
                 Id = appointment.Id,
-                Date = appointment.Date,
                 Time = appointment.Time,
                 StatusId = statusId,
                 BenchId = appointment.Bench.Id,
-                HealthworkerName = appointment.Healthworker.Id,
+                HealthworkerId = appointment.Healthworker.Id,
             };
 
             // Do a PUT request.

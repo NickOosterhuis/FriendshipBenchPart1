@@ -11,9 +11,7 @@ namespace WebApi.Models
         [Key]
         public int Id { get; set; }
 
-        public string Date { get; set; }
-
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         public int StatusId { get; set; }
 
