@@ -27,7 +27,6 @@ namespace MobileApp.Views
 		{
 			InitializeComponent ();
             FetchQuestions();
-
         }
 
         private void button_yes(object sender, EventArgs e)
