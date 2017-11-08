@@ -4,5 +4,46 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Show</h2>
+<h2>Show the Clients of the Healtsworker</h2>
+
+<div ng-app="clients" ng-controller="clientsCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <table>
+        <thead>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Bench Location</th>
+        <th>Healthworker</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in clientUsers">
+                <td>{{ x.streetName }}</td>
+                <td>{{ x.firstName }}</td>
+
+            </tr>
+        </tbody>
+    </table>
+    <script>
+    //module
+    var app = angular.module('clients', []);
+
+    //controller
+    app.controller('clientsCtrl', function ($scope, $http) {
+        $http.get('http://127.0.0.1:54618/api/ClientUsers')
+            .then(function (response) {
+                //first function handles succes
+                $scope.clientUsers = response.data;
+            }, function (response) {
+                //second function handles error
+                $scope.clientUsers = "something went wrong!";
+
+            });
+    });
+    </script>
+
 
