@@ -90,19 +90,17 @@
 
         $scope.sendData = function () {
 
-            sendData = {}
+            $scope.sendDataObject = {}
 
-            sendData.id = $scope.id;
-            sendData.date = $scope.appointment.date;
-            sendData.time = $scope.appointment.time;
-            sendData.statusId = $scope.appointment.status.id;
-            sendData.benchId = $scope.appointment.bench.id;
-            sendData.clientId = $scope.appointment.clientId;
-            sendData.healthworkerName = $scope.appointment.healthworkerName;
+            $scope.sendDataObject.id = $scope.id;
+            $scope.sendDataObject.date = $scope.appointment.date;
+            $scope.sendDataObject.time = $scope.appointment.time;
+            $scope.sendDataObject.statusId = $scope.appointment.status.id;
+            $scope.sendDataObject.benchId = $scope.appointment.bench.id;
+            $scope.sendDataObject.clientId = $scope.appointment.clientId;
+            $scope.sendDataObject.healthworkerName = $scope.appointment.healthworkerName;
 
-            sendData = JSON.stringify(sendData);
-
-            $http.put('http://127.0.0.1:54618/api/Appointments/' + $scope.id, sendData)
+            $http.put('http://127.0.0.1:54618/api/Appointments/' + $scope.id, $scope.sendDataObject)
                 .then(function (response) {
                     alert('appointment has been saved');
 
