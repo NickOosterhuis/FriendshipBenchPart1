@@ -49,8 +49,8 @@ namespace MobileApp.Views
                     Time = (string)convertedJson.time,
                     Status = new AppointmentStatus { Id = (int)convertedJson.status.id, Name = (string)convertedJson.status.name },
                     Bench = new Bench { Id = (int)convertedJson.bench.id, Streetname = (string)convertedJson.bench.streetname, Housenumber = (string)convertedJson.bench.housenumber, Province = (string)convertedJson.bench.province, District = (string)convertedJson.bench.district },
-                    ClientId = (int)convertedJson.clientId,
-                    HealthworkerName = (string)convertedJson.healthworkerName,
+                    ClientId = (string)convertedJson.clientId,
+                    Healthworker = new Healthworker { Id = (string)convertedJson.healthworker.id, Firstname = (string)convertedJson.healthworker.firstname, Lastname = (string)convertedJson.healthworker.lastname, Birthday = (string)convertedJson.healthworker.birthday, Gender = (string)convertedJson.healthworker.gender, Email = (string)convertedJson.healthworker.email }
                 };
             }
             else
@@ -107,7 +107,7 @@ namespace MobileApp.Views
                 Time = appointment.Time,
                 StatusId = statusId,
                 BenchId = appointment.Bench.Id,
-                HealthworkerName = appointment.HealthworkerName,
+                HealthworkerName = appointment.Healthworker.Id,
             };
 
             // Do a PUT request.

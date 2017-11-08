@@ -18,9 +18,9 @@ namespace MobileApp.Models
 
         public Bench Bench { get; set; }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
 
-        public string HealthworkerName { get; set; }
+        public Healthworker Healthworker { get; set; }
 
         public string DateTime
         {

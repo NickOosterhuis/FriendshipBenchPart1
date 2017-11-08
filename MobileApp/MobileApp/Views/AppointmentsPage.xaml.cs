@@ -12,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace MobileApp.Views
 {
@@ -56,6 +57,8 @@ namespace MobileApp.Views
                 String json = await response.Content.ReadAsStringAsync();
                 dynamic convertedJson = JsonConvert.DeserializeObject(json);
 
+                Debug.WriteLine(json);
+
                 // Loop through all the appointments in the JSON object and create appointment objects.
                 foreach (var appointment in convertedJson)
                 {
@@ -66,8 +69,8 @@ namespace MobileApp.Views
                         Time = (string)appointment.time,
                         Status = new AppointmentStatus { Id = (int)appointment.status.id, Name = (string)appointment.status.name },
                         Bench = new Bench { Id = (int)appointment.bench.id, Streetname = (string)appointment.bench.streetname, Housenumber = (string)appointment.bench.housenumber, Province = (string)appointment.bench.province, District = (string)appointment.bench.district },
-                        ClientId = (int)appointment.clientId,
-                        HealthworkerName = (string)appointment.healthworkerName,
+                        ClientId = (string)appointment.clientId,
+                        Healthworker = new Healthworker { Id = (string)appointment.healthworker.id, Firstname = (string)appointment.healthworker.firstname, Lastname = (string)appointment.healthworker.lastname, Birthday = (string)appointment.healthworker.birthday, Gender = (string)appointment.healthworker.gender, Email = (string)appointment.healthworker.email }
                     }); 
                 }
             }
