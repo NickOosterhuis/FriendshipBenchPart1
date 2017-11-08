@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net;
 
 namespace MobileApp.Views
 {    
@@ -17,7 +18,6 @@ namespace MobileApp.Views
     public partial class SignInPage : ContentPage
     {
         public Picker MenuItem;
-
         public Entry email;
         public Entry password;
         
@@ -72,16 +72,17 @@ namespace MobileApp.Views
 
         }
 
-       public async Task Login(ClientUser user)
+        public async Task Login(ClientUser user)
        {
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);
-      
+            
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             string readableContent = await content.ReadAsStringAsync();
 
-            var response = new HttpResponseMessage(); 
-            
+            var response = new HttpResponseMessage();
+
+
             try
             {
                 response = await client.PostAsync(Constants.loginUrl, content);
@@ -96,6 +97,7 @@ namespace MobileApp.Views
             {
                 Debug.WriteLine(@" User Successfully logged in");
                 Debug.WriteLine(readableContent);
+                Debug.WriteLine(response);
                 await Navigation.PushAsync(new LandingPage());
             }
             else

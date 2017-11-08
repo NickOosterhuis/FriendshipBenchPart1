@@ -11,8 +11,9 @@ namespace MobileApp.Models
         public static bool isDev = true;
 
         public static string loginUrl = "http://10.0.2.2:54618/api/account/signin";
-        public static string logoutUrl = "http://10.0.2.2:54618/api/Account/signout";
+        public static string logoutUrl = "http://10.0.2.2:54618/api/account/signout";
         public static string appointmentsUrl = "http://10.0.2.2:54618/api/appointments";
         public static string registerUrl = "http://10.0.2.2:54618/api/account/register/client";
+        public static string getUserUrl = "http://10.0.2.2:54618/api/account/user";
     }
 }

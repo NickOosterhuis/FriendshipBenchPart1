@@ -144,12 +144,11 @@ namespace WebApi.Controllers
 
             var user = await _userManager.GetUserAsync(User);
             var userId = user.Id; 
-
+        
             if (user == null)
             {
-                return NotFound();
+                return new JsonResult("user not found"); ;
             }
-
             return Ok(user);
         }
 

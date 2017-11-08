@@ -32,6 +32,7 @@ namespace MobileApp.Views
         {
             // Send a GET request to the API.
             var client = new HttpClient();
+            
             HttpResponseMessage response = await client.GetAsync(Constants.appointmentsUrl + "/" + appointmentId);
 
             // If the request was succesfull, create a new appointment object
