@@ -73,12 +73,12 @@ namespace MobileApp.Views
             Button cancelButton = new Button { Text = "Cancel the appointment" };
 
             // Add listeners to these buttons.
-            acceptButton.Clicked += (object sender, EventArgs e) =>
-            {
+            acceptButton.Clicked += (object sender, EventArgs e) => {
                 UpdateAppointmentStatusAsync(appointment, true);
             };
-            cancelButton.Clicked += (object sender, EventArgs e) =>
-            {
+            acceptButton.BackgroundColor = (Color)Application.Current.Resources["Primary"];
+            acceptButton.TextColor = Color.White;
+            cancelButton.Clicked += (object sender, EventArgs e) => {
                 UpdateAppointmentStatusAsync(appointment, false);
             };
 
@@ -98,18 +98,6 @@ namespace MobileApp.Views
         // Update the status of an appointment.
         private async Task UpdateAppointmentStatusAsync(Appointment appointment, bool accepted)
         {
-
-            if (!accepted)
-            {
-                var answer = await DisplayAlert("Warning", "Art thou sure to cancel the appointment?", "Yes", "No");
-
-                if (!answer)
-                {
-                    return;
-                }
-
-            }
-
             // Create a model that will be sent to update through the API
             int statusId = accepted ? 2 : 3;
             AppointmentViewModel viewModel = new AppointmentViewModel
@@ -136,7 +124,7 @@ namespace MobileApp.Views
                 String alertMessage = accepted ? "The appointment has been accepted." : "The appointment has been canceled.";
                 DisplayAlert(alertTitle, alertMessage, "Okay");
                 FetchAppointment();
-            }
+            } 
             else
             {
                 // Display an error.

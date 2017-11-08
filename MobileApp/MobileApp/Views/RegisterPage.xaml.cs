@@ -28,6 +28,8 @@ namespace MobileApp.Views
 
         public RegisterPage()
         {
+            InitializeComponent();
+
             var email = new Entry
             {
                 Placeholder = "Email",
