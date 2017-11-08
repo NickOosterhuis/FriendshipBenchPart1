@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace MobileApp.Views
 {    
@@ -56,7 +57,9 @@ namespace MobileApp.Views
             if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine(@" User Successfully logged in");
-                Debug.WriteLine(readableContent);
+                String responseJson = await response.Content.ReadAsStringAsync();
+                LoginToken token = JsonConvert.DeserializeObject<LoginToken>(responseJson);
+                //await LogoutTest(token);
                 await Navigation.PushAsync(new LandingPage());
             }
             else
@@ -65,6 +68,22 @@ namespace MobileApp.Views
                 Debug.WriteLine("Er is iets fout gegaan :(");
                 Debug.WriteLine(response.Headers);
             }  
+        }
+
+        public async Task LogoutTest(LoginToken token)
+        {
+            string url = "http://10.0.2.2:54618/api/Account/user";
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.id_token);
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                String json = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine(json);
+            } else
+            {
+                Debug.WriteLine(response.StatusCode);
+            }
         }
     }
 }

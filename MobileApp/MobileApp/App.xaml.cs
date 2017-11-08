@@ -16,7 +16,7 @@ namespace MobileApp
             if (Device.RuntimePlatform == Device.iOS)
                 MainPage = new Home();
             else
-                MainPage = new NavigationPage(new AppointmentsPage());
+                MainPage = new NavigationPage(new Home());
         }
     }
 }

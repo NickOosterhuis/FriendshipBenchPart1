@@ -112,7 +112,7 @@ namespace WebApi.Controllers
                     return new JsonResult(new Dictionary<string, object>
                     {
                         { "access_token", GetAccessToken(Credentials.Email) },
-                        { "id_token", GetIdToken(user) }
+                        { "id_token", GetIdToken(user) },
                     });
                 }
 
