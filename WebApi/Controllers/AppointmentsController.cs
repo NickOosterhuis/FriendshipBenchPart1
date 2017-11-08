@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
         }
 
         // GET: api/Appointments
+
         [HttpGet]
         public IEnumerable<AppointmentGetViewModel> GetAppointments()
         {
