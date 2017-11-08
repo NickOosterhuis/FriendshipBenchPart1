@@ -5,9 +5,21 @@
     <UserSecretsId>aspnet-WebApplication-BD97FE17-F74C-4885-8540-12C215A65205</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\app\views\NewFolder\**" />
+    <Content Remove="wwwroot\app\views\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\app\views\NewFolder\**" />
+    <None Remove="wwwroot\app\views\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\app\controllers\JavaScript.js" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AngularJS.Core" Version="1.6.5" />
+    <PackageReference Include="AngularJS.Resource" Version="1.6.5" />
     <PackageReference Include="AngularJS.Route" Version="1.6.5" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
