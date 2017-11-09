@@ -11,7 +11,7 @@
             <ContentPage.Content>
                 <StackLayout>
                     <StackLayout Padding="16">
-                        <Label FontSize="Large">The Friendship Bench</Label>
+                        <Label Style="{StaticResource LabelPageHeadingStyle}">The Friendship Bench</Label>
                     </StackLayout>
                     <ListView x:Name="NavigationList">
                         <ListView.ItemTemplate>

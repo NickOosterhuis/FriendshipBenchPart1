@@ -11,5 +11,10 @@ namespace MobileApp.ViewModels
         public int Id { get; set; }
 
         public DateTime Time { get; set; }
+
+        public string DateTime
+        {
+            get { return String.Format("{0:dd/MM/yyyy, hh:mm tt}", Time); }
+        }
     }
 }

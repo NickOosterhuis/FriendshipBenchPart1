@@ -23,6 +23,6 @@ namespace MobileApp.Models
         public string DateTime
         {
             get { return String.Format("{0:dd/MM/yyyy, hh:mm tt}", Time); }
-            }
+        }
     }
 }
