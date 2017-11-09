@@ -97,6 +97,16 @@ namespace MobileApp.Views
         // Update the status of an appointment.
         private async Task UpdateAppointmentStatusAsync(Appointment appointment, bool accepted)
         {
+
+            if(!accepted)
+            {
+              bool answer = await DisplayAlert("Warning", "Are you sure you want to cancel the appointment?", "no", "yes");
+                if (!answer)
+                {
+                    return;
+                }
+            }
+
             // Create a model that will be sent to update through the API
             int statusId = accepted ? 2 : 3;
             AppointmentViewModel viewModel = new AppointmentViewModel
