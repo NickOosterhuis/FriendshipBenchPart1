@@ -100,7 +100,7 @@ namespace MobileApp.Views
 
             if(!accepted)
             {
-              bool answer = await DisplayAlert("Warning", "Are you sure you want to cancel the appointment?", "no", "yes");
+              bool answer = await DisplayAlert("Warning", "Are you sure you want to cancel the appointment?", "yes", "no");
                 if (!answer)
                 {
                     return;

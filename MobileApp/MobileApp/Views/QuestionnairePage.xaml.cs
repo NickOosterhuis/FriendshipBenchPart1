@@ -102,7 +102,6 @@ namespace MobileApp.Views
 
         private async void writeQuestionnaire()
         {
-            Debug.WriteLine("Beunhaas dat ding in elkaar!" + DateTime.Now);
             Questionnaire questionnaire = new Questionnaire
             {
                 Client_id = "1",
@@ -117,8 +116,23 @@ namespace MobileApp.Views
 
             if (response.IsSuccessStatusCode)
             {
-                //Questionnaire aangemaakt
-                //Questionnaire ID uit response halen, antwoorden posten.
+                String responseJson = await response.Content.ReadAsStringAsync();
+                dynamic convertedJson = JsonConvert.DeserializeObject(responseJson);
+                foreach (var answer in allAnswers)
+                {
+                    answer.Questionnaire_id = (int)convertedJson.id;
+
+                }
+                string jsonAnswers = JsonConvert.SerializeObject(allAnswers);
+                Debug.WriteLine(jsonAnswers);
+                var answerContent = new StringContent(jsonAnswers, Encoding.UTF8, "application/json");
+                var answerResponse = new HttpResponseMessage();
+                answerResponse = await client.PostAsync(Constants.answerUrl, answerContent);
+                Debug.WriteLine("MOI TAMMOOOOO: " + answerResponse.StatusCode);
+
+
+                await DisplayAlert("Completed", "You have completely filled out the questionnaire. LOREM IPSUM DOLOR SIT AMET -> Results", "schier");
+                Navigation.PushAsync(new LandingPage());
             }
             else
             {
