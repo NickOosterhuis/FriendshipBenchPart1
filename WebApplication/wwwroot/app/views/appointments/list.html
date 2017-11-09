@@ -18,7 +18,6 @@
     <th>Healthworker</th>
     <th></th>
     <th></th>
-    <th></th>
     </th>
     <tbody>
         <tr ng-repeat="appointment in appointments">
@@ -29,7 +28,6 @@
             <td>{{ appointment.healthworkerName }}</td>
             <td><a ng-click="editAppointment(appointment.id)" class="btn btn-small btn-primary">edit</a></td>
             <td><a ng-click="deleteAppointment(appointment.id)" class="btn btn-small btn-danger">delete</a></td>
-            <td><a ng-click="showAppointment(appointment.id)" class="btn btn-small btn-danger">show</a></td>
 
         </tr>
     </tbody>
