@@ -8,66 +8,61 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using WebApi.Contexts;
 
-namespace WebApi.Migrations.AppointmentDB
+namespace WebApi.Migrations.QuestionnaireDB
 {
-    [DbContext(typeof(AppointmentDBContext))]
-    partial class AppointmentDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(QuestionnaireDBContext))]
+    [Migration("20171106160109_FixedDanboProblem")]
+    partial class FixedDanboProblem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebApi.Models.Appointment", b =>
+            modelBuilder.Entity("WebApi.Models.Answers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BenchId");
+                    b.Property<string>("Answer");
 
-                    b.Property<string>("ClientId");
+                    b.Property<int>("Question_id");
 
-                    b.Property<string>("HealthworkerId");
+                    b.Property<int>("Questionnaire_id");
 
-                    b.Property<int>("StatusId");
+                    b.HasKey("Id");
+
+                    b.ToTable("Answers");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Questionnaire", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Client_id");
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<DateTime>("Time");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Questionnaire");
                 });
 
-            modelBuilder.Entity("WebApi.Models.AppointmentStatus", b =>
+            modelBuilder.Entity("WebApi.Models.Questions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("name");
+                    b.Property<string>("Question");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppointmentStatuses");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Bench", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("District");
-
-                    b.Property<string>("Housenumber");
-
-                    b.Property<string>("Province");
-
-                    b.Property<string>("Streetname");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Benches");
+                    b.ToTable("Questions");
                 });
 #pragma warning restore 612, 618
         }

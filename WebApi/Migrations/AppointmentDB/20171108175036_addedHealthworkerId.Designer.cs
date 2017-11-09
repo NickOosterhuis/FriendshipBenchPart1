@@ -11,9 +11,10 @@ using WebApi.Contexts;
 namespace WebApi.Migrations.AppointmentDB
 {
     [DbContext(typeof(AppointmentDBContext))]
-    partial class AppointmentDBContextModelSnapshot : ModelSnapshot
+    [Migration("20171108175036_addedHealthworkerId")]
+    partial class addedHealthworkerId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,13 +28,15 @@ namespace WebApi.Migrations.AppointmentDB
 
                     b.Property<int>("BenchId");
 
-                    b.Property<string>("ClientId");
+                    b.Property<int>("ClientId");
 
-                    b.Property<string>("HealthworkerId");
+                    b.Property<string>("Date");
+
+                    b.Property<int>("HealthworkerId");
 
                     b.Property<int>("StatusId");
 
-                    b.Property<DateTime>("Time");
+                    b.Property<string>("Time");
 
                     b.HasKey("Id");
 

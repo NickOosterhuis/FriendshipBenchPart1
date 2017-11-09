@@ -82,21 +82,6 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/HealthWorkers
-        [HttpPost]
-        public async Task<IActionResult> PostHealthWorkerUser([FromBody] HealthWorkerUser healthWorkerUser)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.HealthWorker.Add(healthWorkerUser);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetHealthWorkerUser", new { id = healthWorkerUser.Id }, healthWorkerUser);
-        }
-
         // DELETE: api/HealthWorkers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)

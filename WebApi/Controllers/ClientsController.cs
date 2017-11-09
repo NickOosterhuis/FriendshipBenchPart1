@@ -11,7 +11,7 @@ using WebApi.Models;
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ClientUsers")]
+    [Route("api/Clients")]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
@@ -21,14 +21,14 @@ namespace WebApi.Controllers
             _context = context;
         }
 
-        // GET: api/ClientUsers
+        // GET: api/Clients
         [HttpGet]
         public IEnumerable<ClientUser> GetClient()
         {
             return _context.Client;
         }
 
-        // GET: api/ClientUsers/5
+        // GET: api/Clients/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientUser([FromRoute] string id)
         {
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             return Ok(clientUser);
         }
 
-        // PUT: api/ClientUsers/5
+        // PUT: api/Clients/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClientUser([FromRoute] string id, [FromBody] ClientUser clientUser)
         {
@@ -82,7 +82,7 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        // DELETE: api/ClientUsers/5
+        // DELETE: api/Clients/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClientUser([FromRoute] string id)
         {
