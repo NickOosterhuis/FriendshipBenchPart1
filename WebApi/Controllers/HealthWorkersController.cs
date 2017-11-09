@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
@@ -21,11 +22,23 @@ namespace WebApi.Controllers
             _context = context;
         }
 
-        // GET: api/HealthWorkers
         [HttpGet]
-        public IEnumerable<HealthWorkerUser> GetHealthWorker()
+        public IEnumerable<GetHealthWorkerViewModel> GetHealthWorkers()
         {
-            return _context.HealthWorker;
+            List<GetHealthWorkerViewModel> healthWorkers = new List<GetHealthWorkerViewModel>();
+            foreach (HealthWorkerUser healthWorker in _context.HealthWorker)
+            {
+                healthWorkers.Add(new GetHealthWorkerViewModel
+                {
+                    FirstName = healthWorker.FirstName,
+                    LastName = healthWorker.LastName,
+                    Gender = healthWorker.Gender,
+                    BirthDay = healthWorker.BirthDay,
+                    Email = healthWorker.Email,
+                    PhoneNumber = healthWorker.PhoneNumber,
+                });
+            }
+            return healthWorkers;
         }
 
         // GET: api/HealthWorkers/5
