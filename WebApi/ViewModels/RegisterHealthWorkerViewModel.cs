@@ -41,5 +41,10 @@ namespace WebApi.ViewModels
         [DataType(DataType.DateTime)]
         [Display(Name = "Birthday")]
         public DateTime BirthDay { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; }
     }
 }

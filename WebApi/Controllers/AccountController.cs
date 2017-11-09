@@ -80,16 +80,22 @@ namespace WebApi.Controllers
                     LastName = Credentials.LastName,
                     Gender = Credentials.Gender,
                     BirthDay = Credentials.BirthDay,
+                    PhoneNumber = Credentials.PhoneNumber,
                 };
                 var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(healthWorker, isPersistent: false);
-                    return new JsonResult(new Dictionary<string, object>
-          {
-            { "access_token", GetAccessToken(Credentials.Email) },
-            { "id_token", GetIdToken(healthWorker) }
-          });
+
+                    JsonResult token = new JsonResult(new Dictionary<string, object>
+                    {
+                        { "access_token", GetAccessToken(Credentials.Email) },
+                        { "id_token", GetIdToken(healthWorker) }
+                    });
+
+                    HttpContext.Response.Cookies.Append("token", token.ContentType);
+
+                    return token;
                 }
                 return Errors(result);
 
@@ -155,23 +161,23 @@ namespace WebApi.Controllers
         private string GetIdToken(User user)
         {
             var payload = new Dictionary<string, object>
-      {
-        { "id", user.Id },
-        { "sub", user.Email },
-        { "email", user.Email },
-        { "emailConfirmed", user.EmailConfirmed },
-      };
+            {
+                { "id", user.Id },
+                { "sub", user.Email },
+                { "email", user.Email },
+                { "emailConfirmed", user.EmailConfirmed },
+            };
             return GetToken(payload);
         }
 
         private string GetAccessToken(string Email)
         {
             var payload = new Dictionary<string, object>
-      {
-        { "sub", Email },
-        { "email", Email }
-      };
-            return GetToken(payload);
+            {
+                { "sub", Email },
+                { "email", Email }
+            };
+                return GetToken(payload);
         }
 
         private string GetToken(Dictionary<string, object> payload)

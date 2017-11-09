@@ -59,10 +59,12 @@ namespace WebApi
                 .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
-            
+
             //identity service
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<UserDBContext>();
+                .AddEntityFrameworkStores<UserDBContext>()
+                .AddDefaultTokenProviders();
+            
 
             //swagger
             services.AddSwaggerGen(c =>
@@ -94,7 +96,8 @@ namespace WebApi
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath = "/api/account/signin"; 
+                options.LoginPath = "/api/account/signin";
+                options.LogoutPath = "/api/account/signout";
                 options.SlidingExpiration = true;
             });
 
