@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
+using WebApi.ViewModels.Appointments;
+using WebApi.ViewModels.HealthWorkers;
 
 namespace WebApi.Controllers
 {
