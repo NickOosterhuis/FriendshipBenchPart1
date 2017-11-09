@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
@@ -84,12 +85,19 @@ namespace WebApi.Controllers
 
         // POST: api/Questionnaires
         [HttpPost]
-        public async Task<IActionResult> PostQuestionnaire([FromBody] Questionnaire questionnaire)
+        public async Task<IActionResult> PostQuestionnaire([FromBody] QuestionnairePostViewModel questionnaireViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            Questionnaire questionnaire = new Questionnaire
+            {
+                Date = questionnaireViewModel.Time,
+                Time = questionnaireViewModel.Time,
+                Client_id = questionnaireViewModel.Client_id
+            };
 
             _context.Questionnaire.Add(questionnaire);
             await _context.SaveChangesAsync();

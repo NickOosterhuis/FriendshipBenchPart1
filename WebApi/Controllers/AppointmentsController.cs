@@ -16,10 +16,12 @@ namespace WebApi.Controllers
     public class AppointmentsController : Controller
     {
         private readonly AppointmentDBContext _context;
+        private readonly UserDBContext _userContext;
 
-        public AppointmentsController(AppointmentDBContext context)
+        public AppointmentsController(AppointmentDBContext context, UserDBContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         // GET: api/Appointments
@@ -29,15 +31,15 @@ namespace WebApi.Controllers
             List<AppointmentGetViewModel> appointments = new List<AppointmentGetViewModel>();
             foreach(Appointment appointment in _context.Appointments)
             {
+                HealthWorkerUser healthworker = _userContext.HealthWorker.Find(appointment.HealthworkerId);
                 appointments.Add(new AppointmentGetViewModel
                 {
                     Id = appointment.Id,
-                    Date = appointment.Date,
                     Time = appointment.Time,
                     Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                     Bench = _context.Benches.Find(appointment.BenchId),
                     ClientId = appointment.ClientId,
-                    HealthworkerName = appointment.HealthworkerName
+                    Healthworker = new HealthworkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email }
                 });
             }
 
@@ -60,15 +62,15 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
+            HealthWorkerUser healthworker = _userContext.HealthWorker.Find(appointment.HealthworkerId);
             AppointmentGetViewModel viewModel = new AppointmentGetViewModel
             {
                 Id = appointment.Id,
-                Date = appointment.Date,
                 Time = appointment.Time,
                 Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                 Bench = _context.Benches.Find(appointment.BenchId),
                 ClientId = appointment.ClientId,
-                HealthworkerName = appointment.HealthworkerName
+                Healthworker = new HealthworkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email }
             };
 
             return Ok(viewModel);
@@ -120,12 +122,11 @@ namespace WebApi.Controllers
 
             var appointment = new Appointment()
             {
-              Date = appointmentViewModel.Date,
               Time = appointmentViewModel.Time,
               StatusId = 1,
               BenchId = appointmentViewModel.BenchId,
               ClientId = appointmentViewModel.ClientId,
-              HealthworkerName = appointmentViewModel.HealthworkerName
+              HealthworkerId = appointmentViewModel.HealthworkerId
             };
 
             _context.Appointments.Add(appointment);

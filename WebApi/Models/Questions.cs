@@ -11,6 +11,6 @@ namespace WebApi.Models
         [Key]
         public int Id { get; set; }
 
-        public int Question { get; set; }
+        public string Question { get; set; }
     }
 }
