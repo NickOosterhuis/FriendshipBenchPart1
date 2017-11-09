@@ -61,7 +61,8 @@ namespace WebApi
             //sql connection
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
-                .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
+                .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
+                .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
 
             //identity service
             services.AddIdentity<User, IdentityRole>()
