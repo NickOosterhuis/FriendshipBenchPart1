@@ -9,6 +9,7 @@ using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using WebApi.ViewModels.Clients;
 
 namespace WebApi.Controllers
 {

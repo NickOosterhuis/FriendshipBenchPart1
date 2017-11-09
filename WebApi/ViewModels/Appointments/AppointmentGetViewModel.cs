@@ -1,7 +1,8 @@
 ﻿using System;
 using WebApi.Models;
+using WebApi.ViewModels.HealthWorkers;
 
-namespace WebApi.ViewModels
+namespace WebApi.ViewModels.Appointments
 {
     public class AppointmentGetViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.ViewModels
+namespace WebApi.ViewModels.Account
 {
     public class RegisterClientViewModel
     {

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Models;
 using WebApi.ViewModels;
+using WebApi.ViewModels.Account;
 
 namespace WebApi.Controllers
 {
