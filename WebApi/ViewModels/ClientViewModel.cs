@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace WebApi.ViewModels
 {
-    public class GetHealthWorkerViewModel
+    public class ClientViewModel
     {
+        public string id { get; set; }
+
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -23,7 +25,16 @@ namespace WebApi.ViewModels
         [Display(Name = "Birthday")]
         public DateTime BirthDay { get; set; }
 
-        [Display(Name = "Phone number")]
-        public string PhoneNumber { get; set; }
+        [Display(Name = "Street")]
+        public string StreetName { get; set; }
+
+        [Display(Name = "Housenumber")]
+        public string HouseNumber { get; set; }
+
+        [Display(Name = "Province")]
+        public string Province { get; set; }
+
+        [Display(Name = "District")]
+        public string District { get; set; }
     }
 }

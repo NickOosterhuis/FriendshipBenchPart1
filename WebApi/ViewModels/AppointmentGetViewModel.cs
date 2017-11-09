@@ -15,6 +15,6 @@ namespace WebApi.ViewModels
 
         public string ClientId { get; set; }
 
-        public HealthworkerViewModel Healthworker { get; set; }
+        public HealthWorkerViewModel Healthworker { get; set; }
     }
 }

@@ -41,10 +41,10 @@ namespace WebApi.Controllers
                 var client = new ClientUser {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    FirstName = Credentials.FirstName,
-                    LastName = Credentials.LastName,
+                    Firstname = Credentials.FirstName,
+                    Lastname = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    BirthDay = Credentials.BirthDay, 
+                    Birthday = Credentials.BirthDay, 
                     StreetName = Credentials.StreetName,
                     HouseNumber = Credentials.HouseNumber,
                     Province = Credentials.Province,
@@ -53,6 +53,7 @@ namespace WebApi.Controllers
                 var result = await _userManager.CreateAsync(client, Credentials.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(client, "client"); 
                     await _signInManager.SignInAsync(client, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
           {
@@ -67,24 +68,31 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
+        [Authorize(Roles = "admin")]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
+            if (!User.IsInRole("admin"))
+            {
+                return Unauthorized();
+            }
+
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
                 {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    FirstName = Credentials.FirstName,
-                    LastName = Credentials.LastName,
+                    Firstname = Credentials.FirstName,
+                    Lastname = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    BirthDay = Credentials.BirthDay,
+                    Birthday = Credentials.BirthDay,
                     PhoneNumber = Credentials.PhoneNumber,
                 };
                 var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(healthWorker, "healthworker");
                     await _signInManager.SignInAsync(healthWorker, isPersistent: false);
 
                     JsonResult token = new JsonResult(new Dictionary<string, object>
@@ -140,7 +148,7 @@ namespace WebApi.Controllers
         //GET api/account/user
         [Authorize]
         [HttpGet("user")]
-        public async Task<IActionResult> GetClientUsers()
+        public async Task<IActionResult> GetUser()
         {
             if (!ModelState.IsValid)
             {

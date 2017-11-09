@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
+    [Authorize(Roles = "admin, healthworker")]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
@@ -23,17 +25,17 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<GetClientViewModel> GetClients()
+        public IEnumerable<ClientViewModel> GetClients()
         {
-            List<GetClientViewModel> clients = new List<GetClientViewModel>();
+            List<ClientViewModel> clients = new List<ClientViewModel>();
             foreach (ClientUser client in _context.Client)
             {
-                clients.Add(new GetClientViewModel
+                clients.Add(new ClientViewModel
                 {
-                    FirstName = client.FirstName,
-                    LastName = client.LastName,
+                    FirstName = client.Firstname,
+                    LastName = client.Lastname,
                     Gender = client.Gender,
-                    BirthDay = client.BirthDay,
+                    BirthDay = client.Birthday,
                     Email = client.Email,
                     StreetName = client.StreetName,
                     HouseNumber = client.HouseNumber,

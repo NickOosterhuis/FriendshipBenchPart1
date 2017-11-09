@@ -39,7 +39,7 @@ namespace WebApi.Controllers
                     Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                     Bench = _context.Benches.Find(appointment.BenchId),
                     ClientId = appointment.ClientId,
-                    Healthworker = new HealthworkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email }
+                    Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.Firstname, Lastname = healthworker.Lastname, Birthday = healthworker.Birthday, Gender = healthworker.Gender, Email = healthworker.Email }
                 });
             }
 
@@ -70,7 +70,7 @@ namespace WebApi.Controllers
                 Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                 Bench = _context.Benches.Find(appointment.BenchId),
                 ClientId = appointment.ClientId,
-                Healthworker = new HealthworkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email }
+                Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.Firstname, Lastname = healthworker.Lastname, Birthday = healthworker.Birthday, Gender = healthworker.Gender, Email = healthworker.Email }
             };
 
             return Ok(viewModel);

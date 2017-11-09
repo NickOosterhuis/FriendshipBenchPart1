@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.Seeders;
 
 namespace WebApi
 {
@@ -100,23 +101,30 @@ namespace WebApi
                 options.LogoutPath = "/api/account/signout";
                 options.SlidingExpiration = true;
             });
+            
+            //set role seeder as a service 
+            services.AddTransient<UserRoleSeeder>();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserRoleSeeder seeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-                   
+
+            //seed user roles
+            seeder.SeedRoles();
+
             app.UseSwagger();
             app.UseSwaggerUI(c => 
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
             });
+
             app.UseAuthentication();
             app.UseMvc();
         }

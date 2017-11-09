@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/HealthWorkers")]
+    [Authorize]
     public class HealthWorkersController : Controller
     {
         private readonly UserDBContext _context;
@@ -23,22 +25,28 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<GetHealthWorkerViewModel> GetHealthWorkers()
+        public async Task<IActionResult> GetHealthWorkers()
         {
-            List<GetHealthWorkerViewModel> healthWorkers = new List<GetHealthWorkerViewModel>();
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); 
+            }
+
+            List<HealthWorkerViewModel> healthWorkers = new List<HealthWorkerViewModel>();
             foreach (HealthWorkerUser healthWorker in _context.HealthWorker)
             {
-                healthWorkers.Add(new GetHealthWorkerViewModel
+                healthWorkers.Add(new HealthWorkerViewModel
                 {
-                    FirstName = healthWorker.FirstName,
-                    LastName = healthWorker.LastName,
+                    Id = healthWorker.Id,
+                    Firstname = healthWorker.Firstname,
+                    Lastname = healthWorker.Lastname,
                     Gender = healthWorker.Gender,
-                    BirthDay = healthWorker.BirthDay,
+                    Birthday = healthWorker.Birthday,
                     Email = healthWorker.Email,
                     PhoneNumber = healthWorker.PhoneNumber,
                 });
             }
-            return healthWorkers;
+            return Ok(healthWorkers); 
         }
 
         // GET: api/HealthWorkers/5
@@ -57,12 +65,23 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(healthWorkerUser);
+            HealthWorkerViewModel vm = new HealthWorkerViewModel();
+
+            vm.Id = healthWorkerUser.Id;
+            vm.Firstname = healthWorkerUser.Firstname;
+            vm.Lastname = healthWorkerUser.Lastname;
+            vm.Email = healthWorkerUser.Email;
+            vm.Birthday = healthWorkerUser.Birthday;
+            vm.Gender = healthWorkerUser.Gender;
+            vm.PhoneNumber = healthWorkerUser.PhoneNumber;
+            
+            return Ok(vm);
         }
 
         // PUT: api/HealthWorkers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHealthWorkerUser([FromRoute] string id, [FromBody] HealthWorkerUser healthWorkerUser)
+        [Authorize(Roles = "admin, healthworker")]
+        public async Task<IActionResult> PutHealthWorkerUser([FromRoute] string id, [FromBody] HealthWorkerViewModel healthWorkerUser)
         {
             if (!ModelState.IsValid)
             {
@@ -97,6 +116,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/HealthWorkers/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin, healthworker")]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
