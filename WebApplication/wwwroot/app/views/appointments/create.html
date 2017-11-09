@@ -1,0 +1,42 @@
+﻿<h2>Create</h2>
+<script>
+  $( function() {
+      $("#datepicker").datepicker({ dateFormat: "dd-mm-yy"});
+  } );
+</script>
+<div ng-app="appointments" ng-controller="createAppCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Date:</td>
+                    <td><input type="text" id="datepicker" ng-model="appointment.date" /></td>
+                </tr>
+                <tr>
+                    <td>Time:</td>
+                    <td><input ng-model="appointment.time" placeholder="hh:mm" /></td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td><select ng-options="status as status.name for status in statusses" ng-model="appointment.status"></select></td>
+                </tr>
+                <tr>
+                    <td>Bench:</td>
+                    <td><select ng-options="bench as bench.streetname +' '+bench.housenumber for bench in benches" ng-model="appointment.bench"></select></td>
+                </tr>
+                <tr>
+                    <td>Health worker:</td>
+                    <td><input ng-model="appointment.healthworkerName" /></td>
+                </tr>
+                <tr>
+                    <td>Client Id:</td>
+                    <td><input ng-model="appointment.clientId" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <input ng-click="sendData()" type="button" value="Send data" />
+ </div>  

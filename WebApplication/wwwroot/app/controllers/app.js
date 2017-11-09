@@ -32,6 +32,11 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
         $location.path("/appointments/" + appointmentID);
     };
 
+    //callback for ng-click 'createUser':
+    $scope.createAppointment = function () {
+        $location.path("/create/appointment");
+    }
+
     //delete appointment
     $scope.deleteAppointment = function (appointmentID) {
         $http.delete("http://127.0.0.1:54618/api/Appointments/" + appointmentID)
@@ -54,6 +59,7 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
  });
 
 app.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/create/appointment', { templateUrl: '/app/views/appointments/create.html', controller: 'createAppCtrl' });
     $routeProvider.when('/appointments', { templateUrl: '/app/views/appointments/list.html', controller: 'appointmentCtrl' });
     $routeProvider.when('/appointments/:id', { templateUrl: '/app/views/appointments/show.html', controller: 'showAppCtrl' });
     $routeProvider.when('/create-appointment', { templateUrl: '/app/views/appointments/create.html', controller: 'appointmentCtrl' });
