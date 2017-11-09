@@ -1,0 +1,36 @@
+﻿<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    table {
+        margin-top: 10px
+    }
+</style>
+<script>console.log("bas is noob");</script>
+<a ng-click="createNewUser()" class="btn btn-small btn-default">create new user</a>
+<table class="table table-striped table-condensed">
+    <thead>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Status</th>
+    <th>Bench Location</th>
+    <th>Healthworker</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    </th>
+    <tbody>
+        <tr ng-repeat="appointment in appointments">
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.time }}</td>
+            <td>{{ appointment.status.name }}</td>
+            <td>{{ appointment.bench.streetname + " " + appointment.bench.housenumber + ", " + appointment.bench.province + ", " + appointment.bench.district }}</td>
+            <td>{{ appointment.healthworkerName }}</td>
+            <td><a ng-click="editAppointment(appointment.id)" class="btn btn-small btn-primary">edit</a></td>
+            <td><a ng-click="deleteAppointment(appointment.id)" class="btn btn-small btn-danger">delete</a></td>
+            <td><a ng-click="showAppointment(appointment.id)" class="btn btn-small btn-danger">show</a></td>
+
+        </tr>
+    </tbody>
+</table>

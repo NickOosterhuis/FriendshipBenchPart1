@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 using WebApi.Contexts;
 
@@ -135,14 +136,13 @@ namespace WebApi.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Adress");
-
                     b.Property<DateTime>("BirthDay");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<string>("District");
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -171,8 +171,6 @@ namespace WebApi.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("Province");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -191,6 +189,37 @@ namespace WebApi.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                });
+
+            modelBuilder.Entity("WebApi.Models.ClientUser", b =>
+                {
+                    b.HasBaseType("WebApi.Models.User");
+
+                    b.Property<string>("District");
+
+                    b.Property<int>("HealthWorker_Id");
+
+                    b.Property<string>("HouseNumber");
+
+                    b.Property<string>("Province");
+
+                    b.Property<string>("StreetName");
+
+                    b.ToTable("ClientUser");
+
+                    b.HasDiscriminator().HasValue("ClientUser");
+                });
+
+            modelBuilder.Entity("WebApi.Models.HealthWorkerUser", b =>
+                {
+                    b.HasBaseType("WebApi.Models.User");
+
+
+                    b.ToTable("HealthWorkerUser");
+
+                    b.HasDiscriminator().HasValue("HealthWorkerUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
