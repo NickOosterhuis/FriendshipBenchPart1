@@ -57,7 +57,7 @@ namespace WebApi.Migrations.QuestionnaireDB
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Question");
+                    b.Property<string>("Question");
 
                     b.HasKey("Id");
 

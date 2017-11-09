@@ -18,9 +18,9 @@ namespace MobileApp
                     {
                         Title = "Sign In"
                     };
-                    itemsPage = new NavigationPage(new ItemsPage())
+                    itemsPage = new NavigationPage(new AppointmentsPage())
                     {
-                        Title = "Browse"
+                        Title = "Appointments"
                     };
 
                     aboutPage = new NavigationPage(new AboutPage())
@@ -35,9 +35,9 @@ namespace MobileApp
                     {
                         Title = "Sign In"
                     };
-                    itemsPage = new ItemsPage()
+                    itemsPage = new AppointmentsPage()
                     {
-                        Title = "Browse"
+                        Title = "Appointments"
                     };
                     aboutPage = new AboutPage()
                     {

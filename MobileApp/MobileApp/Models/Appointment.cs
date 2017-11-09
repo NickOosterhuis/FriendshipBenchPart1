@@ -10,21 +10,19 @@ namespace MobileApp.Models
     {
         public int Id { get; set; }
 
-        public string Date { get; set; }
-
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         public AppointmentStatus Status { get; set; }
 
         public Bench Bench { get; set; }
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
 
-        public string HealthworkerName { get; set; }
+        public Healthworker Healthworker { get; set; }
 
         public string DateTime
         {
-            get { return string.Format("{0}, {1}", Date, Time); }
-        }
+            get { return String.Format("{0:dd/MM/yyyy, hh:mm tt}", Time); }
+            }
     }
 }

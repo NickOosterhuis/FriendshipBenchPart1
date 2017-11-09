@@ -63,7 +63,7 @@ namespace WebApi
                 .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
-            
+
             //identity service
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserDBContext>();
@@ -114,10 +114,8 @@ namespace WebApi
             }
 
             app.UseCors(builder =>
-            builder.WithOrigins("https://localhost:44314")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            );
+            builder.WithOrigins("https://localhost:44314").
+            AllowAnyHeader().AllowAnyMethod());
 
             app.UseSwagger();
             app.UseSwaggerUI(c => 
