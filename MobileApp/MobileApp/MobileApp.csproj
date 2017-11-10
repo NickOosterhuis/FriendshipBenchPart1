@@ -43,7 +43,7 @@
     <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\AppointmentStatus.cs" />
     <Compile Include="Models\Bench.cs" />
-    <Compile Include="Models\ClientUser.cs" />
+    <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Healthworker.cs" />
     <Compile Include="Models\Item.cs" />

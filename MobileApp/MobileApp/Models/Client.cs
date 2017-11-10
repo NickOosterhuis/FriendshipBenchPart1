@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MobileApp.Models
 {
-    public class ClientUser
+    public class Client
     {
+        public string Id { get; set; }
+
         public string Email { get; set; }
 
         public string Password { get; set; }
