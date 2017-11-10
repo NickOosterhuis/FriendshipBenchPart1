@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.Seeders;
 
 namespace WebApi
 {
@@ -59,10 +60,14 @@ namespace WebApi
                 .AddDbContext<UserDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<AppointmentDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")))
                 .AddDbContext<QuestionnaireDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FriendshipBenchConnection")));
-            
+
             //identity service
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<UserDBContext>();
+                .AddEntityFrameworkStores<UserDBContext>()
+                .AddDefaultTokenProviders();
+
+            //cors service
+            services.AddCors();
 
             //swagger
             services.AddSwaggerGen(c =>
@@ -94,26 +99,39 @@ namespace WebApi
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath = "/api/account/signin"; 
+                options.LoginPath = "/api/account/signin";
+                options.LogoutPath = "/api/account/signout";
                 options.SlidingExpiration = true;
             });
+            
+            //set role seeder as a service 
+            services.AddTransient<UserRoleSeeder>();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserRoleSeeder seeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-                   
+
+            //seed user roles
+            seeder.SeedRoles();
+
             app.UseSwagger();
             app.UseSwaggerUI(c => 
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
             });
+
+            // cors settings
+            app.UseCors(builder =>
+            builder.WithOrigins("https://localhost:44314").
+            AllowAnyHeader().AllowAnyMethod());
+
             app.UseAuthentication();
             app.UseMvc();
         }
