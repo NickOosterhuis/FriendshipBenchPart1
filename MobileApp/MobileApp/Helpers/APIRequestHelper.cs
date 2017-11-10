@@ -1,8 +1,11 @@
-﻿using System;
+﻿using MobileApp.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -98,6 +101,25 @@ namespace MobileApp.Helpers
                 Debug.WriteLine("Exception occured: " + e.Message);
                 return null;
             }
+        }
+
+        public async Task<string> GetAccessToken(Client user)
+        {
+            httpClient.BaseAddress = new Uri("http://10.0.2.2:54618");
+
+            var json = JsonConvert.SerializeObject(user);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync("/account/token", content);
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async void SetTokenHeader(Client user)
+        {
+            var token = await GetAccessToken(user);
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
     }
 }

@@ -1,13 +1,21 @@
 ﻿using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using WebApi.Models;
 using WebApi.ViewModels;
@@ -21,15 +29,18 @@ namespace WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly JWTSettings _options;
+        private readonly IConfiguration _config; 
 
         public AccountController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
-          IOptions<JWTSettings> optionsAccessor)
+          IOptions<JWTSettings> optionsAccessor,
+          IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _options = optionsAccessor.Value;
+            _config = config;
         }
 
         [AllowAnonymous]
@@ -48,14 +59,9 @@ namespace WebApi.Controllers
                 {
                     await _userManager.AddToRoleAsync(admin, "admin");
                     await _signInManager.SignInAsync(admin, isPersistent: false);
-                    return new JsonResult(new Dictionary<string, object>
-          {
-            { "access_token", GetAccessToken(Credentials.Email) },
-            { "id_token", GetIdToken(admin) }
-          });
+                    return Ok("User successfully registered");
                 }
                 return Errors(result);
-
             }
             return Error("Unexpected error");
         }
@@ -84,11 +90,7 @@ namespace WebApi.Controllers
                 {
                     await _userManager.AddToRoleAsync(client, "client"); 
                     await _signInManager.SignInAsync(client, isPersistent: false);
-                    return new JsonResult(new Dictionary<string, object>
-          {
-            { "access_token", GetAccessToken(Credentials.Email) },
-            { "id_token", GetIdToken(client) }
-          });
+                    return Ok("User successfully registered");
                 }
                 return Errors(result);
 
@@ -123,16 +125,7 @@ namespace WebApi.Controllers
                 {
                     await _userManager.AddToRoleAsync(healthWorker, "healthworker");
                     await _signInManager.SignInAsync(healthWorker, isPersistent: false);
-
-                    JsonResult token = new JsonResult(new Dictionary<string, object>
-                    {
-                        { "access_token", GetAccessToken(Credentials.Email) },
-                        { "id_token", GetIdToken(healthWorker) }
-                    });
-
-                    HttpContext.Response.Cookies.Append("token", token.ContentType);
-
-                    return token;
+                    return Ok("User successfully registered");
                 }
                 return Errors(result);
 
@@ -151,17 +144,52 @@ namespace WebApi.Controllers
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(Credentials.Email);
-                    return new JsonResult(new Dictionary<string, object>
-                    {
-                        { "access_token", GetAccessToken(Credentials.Email) },
-                        { "id_token", GetIdToken(user) },
-                    });
+
+                    return Ok("User signed in successfull");
                 }
 
                 return new JsonResult("Unable to sign in") { StatusCode = 401 };
             }
 
             return Error("Unexpected error");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("generatetoken")]
+        public async Task<IActionResult> GenerateToken([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                    if (result.Succeeded)
+                    {
+
+                        var claims = new[]
+                        {
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        };
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSettings:SecretKey"]));
+                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                        var token = new JwtSecurityToken(
+                            issuer: _config["JWTSettings:Issuer"],
+                            audience: _config["JWTSettings:Audience"],
+                            claims: claims,
+                            expires: DateTime.Now.AddMinutes(30),
+                            signingCredentials: creds);
+
+                        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                    }
+                }
+            }
+
+            return BadRequest("Could not create token");
         }
 
         //POST /api/account/signout
@@ -184,8 +212,7 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            var userId = user.Id; 
+            var user = await _userManager.GetUserAsync(User); 
 
             if (user == null)
             {
@@ -193,45 +220,6 @@ namespace WebApi.Controllers
             }
 
             return Ok(user);
-        }
-
-        private string GetIdToken(User user)
-        {
-            var payload = new Dictionary<string, object>
-            {
-                { "id", user.Id },
-                { "sub", user.Email },
-                { "email", user.Email },
-                { "emailConfirmed", user.EmailConfirmed },
-            };
-            return GetToken(payload);
-        }
-
-        private string GetAccessToken(string Email)
-        {
-            var payload = new Dictionary<string, object>
-            {
-                { "sub", Email },
-                { "email", Email }
-            };
-                return GetToken(payload);
-        }
-
-        private string GetToken(Dictionary<string, object> payload)
-        {
-            var secret = _options.SecretKey;
-
-            payload.Add("iss", _options.Issuer);
-            payload.Add("aud", _options.Audience);
-            payload.Add("nbf", ConvertToUnixTimestamp(DateTime.Now));
-            payload.Add("iat", ConvertToUnixTimestamp(DateTime.Now));
-            payload.Add("exp", ConvertToUnixTimestamp(DateTime.Now.AddDays(7)));
-            IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
-            IJsonSerializer serializer = new JsonNetSerializer();
-            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
-            IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
-
-            return encoder.Encode(payload, secret);
         }
 
         private JsonResult Errors(IdentityResult result)

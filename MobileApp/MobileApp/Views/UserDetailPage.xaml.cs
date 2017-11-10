@@ -19,7 +19,6 @@ namespace MobileApp.Views
         {
             InitializeComponent();
             GetCurrentUser();
-
         }
 
         public async Task GetCurrentUser()
