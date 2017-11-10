@@ -13,7 +13,7 @@ app.controller('showClientsController', function ($http, $scope, $location, $rou
     ];
 
     //retrieve all benches
-    $http.get('http://127.0.0.1:54618/api/benches') 
+    $http.get('http://127.0.0.1:54618/api/benches')
         .then(function (response) {
             //first function handles succes
             $scope.benches = response.data;
