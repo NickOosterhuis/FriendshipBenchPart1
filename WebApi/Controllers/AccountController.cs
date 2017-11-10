@@ -32,6 +32,34 @@ namespace WebApi.Controllers
             _options = optionsAccessor.Value;
         }
 
+        [AllowAnonymous]
+        [HttpPost("register/admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel Credentials)
+        {
+            if (ModelState.IsValid)
+            {
+                var admin = new User
+                {
+                    UserName = Credentials.Email,
+                    Email = Credentials.Email,
+                };
+                var result = await _userManager.CreateAsync(admin, Credentials.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(admin, "admin");
+                    await _signInManager.SignInAsync(admin, isPersistent: false);
+                    return new JsonResult(new Dictionary<string, object>
+          {
+            { "access_token", GetAccessToken(Credentials.Email) },
+            { "id_token", GetIdToken(admin) }
+          });
+                }
+                return Errors(result);
+
+            }
+            return Error("Unexpected error");
+        }
+
         //POST /api/account/register/client
         [AllowAnonymous]
         [HttpPost("register/client")]
