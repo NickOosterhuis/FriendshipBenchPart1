@@ -127,11 +127,11 @@ namespace WebApi.Controllers
 
             var appointment = new Appointment()
             {
-              Time = appointmentViewModel.Time,
-              StatusId = 1,
-              BenchId = appointmentViewModel.BenchId,
-              ClientId = appointmentViewModel.ClientId,
-              HealthworkerId = appointmentViewModel.HealthworkerId
+                Time = appointmentViewModel.Time,
+                StatusId = 1,
+                BenchId = appointmentViewModel.BenchId,
+                ClientId = appointmentViewModel.ClientId,
+                HealthworkerId = appointmentViewModel.HealthworkerId
             };
 
             _context.Appointments.Add(appointment);

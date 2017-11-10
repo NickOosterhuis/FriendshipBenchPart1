@@ -21,7 +21,6 @@
         });
 
     //retrieve appointment details
-    console.log(appointmentID + 'dafdfd');
     $http.get("http://127.0.0.1:54618/api/Appointments/" + appointmentID)
         .then(
         function (response) {
