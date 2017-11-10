@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using WebApi.ViewModels.Appointments;
+using WebApi.ViewModels.HealthWorkers;
 
 namespace WebApi.Controllers
 {
@@ -26,7 +27,6 @@ namespace WebApi.Controllers
         }
 
         // GET: api/Appointments
-
         [HttpGet]
         public IEnumerable<AppointmentGetViewModel> GetAppointments()
         {
@@ -41,7 +41,7 @@ namespace WebApi.Controllers
                     Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                     Bench = _context.Benches.Find(appointment.BenchId),
                     ClientId = appointment.ClientId,
-                    Healthworker = new HealthworkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email }
+                    Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.Firstname, Lastname = healthworker.Lastname, Birthday = healthworker.Birthday, Gender = healthworker.Gender, Email = healthworker.Email }
                 });
             }
 
@@ -72,7 +72,7 @@ namespace WebApi.Controllers
                 Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                 Bench = _context.Benches.Find(appointment.BenchId),
                 ClientId = appointment.ClientId,
-                Healthworker = new HealthworkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email }
+                Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.Firstname, Lastname = healthworker.Lastname, Birthday = healthworker.Birthday, Gender = healthworker.Gender, Email = healthworker.Email }
             };
 
             return Ok(viewModel);

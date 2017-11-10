@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using WebApi.ViewModels.Clients;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
+    [Authorize(Roles = "admin, healthworker")]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
@@ -21,11 +25,26 @@ namespace WebApi.Controllers
             _context = context;
         }
 
-        // GET: api/Clients
         [HttpGet]
-        public IEnumerable<ClientUser> GetClient()
+        public IEnumerable<ClientViewModel> GetClients()
         {
-            return _context.Client;
+            List<ClientViewModel> clients = new List<ClientViewModel>();
+            foreach (ClientUser client in _context.Client)
+            {
+                clients.Add(new ClientViewModel
+                {
+                    FirstName = client.Firstname,
+                    LastName = client.Lastname,
+                    Gender = client.Gender,
+                    BirthDay = client.Birthday,
+                    Email = client.Email,
+                    StreetName = client.StreetName,
+                    HouseNumber = client.HouseNumber,
+                    Province = client.Province,
+                    District = client.District
+                });
+            }
+            return clients;
         }
 
         // GET: api/Clients/5

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApi.ViewModels
+namespace WebApi.ViewModels.Appointments
 {
     public class AppointmentPostViewModel
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.ViewModels
+namespace WebApi.ViewModels.Account
 {
-    public class RegisterClientViewModel
+    public class RegisterHealthWorkerViewModel
     {
         [Required]
         [EmailAddress]
@@ -43,23 +43,8 @@ namespace WebApi.ViewModels
         public DateTime BirthDay { get; set; }
 
         [Required]
-        [MaxLength(100, ErrorMessage = "Street name can't be longer than 100 characters")]
-        [Display(Name = "Street")]
-        public string StreetName { get; set; }
-
-        [Required]
-        [MaxLength(10, ErrorMessage = "House number can't be longer than 100 characters")]
-        [Display(Name = "Housenumber")]
-        public string HouseNumber { get; set; }
-
-        [Required]
-        [MaxLength(100, ErrorMessage = "Province can't be longer than 100 characters")]
-        [Display(Name = "Province")]
-        public string Province { get; set; }
-
-        [Required]
-        [MaxLength(100, ErrorMessage = "District can't be longer than 100 characters")]
-        [Display(Name = "District")]
-        public string District { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; }
     }
 }
