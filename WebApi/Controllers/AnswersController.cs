@@ -105,9 +105,8 @@ namespace WebApi.Controllers
             }
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetAnswers", new { id = answers.Id }, answers);
-
-            return NoContent();        }
+            return NoContent();
+        }
 
         // DELETE: api/Answers/5
         [HttpDelete("{id}")]

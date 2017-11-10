@@ -78,12 +78,18 @@ namespace MobileApp.Helpers
                 HttpResponseMessage response = await httpClient.PutAsync(url, stringContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("PUT Request executed succesfully: " + response.StatusCode);
+                    Debug.WriteLine("Post Request to " + url + " executed succesfully: " + response.StatusCode);
                     return await response.Content.ReadAsStringAsync();
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    Debug.WriteLine("Post Request to " + url + " failed: " + response.StatusCode);
+                    Debug.WriteLine("Invalid JSON: " + content);
+                    return null;
                 }
                 else
                 {
-                    Debug.WriteLine("PUT Request failed: " + response.StatusCode);
+                    Debug.WriteLine("Post Request failed: " + response.StatusCode);
                     return null;
                 }
             }
