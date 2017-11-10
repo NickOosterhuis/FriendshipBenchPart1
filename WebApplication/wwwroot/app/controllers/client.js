@@ -1,13 +1,13 @@
 ﻿//module
-var app = angular.module('clients', ['ngRoute']);
+var appClient = angular.module('clients', ['ngRoute']);
 
-app.config(['$locationProvider', function ($locationProvider) {
+appClient.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('');
 }]);
 
 //controller
-app.controller('clientsCtrl', function ($scope, $http, $location) {
+appClient.controller('clientsCtrl', function ($scope, $http, $location) {
 
     //get all clients connected to the logged in healthworker
     $scope.listConnectedClients = function () {
@@ -34,7 +34,7 @@ app.controller('clientsCtrl', function ($scope, $http, $location) {
 
  });
 
-app.config(['$routeProvider', function ($routeProvider) {
+appClient.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/clients', { templateUrl: '/app/views/clients/list.html', controller: 'clientsCtrl' });
     $routeProvider.when('/clients/:id', { templateUrl: '/app/views/clients/show.html', controller: 'showClientCtrl' });
     $routeProvider.when('/questionnaire/:id', { templateUrl: '/app/views/clients/questionnaire.html', controller: 'showQuestionnaireCtrl' });
