@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
@@ -84,18 +85,29 @@ namespace WebApi.Controllers
 
         // POST: api/Answers
         [HttpPost]
-        public async Task<IActionResult> PostAnswers([FromBody] Answers answers)
+        public async Task<IActionResult> PostAnswers([FromBody] List<AnswerPostViewModel> answerViewModels)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Answers.Add(answers);
+            foreach (var answerViewModel in answerViewModels)
+            {
+                Answers answers = new Answers
+                {
+                    Answer = answerViewModel.Answer,
+                    Questionnaire_id = answerViewModel.Questionnaire_id,
+                    Question_id = answerViewModel.Question_id
+                };
+
+                _context.Answers.Add(answers);
+            }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAnswers", new { id = answers.Id }, answers);
-        }
+            //return CreatedAtAction("GetAnswers", new { id = answers.Id }, answers);
+
+            return NoContent();        }
 
         // DELETE: api/Answers/5
         [HttpDelete("{id}")]

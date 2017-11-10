@@ -1,4 +1,4 @@
-﻿namespace WebApi.ViewModels
+﻿namespace WebApi.ViewModels.Benches
 {
     public class BenchViewModel
     {

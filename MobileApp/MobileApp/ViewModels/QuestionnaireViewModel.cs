@@ -4,21 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MobileApp.Models
+namespace MobileApp.ViewModels
 {
-    public class Appointment
+    class QuestionnaireViewModel
     {
         public int Id { get; set; }
 
         public DateTime Time { get; set; }
-
-        public AppointmentStatus Status { get; set; }
-
-        public Bench Bench { get; set; }
-
-        public string ClientId { get; set; }
-
-        public Healthworker Healthworker { get; set; }
 
         public string DateTime
         {

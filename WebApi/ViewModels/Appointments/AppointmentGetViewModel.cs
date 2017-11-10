@@ -1,7 +1,8 @@
 ﻿using System;
 using WebApi.Models;
+using WebApi.ViewModels.HealthWorkers;
 
-namespace WebApi.ViewModels
+namespace WebApi.ViewModels.Appointments
 {
     public class AppointmentGetViewModel
     {
@@ -15,6 +16,6 @@ namespace WebApi.ViewModels
 
         public string ClientId { get; set; }
 
-        public HealthworkerViewModel Healthworker { get; set; }
+        public HealthWorkerViewModel Healthworker { get; set; }
     }
 }

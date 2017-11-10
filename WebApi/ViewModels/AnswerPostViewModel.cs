@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MobileApp.Models
+namespace WebApi.ViewModels
 {
-    class Answers
+    public class AnswerPostViewModel
     {
 
         public string Answer { get; set; }
