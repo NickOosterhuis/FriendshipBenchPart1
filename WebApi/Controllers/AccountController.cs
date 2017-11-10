@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Models;
 using WebApi.ViewModels;
+using WebApi.ViewModels.Account;
 
 namespace WebApi.Controllers
 {
@@ -31,6 +32,34 @@ namespace WebApi.Controllers
             _options = optionsAccessor.Value;
         }
 
+        [AllowAnonymous]
+        [HttpPost("register/admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel Credentials)
+        {
+            if (ModelState.IsValid)
+            {
+                var admin = new User
+                {
+                    UserName = Credentials.Email,
+                    Email = Credentials.Email,
+                };
+                var result = await _userManager.CreateAsync(admin, Credentials.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(admin, "admin");
+                    await _signInManager.SignInAsync(admin, isPersistent: false);
+                    return new JsonResult(new Dictionary<string, object>
+          {
+            { "access_token", GetAccessToken(Credentials.Email) },
+            { "id_token", GetIdToken(admin) }
+          });
+                }
+                return Errors(result);
+
+            }
+            return Error("Unexpected error");
+        }
+
         //POST /api/account/register/client
         [AllowAnonymous]
         [HttpPost("register/client")]
@@ -41,10 +70,10 @@ namespace WebApi.Controllers
                 var client = new ClientUser {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    FirstName = Credentials.FirstName,
-                    LastName = Credentials.LastName,
+                    Firstname = Credentials.FirstName,
+                    Lastname = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    BirthDay = Credentials.BirthDay, 
+                    Birthday = Credentials.BirthDay, 
                     StreetName = Credentials.StreetName,
                     HouseNumber = Credentials.HouseNumber,
                     Province = Credentials.Province,
@@ -53,6 +82,7 @@ namespace WebApi.Controllers
                 var result = await _userManager.CreateAsync(client, Credentials.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(client, "client"); 
                     await _signInManager.SignInAsync(client, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
           {
@@ -67,29 +97,42 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
+        [Authorize(Roles = "admin")]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
+            if (!User.IsInRole("admin"))
+            {
+                return Unauthorized();
+            }
+
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
                 {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    FirstName = Credentials.FirstName,
-                    LastName = Credentials.LastName,
+                    Firstname = Credentials.FirstName,
+                    Lastname = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    BirthDay = Credentials.BirthDay,
+                    Birthday = Credentials.BirthDay,
+                    PhoneNumber = Credentials.PhoneNumber,
                 };
                 var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(healthWorker, "healthworker");
                     await _signInManager.SignInAsync(healthWorker, isPersistent: false);
-                    return new JsonResult(new Dictionary<string, object>
-          {
-            { "access_token", GetAccessToken(Credentials.Email) },
-            { "id_token", GetIdToken(healthWorker) }
-          });
+
+                    JsonResult token = new JsonResult(new Dictionary<string, object>
+                    {
+                        { "access_token", GetAccessToken(Credentials.Email) },
+                        { "id_token", GetIdToken(healthWorker) }
+                    });
+
+                    HttpContext.Response.Cookies.Append("token", token.ContentType);
+
+                    return token;
                 }
                 return Errors(result);
 
@@ -111,7 +154,7 @@ namespace WebApi.Controllers
                     return new JsonResult(new Dictionary<string, object>
                     {
                         { "access_token", GetAccessToken(Credentials.Email) },
-                        { "id_token", GetIdToken(user) }
+                        { "id_token", GetIdToken(user) },
                     });
                 }
 
@@ -134,7 +177,7 @@ namespace WebApi.Controllers
         //GET api/account/user
         [Authorize]
         [HttpGet("user")]
-        public async Task<IActionResult> GetLoggedInUser()
+        public async Task<IActionResult> GetUser()
         {
             if (!ModelState.IsValid)
             {
@@ -155,23 +198,23 @@ namespace WebApi.Controllers
         private string GetIdToken(User user)
         {
             var payload = new Dictionary<string, object>
-      {
-        { "id", user.Id },
-        { "sub", user.Email },
-        { "email", user.Email },
-        { "emailConfirmed", user.EmailConfirmed },
-      };
+            {
+                { "id", user.Id },
+                { "sub", user.Email },
+                { "email", user.Email },
+                { "emailConfirmed", user.EmailConfirmed },
+            };
             return GetToken(payload);
         }
 
         private string GetAccessToken(string Email)
         {
             var payload = new Dictionary<string, object>
-      {
-        { "sub", Email },
-        { "email", Email }
-      };
-            return GetToken(payload);
+            {
+                { "sub", Email },
+                { "email", Email }
+            };
+                return GetToken(payload);
         }
 
         private string GetToken(Dictionary<string, object> payload)

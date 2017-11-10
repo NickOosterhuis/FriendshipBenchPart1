@@ -27,6 +27,8 @@ namespace MobileApp.Views
 
         public RegisterPage()
         {
+            InitializeComponent();
+
             var email = new Entry
             {
                 Placeholder = "Email",
@@ -137,7 +139,7 @@ namespace MobileApp.Views
                     await DisplayAlert("Error", "Confirm password doesn't match password", "Cencel");
                 }
 
-                await Register(new ClientUser
+                await Register(new Client
                 {
                     Email = email.Text,
                     Password = password.Text,
@@ -154,7 +156,7 @@ namespace MobileApp.Views
             };
         }
 
-        public async Task Register(ClientUser user)
+        public async Task Register(Client user)
         {
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);

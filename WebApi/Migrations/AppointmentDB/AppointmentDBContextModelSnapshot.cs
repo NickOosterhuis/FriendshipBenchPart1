@@ -27,15 +27,13 @@ namespace WebApi.Migrations.AppointmentDB
 
                     b.Property<int>("BenchId");
 
-                    b.Property<int>("ClientId");
+                    b.Property<string>("ClientId");
 
-                    b.Property<string>("Date");
-
-                    b.Property<string>("HealthworkerName");
+                    b.Property<string>("HealthworkerId");
 
                     b.Property<int>("StatusId");
 
-                    b.Property<string>("Time");
+                    b.Property<DateTime>("Time");
 
                     b.HasKey("Id");
 

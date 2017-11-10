@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using WebApi.ViewModels.Appointments;
+using WebApi.ViewModels.HealthWorkers;
+using WebApi.ViewModels.Clients;
 
 namespace WebApi.Controllers
 {
@@ -17,29 +19,31 @@ namespace WebApi.Controllers
     public class AppointmentsController : Controller
     {
         private readonly AppointmentDBContext _context;
+        private readonly UserDBContext _userContext;
 
-        public AppointmentsController(AppointmentDBContext context)
+        public AppointmentsController(AppointmentDBContext context, UserDBContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         // GET: api/Appointments
-
         [HttpGet]
         public IEnumerable<AppointmentGetViewModel> GetAppointments()
         {
             List<AppointmentGetViewModel> appointments = new List<AppointmentGetViewModel>();
             foreach(Appointment appointment in _context.Appointments)
             {
+                ClientUser client = _userContext.Client.Find(appointment.ClientId);
+                HealthWorkerUser healthworker = _userContext.HealthWorker.Find(appointment.HealthworkerId);
                 appointments.Add(new AppointmentGetViewModel
                 {
                     Id = appointment.Id,
-                    Date = appointment.Date,
                     Time = appointment.Time,
                     Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                     Bench = _context.Benches.Find(appointment.BenchId),
-                    ClientId = appointment.ClientId,
-                    HealthworkerName = appointment.HealthworkerName
+                    Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.Firstname, LastName = client.Lastname, BirthDay = client.Birthday, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
+                    Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.Firstname, Lastname = healthworker.Lastname, Birthday = healthworker.Birthday, Gender = healthworker.Gender, Email = healthworker.Email }
                 });
             }
 
@@ -62,15 +66,16 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
+            ClientUser client = _userContext.Client.Find(appointment.ClientId);
+            HealthWorkerUser healthworker = _userContext.HealthWorker.Find(appointment.HealthworkerId);
             AppointmentGetViewModel viewModel = new AppointmentGetViewModel
             {
                 Id = appointment.Id,
-                Date = appointment.Date,
                 Time = appointment.Time,
                 Status = _context.AppointmentStatuses.Find(appointment.StatusId),
                 Bench = _context.Benches.Find(appointment.BenchId),
-                ClientId = appointment.ClientId,
-                HealthworkerName = appointment.HealthworkerName
+                Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.Firstname, LastName = client.Lastname, BirthDay = client.Birthday, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
+                Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.Firstname, Lastname = healthworker.Lastname, Birthday = healthworker.Birthday, Gender = healthworker.Gender, Email = healthworker.Email }
             };
 
             return Ok(viewModel);
@@ -122,15 +127,12 @@ namespace WebApi.Controllers
 
             var appointment = new Appointment()
             {
-              Date = appointmentViewModel.Date,
               Time = appointmentViewModel.Time,
               StatusId = 1,
               BenchId = appointmentViewModel.BenchId,
               ClientId = appointmentViewModel.ClientId,
-              HealthworkerName = appointmentViewModel.HealthworkerName
+              HealthworkerId = appointmentViewModel.HealthworkerId
             };
-
-
 
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();

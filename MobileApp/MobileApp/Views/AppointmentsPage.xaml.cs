@@ -12,12 +12,15 @@ using Xamarin.Forms.Xaml;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using MobileApp.Helpers;
 
 namespace MobileApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AppointmentsPage : ContentPage
     {
+        APIRequestHelper apiRequestHelper;
         ObservableCollection<Appointment> allAppointments;
         ObservableCollection<ObservableGroupCollection<string, Appointment>> groupedAppointments;
         private bool isRefreshing = false;
@@ -30,6 +33,7 @@ namespace MobileApp.Views
         // Initialize the page.
         public AppointmentsPage()
         {
+            apiRequestHelper = new APIRequestHelper();
             BindingContext = this;
             InitializeComponent();
         }
@@ -45,16 +49,12 @@ namespace MobileApp.Views
         private async Task FetchAppointments()
         {
             // Send a GET request to the API.
-            var client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(Constants.appointmentsUrl);
-
-            // If the request was succesfull, add appointments to the list. If not, let the user know.
-            if (response.IsSuccessStatusCode)
+            String apiResponse = await apiRequestHelper.GetRequest(Constants.appointmentsUrl);
+            if (apiResponse != null)
             {
                 // Convert the API response into a JSON object.
                 allAppointments = new ObservableCollection<Appointment>();
-                String json = await response.Content.ReadAsStringAsync();
-                dynamic convertedJson = JsonConvert.DeserializeObject(json);
+                dynamic convertedJson = JsonConvert.DeserializeObject(apiResponse);
 
                 // Loop through all the appointments in the JSON object and create appointment objects.
                 foreach (var appointment in convertedJson)
@@ -62,12 +62,11 @@ namespace MobileApp.Views
                     allAppointments.Add(new Appointment
                     {
                         Id = (int)appointment.id,
-                        Date = (string)appointment.date,
-                        Time = (string)appointment.time,
+                        Time = (DateTime)appointment.time,
                         Status = new AppointmentStatus { Id = (int)appointment.status.id, Name = (string)appointment.status.name },
                         Bench = new Bench { Id = (int)appointment.bench.id, Streetname = (string)appointment.bench.streetname, Housenumber = (string)appointment.bench.housenumber, Province = (string)appointment.bench.province, District = (string)appointment.bench.district },
-                        ClientId = (int)appointment.clientId,
-                        HealthworkerName = (string)appointment.healthworkerName,
+                        Client = new Client { Id = (string)appointment.client.id, Email = (string)appointment.client.email, FirstName = (string)appointment.client.firstname, LastName = (string)appointment.client.lastname, BirthDay = (DateTime)appointment.client.birthDay, District = (string)appointment.client.district, Gender = (string)appointment.client.gender, HouseNumber = (string)appointment.client.houseNumber, Province = (string)appointment.client.province, StreetName = (string)appointment.client.streetName },
+                        Healthworker = new Healthworker { Id = (string)appointment.healthworker.id, Firstname = (string)appointment.healthworker.firstname, Lastname = (string)appointment.healthworker.lastname, Birthday = (DateTime)appointment.healthworker.birthday, Gender = (string)appointment.healthworker.gender, Email = (string)appointment.healthworker.email }
                     }); 
                 }
             }
@@ -87,7 +86,6 @@ namespace MobileApp.Views
             // Group the appointments by their status.
             var orderedAppointments =
                 allAppointments.OrderBy(a => a.Status.Id)
-                .ThenBy(a => a.Date)
                 .ThenBy(a => a.Time)
                 .GroupBy(a => a.Status.Name)
                 .Select(a => new ObservableGroupCollection<string, Appointment>(a))

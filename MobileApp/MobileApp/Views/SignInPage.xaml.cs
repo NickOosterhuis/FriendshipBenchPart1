@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace MobileApp.Views
 {    
@@ -17,62 +18,23 @@ namespace MobileApp.Views
     public partial class SignInPage : ContentPage
     {
         public Picker MenuItem;
-
-        public Entry email;
-        public Entry password;
         
         public SignInPage()
         {
-            email = new Entry
-            {
-                Placeholder = "Email"
-            };
-
-            password = new Entry
-            {
-                Placeholder = "Password",
-                IsPassword = true
-            };
-
-            var signInButton = new Button
-            {
-                Text = "Sign In"
-            };
-
-            var registerButton = new Button
-            {
-                Text = "Register"
-            };
-
-            
-
-            Content = new StackLayout
-            {
-                Padding = 30,
-                Spacing = 10,
-                Children =
-                {
-                    new Label {Text = "Sign in", FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
-                    email,
-                    password,
-                    signInButton,
-                    registerButton
-                }
-            };
-
-            registerButton.Clicked += (object sender, EventArgs e) =>
+            InitializeComponent();
+            RegisterButton.Clicked += (object sender, EventArgs e) =>
             {
                 Navigation.PushAsync(new RegisterPage());
             };
 
-            signInButton.Clicked += async (object sender, EventArgs e) =>
+            SignInButton.Clicked += async (object sender, EventArgs e) =>
             {
-                await Login(new ClientUser { Email = email.Text, Password = password.Text });
+                await Login(new Client { Email = Email.Text, Password = Password.Text });
             };
 
         }
 
-       public async Task Login(ClientUser user)
+       public async Task Login(Client user)
        {
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);
@@ -95,7 +57,9 @@ namespace MobileApp.Views
             if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine(@" User Successfully logged in");
-                Debug.WriteLine(readableContent);
+                String responseJson = await response.Content.ReadAsStringAsync();
+                LoginToken token = JsonConvert.DeserializeObject<LoginToken>(responseJson);
+                //await LogoutTest(token);
                 await Navigation.PushAsync(new LandingPage());
             }
             else
@@ -104,6 +68,22 @@ namespace MobileApp.Views
                 Debug.WriteLine("Er is iets fout gegaan :(");
                 Debug.WriteLine(response.Headers);
             }  
+        }
+
+        public async Task LogoutTest(LoginToken token)
+        {
+            string url = "http://10.0.2.2:54618/api/Account/user";
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.id_token);
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                String json = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine(json);
+            } else
+            {
+                Debug.WriteLine(response.StatusCode);
+            }
         }
     }
 }
