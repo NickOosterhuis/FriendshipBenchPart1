@@ -8,7 +8,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 
 //controller
 app.controller('appointmentCtrl', function ($scope, $http, $location) {
-
+    console.log('kek');
     //get all appointments
     $scope.listAppointments = function () {
         $http.get('http://127.0.0.1:54618/api/Appointments')

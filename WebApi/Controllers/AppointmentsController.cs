@@ -124,17 +124,38 @@ namespace WebApi.Controllers
 
             var appointment = new Appointment()
             {
-              Time = appointmentViewModel.Time,
-              StatusId = 1,
-              BenchId = appointmentViewModel.BenchId,
-              ClientId = appointmentViewModel.ClientId,
-              HealthworkerId = appointmentViewModel.HealthworkerId
+                Time = appointmentViewModel.Time,
+                StatusId = 1,
+                BenchId = appointmentViewModel.BenchId,
+                ClientId = appointmentViewModel.ClientId,
+                HealthworkerId = appointmentViewModel.HealthworkerId
             };
 
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAppointment", new { id = appointment.Id }, appointment);
+        }
+
+        // DELETE: api/Appointments/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAppointment([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var appointment = await _context.Appointments.SingleOrDefaultAsync(m => m.Id == id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+
+            return Ok(appointment);
         }
 
         private bool AppointmentExists(int id)
