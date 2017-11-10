@@ -1,0 +1,17 @@
+﻿
+<h2>Edit</h2>
+<div ng-app="clients" ng-controller="showQuestionnaireCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <div ng-if="questionnaire" ng-repeat="question in questionnaire.questions">
+        <div>
+            {{ question.question }} {{ question.answer }}
+        </div>
+    </div>
+    <div ng-if="!questionnaire">
+        There was a problem retrieving the questionnaire.
+    </div>
+</div>

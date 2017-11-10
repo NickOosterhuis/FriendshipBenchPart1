@@ -1,0 +1,50 @@
+﻿
+<h2>Edit</h2>
+<div ng-app="clients" ng-controller="showClientCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <div ng-if="client">
+        <table>
+            <tbody>
+                <tr>
+                    <td>{{ client.firstname }} {{ client.lastname }}</td>
+                </tr>
+                <tr>
+                    <td>{{ client.gender }}</td>
+                </tr>
+                <tr>
+                    <td>Born on {{ client.birthday }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>{{ client.email }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>{{ client.street }} {{ client.housenumber }}</td>
+                </tr>
+                <tr>
+                    <td>{{ client.district }}</td>
+                </tr>
+                <tr>
+                    <td>{{ client.province }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><a ng-click="createAppointment(client.id)" class="btn btn-small btn-primary">Create appointment</a> <a ng-click="showQuestionnaire(client.id)" class="btn btn-small btn-primary">Show questionnaire</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-if="!client">
+        There was a problem retrieving the appointment.
+    </div>
