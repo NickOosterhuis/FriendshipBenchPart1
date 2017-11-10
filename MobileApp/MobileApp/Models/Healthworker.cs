@@ -23,5 +23,10 @@ namespace MobileApp.Models
         {
             get { return string.Format("{0} {1}", Firstname, Lastname); }
         }
+
+        public string DayOfBirth
+        {
+            get { return String.Format("{0:dd/MM/yyyy}", Birthday); }
+        }
     }
 }

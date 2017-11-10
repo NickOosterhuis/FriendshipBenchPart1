@@ -61,6 +61,9 @@
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireGetViewModel.cs" />
+    <Compile Include="Views\HealthworkerPage.xaml.cs">
+      <DependentUpon>HealthworkerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\QuestionnaireDetailPage.xaml.cs">
       <DependentUpon>QuestionnaireDetailPage.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\QuestionnaireDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\HealthworkerPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
