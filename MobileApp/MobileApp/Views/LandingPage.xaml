@@ -2,7 +2,6 @@
 <MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Views.LandingPage"
-                  Title="MasterPage"
                                NavigationPage.HasNavigationBar="False" 
              NavigationPage.HasBackButton="False">
 
@@ -10,13 +9,18 @@
     <MasterDetailPage.Master>
         <ContentPage Title="MasterPage">
             <ContentPage.Content>
-                <ListView x:Name="NavigationList">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ImageCell Text="{Binding Name}" ImageSource="{Binding Icon}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <StackLayout>
+                    <StackLayout Padding="16">
+                        <Label Style="{StaticResource LabelPageHeadingStyle}">The Friendship Bench</Label>
+                    </StackLayout>
+                    <ListView x:Name="NavigationList">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ImageCell Text="{Binding Name}" ImageSource="{Binding Icon}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
             </ContentPage.Content>
         </ContentPage>
     </MasterDetailPage.Master>

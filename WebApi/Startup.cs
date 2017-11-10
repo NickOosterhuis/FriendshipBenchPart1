@@ -65,7 +65,9 @@ namespace WebApi
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserDBContext>()
                 .AddDefaultTokenProviders();
-            
+
+            //cors service
+            services.AddCors();
 
             //swagger
             services.AddSwaggerGen(c =>
@@ -124,6 +126,11 @@ namespace WebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
             });
+
+            // cors settings
+            app.UseCors(builder =>
+            builder.WithOrigins("https://localhost:44314").
+            AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthentication();
             app.UseMvc();

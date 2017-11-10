@@ -13,5 +13,7 @@ namespace MobileApp.Models
 
         public int Question_id { get; set; }
 
+        public int Questionnaire_id { get; set; }
+
     }
 }

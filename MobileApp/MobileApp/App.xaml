@@ -12,9 +12,8 @@
             <Color x:Key="LightTextColor">#999999</Color>
 
             <Style x:Key="LabelPageHeadingStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontSize" Value="20" />
                 <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="TextColor" Value="{StaticResource HeadingTextColor}" />
             </Style>
 

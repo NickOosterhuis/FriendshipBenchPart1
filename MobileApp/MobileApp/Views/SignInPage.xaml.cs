@@ -29,12 +29,12 @@ namespace MobileApp.Views
 
             SignInButton.Clicked += async (object sender, EventArgs e) =>
             {
-                await Login(new ClientUser { Email = Email.Text, Password = Password.Text });
+                await Login(new Client { Email = Email.Text, Password = Password.Text });
             };
 
         }
 
-       public async Task Login(ClientUser user)
+       public async Task Login(Client user)
        {
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(user);

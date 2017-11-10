@@ -216,7 +216,6 @@ namespace WebApi.Migrations
                 {
                     b.HasBaseType("WebApi.Models.User");
 
-                    b.Property<int>("Bench_id");
 
                     b.ToTable("HealthWorkerUser");
 
