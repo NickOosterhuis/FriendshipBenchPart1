@@ -1,4 +1,4 @@
-﻿app.controller('createAppCtrl', function ($http, $scope, $location) {   
+﻿app.controller('createAppCtrl', function ($http, $scope, $location) {
 
     //retrieve all benches
     $http.get('http://127.0.0.1:54618/api/benches')
@@ -8,9 +8,7 @@
         }, function (response) {
             //second function handles error
             console.log("something went wrong!");
-        });
-
-   
+        });   
 
     $scope.sendData = function () {
 
