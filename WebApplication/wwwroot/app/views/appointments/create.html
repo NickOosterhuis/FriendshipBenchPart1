@@ -21,16 +21,12 @@
                     <td><input ng-model="appointment.time" placeholder="hh:mm" /></td>
                 </tr>
                 <tr>
-                    <td>Status:</td>
-                    <td><select ng-options="status as status.name for status in statusses" ng-model="appointment.status"></select></td>
-                </tr>
-                <tr>
                     <td>Bench:</td>
                     <td><select ng-options="bench as bench.streetname +' '+bench.housenumber for bench in benches" ng-model="appointment.bench"></select></td>
                 </tr>
                 <tr>
-                    <td>Health worker:</td>
-                    <td><input ng-model="appointment.healthworkerName" /></td>
+                    <td>Health worker:(hier moet uiteindelijk gewoon achter de schermen het id van de ingelogde healthworker gegeven worden.)</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>Client Id:</td>
