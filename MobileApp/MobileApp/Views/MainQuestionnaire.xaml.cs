@@ -73,8 +73,8 @@ namespace MobileApp.Views
         // Show the appointment details when an item has been selected.
         private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            ////Appointment selectedAppointment = (Appointment)e.SelectedItem;
-            //Navigation.PushAsync(new AppointmentDetailPage(selectedAppointment.Id));
+            QuestionnaireViewModel selectedQuestionnaire = (QuestionnaireViewModel)e.SelectedItem;
+            Navigation.PushAsync(new QuestionnaireDetailPage(selectedQuestionnaire.Id));
         }
 
         // Start a new questionnaire.
