@@ -11,7 +11,7 @@ appClient.controller('clientsCtrl', function ($scope, $http, $location) {
 
     //get all clients connected to the logged in healthworker
     $scope.listConnectedClients = function () {
-        $http.get('http://127.0.0.1:54618/api/Clients/Connected')
+        $http.get('http://127.0.0.1:54618/api/ClientUsers/')
             .then(function (response) {
                 //first function handles succes
                 $scope.clients = response.data;
@@ -37,7 +37,8 @@ appClient.controller('clientsCtrl', function ($scope, $http, $location) {
 appClient.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/clients', { templateUrl: '/app/views/clients/list.html', controller: 'clientsCtrl' });
     $routeProvider.when('/clients/:id', { templateUrl: '/app/views/clients/show.html', controller: 'showClientCtrl' });
-    $routeProvider.when('/questionnaire/:id', { templateUrl: '/app/views/clients/questionnaire.html', controller: 'showQuestionnaireCtrl' });
+    $routeProvider.when('/clients/:id/questionnaires', { templateUrl: '/app/views/clients/questionnaireList.html', controller: 'showQuestionnairesCtrl' });
+    $routeProvider.when('/questionnaire/:id', { templateUrl: '/app/views/clients/questionnaire.html', controller: 'showQuestionnairesCtrl' });
     $routeProvider.otherwise({ redirectTo: '/' });
 }]);
 
