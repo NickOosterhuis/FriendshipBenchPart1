@@ -121,7 +121,7 @@ namespace MobileApp.Views
 
                 // Do a POST request.
                 string answerContent = JsonConvert.SerializeObject(allAnswers);
-                string answerResponse = await apiRequestHelper.PostRequest(Constants.answerUrl, content);
+                string answerResponse = await apiRequestHelper.PostRequest(Constants.answerUrl, answerContent);
                 if (response != null)
                 {
                     await DisplayAlert("Completed", "You have completely filled out the questionnaire.", "Okay");

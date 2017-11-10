@@ -24,12 +24,12 @@ namespace MobileApp.Helpers
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("GET Request executed succesfully: " + response.StatusCode);
+                    Debug.WriteLine("GET Request to " + url + " executed succesfully: " + response.StatusCode);
                     return await response.Content.ReadAsStringAsync();
                 }
                 else
                 {
-                    Debug.WriteLine("GET Request failed: " + response.StatusCode);
+                    Debug.WriteLine("GET Request to " + url + " failed: " + response.StatusCode);
                     return null;
                 }
             }
@@ -48,8 +48,14 @@ namespace MobileApp.Helpers
                 HttpResponseMessage response = await httpClient.PostAsync(url, apiContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Post Request executed succesfully: " + response.StatusCode);
+                    Debug.WriteLine("Post Request to " + url + " executed succesfully: " + response.StatusCode);
                     return await response.Content.ReadAsStringAsync();
+                }
+                else if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    Debug.WriteLine("Post Request to " + url + " failed: " + response.StatusCode);
+                    Debug.WriteLine("Invalid JSON: " + content);
+                    return null;
                 }
                 else
                 {
