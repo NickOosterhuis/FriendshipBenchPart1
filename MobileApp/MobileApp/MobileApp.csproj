@@ -59,6 +59,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireGetViewModel.cs" />
     <Compile Include="Views\QuestionnaireDetailPage.xaml.cs">

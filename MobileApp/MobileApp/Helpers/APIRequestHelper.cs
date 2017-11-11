@@ -103,21 +103,39 @@ namespace MobileApp.Helpers
             }
         }
 
-        public async Task<string> GetAccessToken(Client user)
+        public async Task<string> GetAccessToken(string content)
         {
-            httpClient.BaseAddress = new Uri("http://10.0.2.2:54618");
-
-            var json = JsonConvert.SerializeObject(user);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync("/account/token", content);
-
-            return await response.Content.ReadAsStringAsync();
+            StringContent apiContent = new StringContent(content, Encoding.UTF8, "application/json");
+            try
+            {
+                HttpResponseMessage response = await httpClient.PostAsync(Constants.tokenUrl, apiContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Post Request to " + Constants.tokenUrl + " executed succesfully: " + response.StatusCode);
+                    return await response.Content.ReadAsStringAsync();
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    Debug.WriteLine("Post Request to " + Constants.tokenUrl + " failed: " + response.StatusCode);
+                    Debug.WriteLine("Invalid JSON: " + content);
+                    return null;
+                }
+                else
+                {
+                    Debug.WriteLine("Post Request failed: " + response.StatusCode);
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception occured: " + e.Message);
+                return null;
+            }
         }
 
-        public async void SetTokenHeader(Client user)
+        public async void SetTokenHeader(string content)
         {
-            var token = await GetAccessToken(user);
+            var token = await GetAccessToken(content);
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
