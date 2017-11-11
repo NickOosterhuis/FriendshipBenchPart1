@@ -65,7 +65,7 @@ namespace MobileApp.Views
                         Time = (DateTime)appointment.time,
                         Status = new AppointmentStatus { Id = (int)appointment.status.id, Name = (string)appointment.status.name },
                         Bench = new Bench { Id = (int)appointment.bench.id, Streetname = (string)appointment.bench.streetname, Housenumber = (string)appointment.bench.housenumber, Province = (string)appointment.bench.province, District = (string)appointment.bench.district },
-                        ClientId = (string)appointment.clientId,
+                        Client = new Client { Id = (string)appointment.client.id, Email = (string)appointment.client.email, FirstName = (string)appointment.client.firstname, LastName = (string)appointment.client.lastname, BirthDay = (DateTime)appointment.client.birthDay, District = (string)appointment.client.district, Gender = (string)appointment.client.gender, HouseNumber = (string)appointment.client.houseNumber, Province = (string)appointment.client.province, StreetName = (string)appointment.client.streetName },
                         Healthworker = new Healthworker { Id = (string)appointment.healthworker.id, Firstname = (string)appointment.healthworker.firstname, Lastname = (string)appointment.healthworker.lastname, Birthday = (DateTime)appointment.healthworker.birthday, Gender = (string)appointment.healthworker.gender, Email = (string)appointment.healthworker.email }
                     }); 
                 }

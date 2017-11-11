@@ -47,7 +47,7 @@ namespace MobileApp.Views
                     Time = (DateTime)convertedJson.time,
                     Status = new AppointmentStatus { Id = (int)convertedJson.status.id, Name = (string)convertedJson.status.name },
                     Bench = new Bench { Id = (int)convertedJson.bench.id, Streetname = (string)convertedJson.bench.streetname, Housenumber = (string)convertedJson.bench.housenumber, Province = (string)convertedJson.bench.province, District = (string)convertedJson.bench.district },
-                    ClientId = (string)convertedJson.clientId,
+                    Client = new Client { Id = (string)convertedJson.client.id, Email = (string)convertedJson.client.email, FirstName = (string)convertedJson.client.firstname, LastName = (string)convertedJson.client.lastname, District = (string)convertedJson.client.district, Gender = (string)convertedJson.client.gender, HouseNumber = (string)convertedJson.client.houseNumber, Province = (string)convertedJson.client.province, StreetName = (string)convertedJson.client.streetName },
                     Healthworker = new Healthworker { Id = (string)convertedJson.healthworker.id, Firstname = (string)convertedJson.healthworker.firstname, Lastname = (string)convertedJson.healthworker.lastname, Birthday = (DateTime)convertedJson.healthworker.birthday, Gender = (string)convertedJson.healthworker.gender, Email = (string)convertedJson.healthworker.email }
                 };
             }
@@ -115,6 +115,7 @@ namespace MobileApp.Views
                 Time = appointment.Time,
                 StatusId = statusId,
                 BenchId = appointment.Bench.Id,
+                ClientId = appointment.Client.Id,
                 HealthworkerId = appointment.Healthworker.Id,
             };
 

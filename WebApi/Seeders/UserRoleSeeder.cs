@@ -17,13 +17,21 @@ namespace WebApi.Seeders
 
         public async void SeedRoles()
         {
-            //var adminRoleBool = _roleManager.RoleExistsAsync("admin").Result;
-            //var clientRoleBool = _roleManager.RoleExistsAsync("client").Result;
-            //var healthWorkerRoleBool = _roleManager.RoleExistsAsync("healthworker").Result;
+            var adminRoleBool = _roleManager.RoleExistsAsync("admin").Result;
+            var clientRoleBool = _roleManager.RoleExistsAsync("client").Result;
+            var healthWorkerRoleBool = _roleManager.RoleExistsAsync("healthworker").Result;
 
-            await _roleManager.CreateAsync(new IdentityRole("admin"));
-            await _roleManager.CreateAsync(new IdentityRole("healthworker"));
-            await _roleManager.CreateAsync(new IdentityRole("client"));
+            if (!adminRoleBool) { 
+                await _roleManager.CreateAsync(new IdentityRole("admin"));
+            }
+            if (!clientRoleBool)
+            {
+                await _roleManager.CreateAsync(new IdentityRole("client"));
+            }
+            if (!healthWorkerRoleBool)
+            {
+                await _roleManager.CreateAsync(new IdentityRole("healthworker"));
+            }
         }
     }
 }

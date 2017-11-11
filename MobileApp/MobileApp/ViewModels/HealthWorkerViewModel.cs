@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace MobileApp.Models
+namespace MobileApp.ViewModels
 {
-    public class Healthworker
+    class HealthWorkerViewModel
     {
+
         public string Id { get; set; }
 
         public string Firstname { get; set; }
@@ -19,14 +21,7 @@ namespace MobileApp.Models
 
         public string Email { get; set; }
 
-        public string Name
-        {
-            get { return string.Format("{0} {1}", Firstname, Lastname); }
-        }
+        public string PhoneNumber { get; set; }
 
-        public string DayOfBirth
-        {
-            get { return String.Format("{0:dd/MM/yyyy}", Birthday); }
-        }
     }
 }

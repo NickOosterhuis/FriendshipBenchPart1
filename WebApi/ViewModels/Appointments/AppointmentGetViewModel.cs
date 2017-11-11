@@ -1,5 +1,6 @@
 ﻿using System;
 using WebApi.Models;
+using WebApi.ViewModels.Clients;
 using WebApi.ViewModels.HealthWorkers;
 
 namespace WebApi.ViewModels.Appointments
@@ -14,7 +15,7 @@ namespace WebApi.ViewModels.Appointments
 
         public Bench Bench { get; set; }
 
-        public string ClientId { get; set; }
+        public ClientViewModel Client { get; set; }
 
         public HealthWorkerViewModel Healthworker { get; set; }
     }
