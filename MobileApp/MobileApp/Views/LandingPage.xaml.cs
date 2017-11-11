@@ -21,7 +21,7 @@ namespace MobileApp.Views
             navigationItems.Add(new NavigationItem { Name = "My Healthworker", TargetType = typeof(HealthworkerPage) });
             navigationItems.Add(new NavigationItem { Name = "Messages" });
             navigationItems.Add(new NavigationItem { Name = "Appointments", TargetType = typeof(AppointmentsPage) });
-            navigationItems.Add(new NavigationItem { Name = "Profile" });
+            navigationItems.Add(new NavigationItem { Name = "Profile", TargetType = typeof(UserDetailPage) });
             navigationItems.Add(new NavigationItem { Name = "About", TargetType = typeof(AboutPage) });
             NavigationList.ItemsSource = navigationItems;
             NavigationList.ItemSelected += OnItemSelected;

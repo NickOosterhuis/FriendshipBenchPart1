@@ -60,6 +60,7 @@
     <Compile Include="ViewModels\HealthWorkerViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireGetViewModel.cs" />
     <Compile Include="Views\HealthworkerPage.xaml.cs">
@@ -104,6 +105,9 @@
     <Compile Include="Views\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserDetailPage.xaml.cs">
+      <DependentUpon>UserDetailPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">
@@ -125,6 +129,10 @@
     <EmbeddedResource Include="Views\NewItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
