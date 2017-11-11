@@ -57,6 +57,7 @@
     <Compile Include="ViewModels\AnswerGetViewModel.cs" />
     <Compile Include="ViewModels\AppointmentViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\HealthWorkerViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireViewModel.cs" />

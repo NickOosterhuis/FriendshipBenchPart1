@@ -15,7 +15,7 @@ namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/HealthWorkers")]
-    [Authorize]
+    //[Authorize]
     public class HealthWorkersController : Controller
     {
         private readonly UserDBContext _context;
