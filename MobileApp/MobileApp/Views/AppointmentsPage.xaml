@@ -17,7 +17,14 @@
                         <TextCell Text="{Binding DateTime}" Detail="{Binding Bench.Location}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Margin="16, 8, 0, 0" Style="{StaticResource LabelPageHeadingStyle}" Text="{Binding Key}" LineBreakMode="TailTruncation"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+        </ListView>
     </ScrollView>
 
 </ContentPage>

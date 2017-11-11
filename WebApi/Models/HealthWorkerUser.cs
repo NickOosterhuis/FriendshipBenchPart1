@@ -7,6 +7,6 @@ namespace WebApi.Models
 {
     public class HealthWorkerUser : User
     {
-        
+       
     }
 }

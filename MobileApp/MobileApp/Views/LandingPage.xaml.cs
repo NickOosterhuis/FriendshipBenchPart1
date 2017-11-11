@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,32 +16,32 @@ namespace MobileApp.Views
 		public LandingPage ()
 		{
 			InitializeComponent ();
-            DisplayAlert("Hello", "Swipe right to open the menu", "Got it!");
-        }
-
-        private void About_Clicked(object sender, EventArgs e)
-        {
+            List<NavigationItem> navigationItems = new List<NavigationItem>();
+            navigationItems.Add(new NavigationItem { Name = "Questionnaires", TargetType = typeof(MainQuestionnaire) });
+            navigationItems.Add(new NavigationItem { Name = "Messages" });
+            navigationItems.Add(new NavigationItem { Name = "Appointments", TargetType = typeof(AppointmentsPage) });
+            navigationItems.Add(new NavigationItem { Name = "Profile", TargetType = typeof(UserDetailPage) });
+            navigationItems.Add(new NavigationItem { Name = "About", TargetType = typeof(AboutPage) });
+            NavigationList.ItemsSource = navigationItems;
+            NavigationList.ItemSelected += OnItemSelected;
             Detail = new NavigationPage(new AboutPage());
         }
 
-        private void Appointments_Clicked(object sender, EventArgs e)
+        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Detail = new NavigationPage(new AppointmentsPage());
-        }
-
-        private void Profile_Clicked(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Messages_Clicked(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Questionnaire_Clicked(object sender, EventArgs e)
-        {
-
+            var item = e.SelectedItem as NavigationItem;
+            Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
+            IsPresented = false;
         }
     }
+
+    public class NavigationItem
+    {
+        public string Name { get; set; }
+        
+        public string Icon { get; set; }
+
+        public Type TargetType { get; set; }
+    }
+
 }

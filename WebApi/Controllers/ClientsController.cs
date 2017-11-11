@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using WebApi.ViewModels.Clients;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ClientUsers")]
+    [Route("api/Clients")]
+    [Authorize(Roles = "admin, healthworker")]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
@@ -21,14 +25,29 @@ namespace WebApi.Controllers
             _context = context;
         }
 
-        // GET: api/ClientUsers
         [HttpGet]
-        public IEnumerable<ClientUser> GetClient()
+        public IEnumerable<ClientViewModel> GetClients()
         {
-            return _context.Client;
+            List<ClientViewModel> clients = new List<ClientViewModel>();
+            foreach (ClientUser client in _context.Client)
+            {
+                clients.Add(new ClientViewModel
+                {
+                    FirstName = client.Firstname,
+                    LastName = client.Lastname,
+                    Gender = client.Gender,
+                    BirthDay = client.Birthday,
+                    Email = client.Email,
+                    StreetName = client.StreetName,
+                    HouseNumber = client.HouseNumber,
+                    Province = client.Province,
+                    District = client.District
+                });
+            }
+            return clients;
         }
 
-        // GET: api/ClientUsers/5
+        // GET: api/Clients/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientUser([FromRoute] string id)
         {
@@ -47,7 +66,7 @@ namespace WebApi.Controllers
             return Ok(clientUser);
         }
 
-        // PUT: api/ClientUsers/5
+        // PUT: api/Clients/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClientUser([FromRoute] string id, [FromBody] ClientUser clientUser)
         {
@@ -82,7 +101,7 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        // DELETE: api/ClientUsers/5
+        // DELETE: api/Clients/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClientUser([FromRoute] string id)
         {

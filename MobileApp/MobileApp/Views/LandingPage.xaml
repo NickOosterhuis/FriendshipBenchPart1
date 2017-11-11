@@ -2,26 +2,25 @@
 <MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Views.LandingPage"
-                  Title="MasterPage"
                                NavigationPage.HasNavigationBar="False" 
              NavigationPage.HasBackButton="False">
 
 
     <MasterDetailPage.Master>
-        <ContentPage Padding="10" Title="MasterPage">
+        <ContentPage Title="MasterPage">
             <ContentPage.Content>
-                <StackLayout Margin="5, 30, 5, 5">
-                    <Label Text="Master Page">
-                    </Label>
-
-                    <Button Text="About" Clicked="About_Clicked" BorderWidth="3" BorderRadius="1" BackgroundColor="White" BorderColor="Blue"></Button>
-                    <Button Text="Appointments" Clicked="Appointments_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="AliceBlue"></Button>
-                    <Button Text="Profile" Clicked="Profile_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="BlueViolet"></Button>
-                    <Button Text="Messages" Clicked="Messages_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="CadetBlue"></Button>
-                    <Button Text="Questionnaire" Clicked="Questionnaire_Clicked" BorderWidth="3" BackgroundColor="White" BorderColor="SkyBlue"></Button>
-
+                <StackLayout>
+                    <StackLayout Padding="16">
+                        <Label Style="{StaticResource LabelPageHeadingStyle}">The Friendship Bench</Label>
+                    </StackLayout>
+                    <ListView x:Name="NavigationList">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ImageCell Text="{Binding Name}" ImageSource="{Binding Icon}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackLayout>
-
             </ContentPage.Content>
         </ContentPage>
     </MasterDetailPage.Master>

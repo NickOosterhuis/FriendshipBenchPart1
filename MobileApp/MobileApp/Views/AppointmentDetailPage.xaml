@@ -5,13 +5,13 @@
              Title="Appointment details">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10">
+            <StackLayout Padding="16">
                 <Label Text="When:" FontAttributes="Bold" />
                 <Label Text="{Binding DateTime}" />
                 <Label Text="Where:" FontAttributes="Bold" />
                 <Label Text="{Binding Bench.Location}" />
                 <Label Text="Who:" FontAttributes="Bold"/>
-                <Label Text="{Binding HealthworkerName, StringFormat='You and {0}'}" />
+                <Label Text="{Binding Healthworker.Name, StringFormat='You and {0}'}" />
                 <Label Text="Status:" FontAttributes="Bold"/>
                 <Label Text="{Binding Status.Name}" />
                 <StackLayout x:Name="ButtonSpace" />
