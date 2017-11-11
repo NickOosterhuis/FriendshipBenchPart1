@@ -21,6 +21,16 @@ namespace MobileApp.Views
             GetCurrentUser();
         }
 
+        protected override void OnAppearing()
+        {
+            var email = App.Current.Properties["email"] as string;
+            var password = App.Current.Properties["password"] as string;
+            var token = App.Current.Properties["token"] as string;
+
+            Debug.WriteLine("Credentials from memory!!!: " + email + password + token);
+        }
+
+
         public async Task GetCurrentUser()
         {
             var httpClient = new HttpClient();
