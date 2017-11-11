@@ -5,7 +5,7 @@
     var QuestionnaireID = this.routeParams['id'];
 
     //retrieve all questionnaires
-    $http.get('http://127.0.0.1:54618/api/clients/questionnaires/' + QuestionnaireID)
+    $http.get('http://127.0.0.1:54618/api/clients/questionnaires/')
         .then(function (response) {
             //first function handles succes
             $scope.questionnaires = response.data;

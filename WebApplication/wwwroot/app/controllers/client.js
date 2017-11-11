@@ -11,7 +11,7 @@ appClient.controller('clientsCtrl', function ($scope, $http, $location) {
 
     //get all clients connected to the logged in healthworker
     $scope.listConnectedClients = function () {
-        $http.get('http://127.0.0.1:54618/api/ClientUsers/')
+        $http.get('http://127.0.0.1:54618/api/Clients/')
             .then(function (response) {
                 //first function handles succes
                 $scope.clients = response.data;
