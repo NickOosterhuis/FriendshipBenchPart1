@@ -10,6 +10,7 @@ using WebApi.Models;
 using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.ViewModels.Clients;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Controllers
 {
@@ -19,10 +20,12 @@ namespace WebApi.Controllers
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ClientsController(UserDBContext context)
+        public ClientsController(UserDBContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -46,7 +49,40 @@ namespace WebApi.Controllers
             }
             return clients;
         }
+        
+        [HttpGet("connected")]
+        public IEnumerable<ClientViewModel> GetConnectedClients()
+        {
+            var userId = _userManager.GetUserId(User);
 
+            if (userId == null)
+            {
+                return null;
+            }
+
+            List<ClientViewModel> clients = new List<ClientViewModel>();
+            foreach (ClientUser client in _context.Client)
+            {
+                if (client.HealthWorker_Id == userId)
+                {
+                    clients.Add(new ClientViewModel
+                    {
+                        Id = client.Id,
+                        FirstName = client.Firstname,
+                        LastName = client.Lastname,
+                        Gender = client.Gender,
+                        BirthDay = client.Birthday,
+                        Email = client.Email,
+                        StreetName = client.StreetName,
+                        HouseNumber = client.HouseNumber,
+                        Province = client.Province,
+                        District = client.District
+                    });
+                }
+            }
+            return clients;
+        }
+        
         // GET: api/Clients/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientUser([FromRoute] string id)

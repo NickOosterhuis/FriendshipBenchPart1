@@ -15,6 +15,6 @@ namespace WebApi.Models
 
         public string District { get; set; }
 
-        public int HealthWorker_Id { get; set; }
+        public string HealthWorker_Id { get; set; }
     }
 }

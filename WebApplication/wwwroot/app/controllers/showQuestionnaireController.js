@@ -1,4 +1,4 @@
-﻿app.controller('showQuestionnairesCtrl', function ($http, $scope, $location, $route, $routeParams) {
+﻿appClient.controller('showQuestionnairesCtrl', function ($http, $scope, $location, $route, $routeParams) {
     //show appointment by appointmentId
     this.route = $route;
     this.routeParams = $routeParams;
