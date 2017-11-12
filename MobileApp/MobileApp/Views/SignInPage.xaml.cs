@@ -11,6 +11,9 @@ using Xamarin.Forms.Xaml;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using Android.Webkit;
+using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace MobileApp.Views
 {    
@@ -36,12 +39,15 @@ namespace MobileApp.Views
 
        public async Task Login(ClientUser user)
        {
-            var client = new HttpClient();
+            CookieContainer cookies = new CookieContainer();
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.CookieContainer = cookies;
+            
+            HttpClient client = new HttpClient(handler);
             var json = JsonConvert.SerializeObject(user);
       
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             string readableContent = await content.ReadAsStringAsync();
-
             var response = new HttpResponseMessage(); 
             
             try
@@ -59,7 +65,8 @@ namespace MobileApp.Views
                 Debug.WriteLine(@" User Successfully logged in");
                 String responseJson = await response.Content.ReadAsStringAsync();
                 LoginToken token = JsonConvert.DeserializeObject<LoginToken>(responseJson);
-                //await LogoutTest(token);
+               
+                await currentUserData(token);
                 await Navigation.PushAsync(new LandingPage());
             }
             else
@@ -70,19 +77,20 @@ namespace MobileApp.Views
             }  
         }
 
-        public async Task LogoutTest(LoginToken token)
+        public async Task currentUserData(LoginToken token)
         {
-            string url = "http://10.0.2.2:54618/api/Account/user";
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.id_token);
-            HttpResponseMessage response = await client.GetAsync(url);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("access_token", token.access_token);
+            HttpResponseMessage response = await client.GetAsync(Constants.getUserUrl);
+
             if (response.IsSuccessStatusCode)
             {
                 String json = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine(json);
             } else
             {
-                Debug.WriteLine(response.StatusCode);
+                Debug.WriteLine(client);
+                Debug.WriteLine(response);
             }
         }
     }

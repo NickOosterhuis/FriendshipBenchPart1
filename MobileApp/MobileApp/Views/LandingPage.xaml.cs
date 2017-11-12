@@ -20,7 +20,7 @@ namespace MobileApp.Views
             navigationItems.Add(new NavigationItem { Name = "Questionnaires", TargetType = typeof(MainQuestionnaire) });
             navigationItems.Add(new NavigationItem { Name = "Messages" });
             navigationItems.Add(new NavigationItem { Name = "Appointments", TargetType = typeof(AppointmentsPage) });
-            navigationItems.Add(new NavigationItem { Name = "Profile" });
+            navigationItems.Add(new NavigationItem { Name = "Profile", TargetType = typeof(EditUserPage) });
             navigationItems.Add(new NavigationItem { Name = "About", TargetType = typeof(AboutPage) });
             NavigationList.ItemsSource = navigationItems;
             NavigationList.ItemSelected += OnItemSelected;

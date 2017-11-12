@@ -112,6 +112,7 @@ namespace WebApi.Controllers
                     {
                         { "access_token", GetAccessToken(Credentials.Email) },
                         { "id_token", GetIdToken(user) },
+                        { "user", GetLoggedInUser() },
                     });
                 }
 
