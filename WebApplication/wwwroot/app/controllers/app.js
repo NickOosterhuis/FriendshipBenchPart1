@@ -13,7 +13,6 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
         $location.path("/appointments/" + appointmentID);
     };
 
-
     //get all appointments
     $http.get('http://127.0.0.1:54618/api/Appointments')
         .then(function (response) {

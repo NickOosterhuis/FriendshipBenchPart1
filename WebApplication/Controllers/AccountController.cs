@@ -62,18 +62,15 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            //@todo: Cleanup this method....
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(model);
             ViewBag.id = json;
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             string readableContent = await content.ReadAsStringAsync();
-            Debug.WriteLine("ASDFASDFASDFASDFASDFASDFASDF");
-            Debug.WriteLine(json);
             var response = new HttpResponseMessage();
-            Debug.WriteLine("ASDFASDFASDFASDFASDFASDFASDF");
             try
             {
-                Debug.WriteLine("ASDFASDFASDFASDFASDFASDFASDF");
                 response = await client.PostAsync("http://127.0.0.1:54618/api/Account/signin", content);
             }
             catch (Exception e)
@@ -83,10 +80,15 @@ namespace WebApplication.Controllers
             Debug.WriteLine("STATUSCODE: " + response.StatusCode.ToString());
             if (response.IsSuccessStatusCode)
             {
-                Debug.WriteLine(@" User Successfully logged in");
-                String responseJson = await response.Content.ReadAsStringAsync();
-                LoginToken token = JsonConvert.DeserializeObject<LoginToken>(responseJson);
-                Debug.WriteLine(token.access_token + " ASDFASDFASDFASDFASDFASDFASDFFDFSDAFASDGSADAHERAHERADHF " + token.id_token);
+                Debug.WriteLine(@" User Successfully logged in");          
+                //LoginToken token = JsonConvert.DeserializeObject<LoginToken>(responseJson);
+                
+                response = await client.PostAsync("http://127.0.0.1:54618/api/Account/generatetoken", content);
+                string responseJson = await response.Content.ReadAsStringAsync();
+                var data = (JObject)JsonConvert.DeserializeObject(responseJson);
+                string token = data["token"].Value<string>();
+                Response.Cookies.Append("JWT", token);
+
             }
             else
             {
