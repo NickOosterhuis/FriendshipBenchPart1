@@ -18,6 +18,7 @@ namespace MobileApp.Views
 			InitializeComponent ();
             List<NavigationItem> navigationItems = new List<NavigationItem>();
             navigationItems.Add(new NavigationItem { Name = "Questionnaires", TargetType = typeof(MainQuestionnaire) });
+            navigationItems.Add(new NavigationItem { Name = "My Healthworker", TargetType = typeof(HealthworkerPage) });
             navigationItems.Add(new NavigationItem { Name = "Messages" });
             navigationItems.Add(new NavigationItem { Name = "Appointments", TargetType = typeof(AppointmentsPage) });
             navigationItems.Add(new NavigationItem { Name = "Profile", TargetType = typeof(UserDetailPage) });

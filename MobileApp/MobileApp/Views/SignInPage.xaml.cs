@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using MobileApp.Helpers;
+using MobileApp.ViewModels;
 
 namespace MobileApp.Views
 {    
@@ -19,8 +20,10 @@ namespace MobileApp.Views
     public partial class SignInPage : ContentPage
     {
         public Picker MenuItem;
-        APIRequestHelper requestHelper; 
+        APIRequestHelper requestHelper;
+        Client client; 
         
+
         public SignInPage()
         {
             InitializeComponent();
@@ -33,20 +36,46 @@ namespace MobileApp.Views
 
             SignInButton.Clicked += async (object sender, EventArgs e) =>
             {
-                await Login(new Client { Email = Email.Text, Password = Password.Text });
+                client = new Client { Email = Email.Text, Password = Password.Text };
+                await Login(client);
             };
-
         }
 
-       public async Task Login(Client user)
+        protected override void OnDisappearing()
+        {
+            LoginViewModel vm = new LoginViewModel
+            {
+                Email = Email.Text,
+                Password = Password.Text,
+            };
+
+            var content = JsonConvert.SerializeObject(vm);
+            var token = requestHelper.GetAccessToken(content);
+
+            App.Current.Properties["id"] = client.Id;
+            App.Current.Properties["email"] = client.Email;
+            App.Current.Properties["token"] = token;
+            App.Current.Properties["password"] = client.Password;
+
+            App.Current.SavePropertiesAsync();
+        }
+
+        public async Task Login(Client user)
        {
-            var content = JsonConvert.SerializeObject(user);           
+            LoginViewModel vm = new LoginViewModel
+            {
+                Email = user.Email,
+                Password = user.Password
+            };
+
+            var content = JsonConvert.SerializeObject(vm); 
+            
             var apiResponse = await requestHelper.PostRequest(Constants.loginUrl, content);
 
             if (apiResponse != null)
             {
                 //get token and bind to httpheader
-                requestHelper.SetTokenHeader(user);
+                requestHelper.SetTokenHeader(content);
                 Debug.WriteLine(@" User Successfully logged in");
                 await Navigation.PushAsync(new LandingPage());
             }

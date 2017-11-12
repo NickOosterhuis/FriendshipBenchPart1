@@ -18,10 +18,6 @@
                     <td><input ng-model="appointment.time" /></td>
                 </tr>
                 <tr>
-                    <td>Status:</td>
-                    <td><select ng-options="status as status.name for status in statusses" ng-model="appointment.status"></select></td>
-                </tr>
-                <tr>
                     <td>Bench:</td>
                     <td><select ng-options="bench as bench.streetname +' '+bench.housenumber for bench in benches" ng-model="appointment.bench"></select></td>
                 </tr>

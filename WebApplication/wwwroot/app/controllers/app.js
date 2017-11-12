@@ -8,7 +8,6 @@ app.config(['$locationProvider', function ($locationProvider) {
 
 //controller
 app.controller('appointmentCtrl', function ($scope, $http, $location) {
-
     //get all appointments
     $scope.listAppointments = function () {
         $http.get('http://127.0.0.1:54618/api/Appointments')
@@ -27,9 +26,39 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
     $scope.listAppointments();
 
 
-    // callback for ng-click 'editUser':
-    $scope.editAppointment = function (appointmentID) {
-        $location.path("/appointments/" + appointmentID);
+    // callback for ng-click 'cancelAppointment':
+    $scope.cancelAppointment = function (appointmentID) {
+        $http.get('http://127.0.0.1:54618/api/appointments/' + appointmentID)
+            .then(function (response) {
+                //succes
+                $appointment = response.data;
+                console.log($appointment);
+                $scope.sendDataObject = {}
+
+                $scope.sendDataObject.id = $appointment.id;
+                $scope.sendDataObject.time = $appointment.time;
+                $scope.sendDataObject.statusId = 3;
+                $scope.sendDataObject.benchId = $appointment.bench.id
+                $scope.sendDataObject.clientId = $appointment.clientId
+                $scope.sendDataObject.healthworkerId = "0bba7a60-d5ff-4e53-bdf9-e00bc7552f10";
+                console.log($scope.sendDataObject);
+
+                $http.put('http://127.0.0.1:54618/api/Appointments/' + appointmentID, $scope.sendDataObject)
+                    .then(function (response) {
+                        alert('appointment has been updated');
+
+                        $scope.listAppointments();
+
+                    }, function (response) {
+                        //second function handles error
+                        alert('something went wrong!');
+
+                    });
+
+            }, function (response) {
+                //failure
+                alert('not able to retrieve appointment data');
+            });
     };
 
     //callback for ng-click 'createUser':
@@ -62,7 +91,6 @@ app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/create/appointment', { templateUrl: '/app/views/appointments/create.html', controller: 'createAppCtrl' });
     $routeProvider.when('/appointments', { templateUrl: '/app/views/appointments/list.html', controller: 'appointmentCtrl' });
     $routeProvider.when('/appointments/:id', { templateUrl: '/app/views/appointments/show.html', controller: 'showAppCtrl' });
-    $routeProvider.when('/create-appointment', { templateUrl: '/app/views/appointments/create.html', controller: 'appointmentCtrl' });
     $routeProvider.otherwise({ redirectTo: '/' });
 }]);
 
