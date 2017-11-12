@@ -8,8 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Text;
 using WebApi.Contexts;
 using WebApi.Models;
+using WebApi.Seeders;
 
 namespace WebApi
 {
@@ -21,37 +23,25 @@ namespace WebApi
         }
 
         public IConfiguration Configuration { get; }
-        public object HTTPStatusCode { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //JWT Token settings 
-            services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
 
-            // secretKey contains a secret passphrase only your server knows
-            var secretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
-            var issuer = Configuration.GetSection("JWTSettings:Issuer").Value;
-            var audience = Configuration.GetSection("JWTSettings:Audience").Value;
-            var signingKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(secretKey));
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-
-                // Validate the JWT Issuer (iss) claim
-                ValidateIssuer = true,
-                ValidIssuer = issuer,
-
-                // Validate the JWT Audience (aud) claim
-                ValidateAudience = true,
-                ValidAudience = audience
-            };
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            //JWT authentication provider
+            services.AddAuthentication()
+                .AddCookie(options => options.SlidingExpiration = true)
+                .AddJwtBearer(cfg =>
                 {
-                    options.TokenValidationParameters = tokenValidationParameters;
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = Configuration["JWTSettings:Issuer"],
+                        ValidAudience = Configuration["JWTSettings:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTSettings:SecretKey"])),
+                    };
                 });
 
             //sql connection
@@ -62,13 +52,8 @@ namespace WebApi
 
             //identity service
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<UserDBContext>();
-
-            //swagger
-            services.AddSwaggerGen(c =>
-           {
-               c.SwaggerDoc("v1", new Info { Title = "WebApi", Version = "v1" });
-           });
+                .AddEntityFrameworkStores<UserDBContext>()
+                .AddDefaultTokenProviders();       
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -95,35 +80,47 @@ namespace WebApi
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
                 options.LoginPath = "/api/account/signin";
+                options.LogoutPath = "/api/account/signout";
                 options.SlidingExpiration = true;
             });
 
-            //
+            //cors service
+            services.AddCors();
 
+            //swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "WebApi", Version = "v1" });
+            });
+
+            //set role seeder as a service 
+            services.AddTransient<UserRoleSeeder>();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserRoleSeeder seeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            //Access control error fix for web application
-            app.UseCors(builder =>
-            builder.WithOrigins("https://localhost:44314")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-            );
+            //seed user roles
+            seeder.SeedRoles();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(c => 
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
             });
+
+            // cors settings
+            app.UseCors(builder =>
+            builder.WithOrigins("https://localhost:44314").
+            AllowAnyHeader().AllowAnyMethod());
+
             app.UseAuthentication();
             app.UseMvc();
         }

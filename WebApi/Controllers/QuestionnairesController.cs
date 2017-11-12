@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
+using WebApi.ViewModels.Questionnaires;
 
 namespace WebApi.Controllers
 {
@@ -45,7 +46,27 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(questionnaire);
+            List<AnswerGetViewModel> answers = new List<AnswerGetViewModel>();
+
+            foreach(Answers answer in _context.Answers.Where(a => a.Questionnaire_id == questionnaire.Id))
+            {
+                Questions question = _context.Questions.SingleOrDefault(m => m.Id == answer.Question_id);
+                answers.Add(new AnswerGetViewModel
+                {
+                    QuestionId = question.Id,
+                    Question = question.Question,
+                    Answer = answer.Answer
+                });
+            }
+
+            QuestionnaireWithAnswersViewModel questionnaireViewModel = new QuestionnaireWithAnswersViewModel
+            {
+                Client_id = questionnaire.Client_id,
+                Time = questionnaire.Time,
+                Answers = answers
+            };
+
+            return Ok(questionnaireViewModel);
         }
 
         // PUT: api/Questionnaires/5
