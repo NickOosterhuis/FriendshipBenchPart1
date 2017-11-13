@@ -11,6 +11,8 @@ using WebApi.ViewModels;
 using WebApi.ViewModels.Appointments;
 using WebApi.ViewModels.HealthWorkers;
 using WebApi.ViewModels.Clients;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
@@ -29,6 +31,7 @@ namespace WebApi.Controllers
 
         // GET: api/Appointments
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<AppointmentGetViewModel> GetAppointments()
         {
             List<AppointmentGetViewModel> appointments = new List<AppointmentGetViewModel>();
@@ -52,6 +55,7 @@ namespace WebApi.Controllers
 
         // GET: api/Appointments/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAppointment([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -83,6 +87,7 @@ namespace WebApi.Controllers
 
         // PUT: api/Appointments/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutAppointment([FromRoute] int id, [FromBody] Appointment appointment)
         {
             if (!ModelState.IsValid)
@@ -118,6 +123,7 @@ namespace WebApi.Controllers
 
         // POST: api/Appointments
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostAppointment([FromBody] AppointmentPostViewModel appointmentViewModel)
         {
             if (!ModelState.IsValid)
@@ -142,6 +148,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/Appointments/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteAppointment([FromRoute] int id)
         {
             if (!ModelState.IsValid)

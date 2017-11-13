@@ -16,7 +16,6 @@ namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/HealthWorkers")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HealthWorkersController : Controller
     {
         private readonly UserDBContext _context;
@@ -27,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkers()
         {
             if(!ModelState.IsValid)
@@ -84,6 +84,7 @@ namespace WebApi.Controllers
         // PUT: api/HealthWorkers/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "admin, healthworker")]
         public async Task<IActionResult> PutHealthWorkerUser([FromRoute] string id, [FromBody] HealthWorkerViewModel healthWorkerUser)
         {
             if (!ModelState.IsValid)

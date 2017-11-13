@@ -33,6 +33,8 @@ namespace MobileApp.Views
         // Fetch the appointment.
         private async Task FetchAppointment()
         {
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
             string apiResponse = await apiRequestHelper.GetRequest(Constants.appointmentsUrl + "/" + appointmentId);
             if (apiResponse != null)
@@ -121,6 +123,8 @@ namespace MobileApp.Views
 
             // Do a PUT request.
             string content = JsonConvert.SerializeObject(viewModel);
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             string response = await apiRequestHelper.PutRequest(Constants.appointmentsUrl + "/" + appointment.Id, content);
             if (response != null)
             {

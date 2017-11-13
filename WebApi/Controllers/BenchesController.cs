@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +25,7 @@ namespace WebApi.Controllers
 
         // GET: api/Benches
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<Bench> GetBenches()
         {
             return _context.Benches;
@@ -30,6 +33,7 @@ namespace WebApi.Controllers
 
         // GET: api/Benches/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetBench([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -49,6 +53,7 @@ namespace WebApi.Controllers
 
         // PUT: api/Benches/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutBench([FromRoute] int id, [FromBody] Bench bench)
         {
             if (!ModelState.IsValid)
@@ -84,6 +89,7 @@ namespace WebApi.Controllers
 
         // POST: api/Benches
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostBench([FromBody] Bench bench)
         {
             if (!ModelState.IsValid)
@@ -99,6 +105,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/Benches/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteBench([FromRoute] int id)
         {
             if (!ModelState.IsValid)

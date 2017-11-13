@@ -5,12 +5,10 @@ using Xamarin.Forms;
 
 namespace MobileApp
 {
-    public class AboutViewModel : BaseViewModel
+    public class AboutViewModel 
     {
         public AboutViewModel()
         {
-            Title = "About";
-
             OpenWebCommand = new Command(() => Device.OpenUri(new Uri("http://www.friendshipbenchzimbabwe.org/")));
         }
 
