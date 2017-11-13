@@ -112,7 +112,9 @@ namespace MobileApp.Helpers
                 if (response.IsSuccessStatusCode)
                 {
                     Debug.WriteLine("Post Request to " + Constants.tokenUrl + " executed succesfully: " + response.StatusCode);
-                    return await response.Content.ReadAsStringAsync();
+                    var token = await response.Content.ReadAsStringAsync();
+
+                    return token; 
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
@@ -133,9 +135,9 @@ namespace MobileApp.Helpers
             }
         }
 
-        public async void SetTokenHeader(string content)
+        public async void SetTokenHeader()
         {
-            var token = await GetAccessToken(content);
+            var token = App.Current.Properties["token"] as string;
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }

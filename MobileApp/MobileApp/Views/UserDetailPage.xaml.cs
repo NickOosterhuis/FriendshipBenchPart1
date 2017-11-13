@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using MobileApp.Helpers;
+using MobileApp.Models;
+using MobileApp.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,43 +18,75 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserDetailPage : ContentPage
     {
+        Client user;
+        APIRequestHelper apiRequestHelper;
+
         public UserDetailPage()
         {
+            apiRequestHelper = new APIRequestHelper();
             InitializeComponent();
             GetCurrentUser();
         }
 
-        protected override void OnAppearing()
-        {
-            var email = App.Current.Properties["email"] as string;
-            var password = App.Current.Properties["password"] as string;
-            var token = App.Current.Properties["token"] as string;
-
-            Debug.WriteLine("Credentials from memory!!!: " + email + password + token);
-        }
-
-
+        //Fetch the current user
         public async Task GetCurrentUser()
         {
-            var httpClient = new HttpClient();
-            var url = "http://10.0.2.2:54618/api/account/user";
+            string email = App.Current.Properties["email"] as string;
+            var token = App.Current.Properties["token"] as string;
 
-            HttpResponseMessage response = await httpClient.GetAsync(url);
+            Debug.WriteLine("Credentials from memory!!!: " + email + " " + token);
 
-            if(response.IsSuccessStatusCode)
+            apiRequestHelper.SetTokenHeader();
+            string apiResponse = await apiRequestHelper.GetRequest(Constants.getCurrentUserUrl + "/" + email);
+
+            Debug.WriteLine("API RESPONSE IST JETZT HIER!" + apiResponse);
+
+            if (apiResponse != null)
             {
-                String json = await response.Content.ReadAsStringAsync();
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var convertedJson = JsonConvert.DeserializeObject(json);
+                dynamic convertedJson = JsonConvert.DeserializeObject(apiResponse);
 
-                Debug.WriteLine(json);
-                DisplayAlert("SUCCESS", response.RequestMessage.Content.ToString(), "cancel");
+                user = new Client
+                {
+                    Email = (string)convertedJson.email,
+                    FirstName = (string)convertedJson.firstname,
+                    LastName = (string)convertedJson.lastname,
+                    Gender = (string)convertedJson.gender,
+                    BirthDay = (DateTime)convertedJson.birthday,
+                    StreetName = (string)convertedJson.streetName,
+                    District = (string)convertedJson.district,
+                    Province = (string)convertedJson.province,
+                    HouseNumber = (string)convertedJson.houseNumber,
+                };
             }
             else
             {
-                DisplayAlert("HTTP ERROR", response.Content.ReadAsStringAsync().ToString(), "Cancel");
-                //Debug.WriteLine("HTTP ERROR: " + response.Headers.);
+                DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
             }
+
+            Debug.WriteLine("USER DATA IST JETZT HIERRR!" + user);
+
+            BindingContext = user;
+            UpdateButtons();
+        }               
+
+        private void UpdateButtons()
+        {
+            // Remove existing buttons.
+            ButtonSpace.Children.Clear();
+
+            // Create a accept and a cancel button.
+            Button editButton = new Button { Text = "Edit" };
+
+
+            // Add listeners to these buttons.
+            editButton.Clicked += (object sender, EventArgs e) =>
+            {
+                Navigation.PushAsync(new UserEditPage(user));
+            };
+            editButton.BackgroundColor = (Color)Application.Current.Resources["Primary"];
+            editButton.TextColor = Color.White;
+
+            ButtonSpace.Children.Add(editButton);
         }
     }
 }

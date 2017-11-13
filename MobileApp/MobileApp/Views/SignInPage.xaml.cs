@@ -20,14 +20,14 @@ namespace MobileApp.Views
     public partial class SignInPage : ContentPage
     {
         public Picker MenuItem;
-        APIRequestHelper requestHelper;
+        APIRequestHelper apiRequestHelper;
         Client client; 
         
 
         public SignInPage()
         {
             InitializeComponent();
-            requestHelper = new APIRequestHelper(); 
+            apiRequestHelper = new APIRequestHelper(); 
 
             RegisterButton.Clicked += (object sender, EventArgs e) =>
             {
@@ -41,23 +41,35 @@ namespace MobileApp.Views
             };
         }
 
-        protected override void OnDisappearing()
+
+        //Method to save logged in user credentials in local app storage
+        protected async override void OnDisappearing()
         {
-            LoginViewModel vm = new LoginViewModel
+
+            if (Email.Text != null && Password.Text != null)
             {
-                Email = Email.Text,
-                Password = Password.Text,
-            };
+                LoginViewModel vm = new LoginViewModel
+                {
+                    Email = Email.Text,
+                    Password = Password.Text,
+                };
 
-            var content = JsonConvert.SerializeObject(vm);
-            var token = requestHelper.GetAccessToken(content);
 
-            App.Current.Properties["id"] = client.Id;
-            App.Current.Properties["email"] = client.Email;
-            App.Current.Properties["token"] = token;
-            App.Current.Properties["password"] = client.Password;
+                var content = JsonConvert.SerializeObject(vm);
+                var tokenJson = await apiRequestHelper.GetAccessToken(content);
 
-            App.Current.SavePropertiesAsync();
+                dynamic token = JsonConvert.DeserializeObject(tokenJson);
+
+                Debug.WriteLine((string)token.token);
+
+                App.Current.Properties["email"] = client.Email;
+                App.Current.Properties["token"] = (string)token.token;
+                App.Current.Properties["password"] = client.Password;
+
+                App.Current.SavePropertiesAsync();
+
+            }
+                        
         }
 
         public async Task Login(Client user)
@@ -70,12 +82,11 @@ namespace MobileApp.Views
 
             var content = JsonConvert.SerializeObject(vm); 
             
-            var apiResponse = await requestHelper.PostRequest(Constants.loginUrl, content);
+            var apiResponse = await apiRequestHelper.PostRequest(Constants.loginUrl, content);
 
             if (apiResponse != null)
             {
-                //get token and bind to httpheader
-                requestHelper.SetTokenHeader(content);
+                apiRequestHelper.SetTokenHeader();
                 Debug.WriteLine(@" User Successfully logged in");
                 await Navigation.PushAsync(new LandingPage());
             }
