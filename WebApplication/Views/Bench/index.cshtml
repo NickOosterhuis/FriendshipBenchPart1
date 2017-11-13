@@ -9,14 +9,13 @@
     --->
 
 <h2>Benches</h2>
-
+<a href="@Url.Action(action: "Index", controller: "Admin")"><button class="btn btn-success">Back to admin panel</button></a>
 <div ng-app="benches" ng-controller="benchescontroller">
     <style>
         table, th, td {
             border: 1px solid black;
         }
     </style>
-    <a href="@Url.Action(action: "Add", controller: "Bench")"><button class="btn btn-success" style="margin-bottom: 1.5em">New bench</button></a>
     <table id="example" class="table">
         <thead>
             <th>ID</th>

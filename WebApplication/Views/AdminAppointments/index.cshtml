@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Appointment control panel.</h2>
-
+<a href="@Url.Action(action: "Index", controller: "Admin")"><button class="btn btn-success">Back to admin panel</button></a>
 <div ng-app="appointments" ng-controller="appointmentscontroller">
 
     <style>
