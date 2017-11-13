@@ -268,7 +268,7 @@ namespace WebApi.Controllers
                 HouseNumber = vm.HouseNumber,
                 Province = vm.Province,
                 District = vm.District,
-                PasswordHash = vm.Password,
+                PasswordHash = dbUser.PasswordHash,
                 AccessFailedCount = dbUser.AccessFailedCount,
                 Birthday = dbUser.Birthday,
                 ConcurrencyStamp = dbUser.ConcurrencyStamp,
@@ -287,18 +287,10 @@ namespace WebApi.Controllers
                 SecurityStamp = dbUser.SecurityStamp,
                 TwoFactorEnabled = dbUser.TwoFactorEnabled,
                 UserName = dbUser.UserName,
-            };
-
-            //await _userManager.ChangePasswordAsync(user, dbUser.PasswordHash, user.PasswordHash);
-
-
-            var hashedPassword = _userManager.PasswordHasher.HashPassword(user, user.PasswordHash);
-            user.PasswordHash = hashedPassword; 
-                       
+            };                       
 
             _context.Entry(user).State = EntityState.Modified;
-
-
+            
             try
             {
                 await _context.SaveChangesAsync();
