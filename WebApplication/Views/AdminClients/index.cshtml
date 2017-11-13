@@ -23,7 +23,8 @@
         <th>houseNumber</th>
         <th>province</th>
         <th>district</th>
-        </thead>
+        <th></th>
+        </th>
         <tbody>
             <tr ng-repeat="client in clients">
                 <td id="id">{{ client.id }}</td>
@@ -33,6 +34,7 @@
                 <td>{{ client.gender }}</td>
                 <td>{{ client.birthDay }}</td>
                 <td>{{ client.streetName }}</td>
+                <td>{{ client.houseNumber}}</td>
                 <td>{{ client.province }}</td>
                 <td>{{ client.district }}</td>
                 <td><a href="@Url.Action(action: "Info", controller: "AdminClients")/{{client.id}}"><button class="btn btn-primary">edit</button></a></td>

@@ -1,5 +1,5 @@
 ﻿//module
-var appClient = angular.module('clients', ['ngRoute']);
+var appClient = angular.module('userClients', ['ngRoute']);
 
 appClient.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
