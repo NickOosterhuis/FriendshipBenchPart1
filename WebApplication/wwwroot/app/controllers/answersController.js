@@ -4,7 +4,11 @@
     this.routeParams = $routeParams;
     var questionnaireId = this.routeParams['id'];
 
-    $http.get('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId)
+    $http.get('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId, {
+        headers: {
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    })
         .then(function (response) {
             //succes
             console.log(response.data);
@@ -19,9 +23,13 @@
 
     $scope.setRedFlag = function () {
         console.log(questionnaireId);
-        $http.get('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId)
+        $http.get('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId, {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(function (response) {
-               //success
+                //success
                 var questionnaire = response.data;
                 console.log(questionnaire);
                 $scope.sendDataObject = {};
@@ -30,7 +38,11 @@
                 $scope.sendDataObject.client_id = questionnaire.client.id;
                 $scope.sendDataObject.redflag = true;
                 console.log($scope.sendDataObject);
-                $http.put('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId, $scope.sendDataObject)
+                $http.put('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId, $scope.sendDataObject, {
+                    headers: {
+                        'Authorization': "Bearer " + getCookie("JWT")
+                    }
+                })
                     .then(function (response) {
                         //success
                         alert('updatet red flag!');

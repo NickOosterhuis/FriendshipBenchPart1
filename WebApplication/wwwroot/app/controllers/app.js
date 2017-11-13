@@ -1,14 +1,11 @@
 ﻿//module
-var app = angular.module('appointments', ['ngRoute']);
+var app = angular.module('hwAppointments', ['ngRoute']);
 
 app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('');
 }]);
 
-app.controller('test', function ($scope) {
-    alert('test');
-});
 
 //controller
 app.controller('appointmentCtrl', function ($scope, $http, $location) {
@@ -31,7 +28,11 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
     });
 
     $scope.listAppointments = function () {
-        $http.get('http://127.0.0.1:54618/api/Appointments')
+        $http.get('http://127.0.0.1:54618/api/Appointments', {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(function (response) {
                 //first function handles succes
                 var arr = response.data;
@@ -56,7 +57,11 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
   
     // callback for ng-click 'cancelAppointment':
     $scope.cancelAppointment = function (appointmentID) {
-        $http.get('http://127.0.0.1:54618/api/appointments/' + appointmentID)
+        $http.get('http://127.0.0.1:54618/api/appointments/' + appointmentID, {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(function (response) {
                 //succes
                 $appointment = response.data;
@@ -72,7 +77,11 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
                 $scope.sendDataObject.healthworkerId = $scope.healthworkerId;
                 console.log($scope.sendDataObject);
 
-                $http.put('http://127.0.0.1:54618/api/Appointments/' + appointmentID, $scope.sendDataObject)
+                $http.put('http://127.0.0.1:54618/api/Appointments/' + appointmentID, $scope.sendDataObject, {
+                    headers: {
+                        'Authorization': "Bearer " + getCookie("JWT")
+                    }
+                })
                     .then(function (response) {
                         alert('appointment has been updated');
 
@@ -97,7 +106,11 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
 
     //delete appointment
     $scope.deleteAppointment = function (appointmentID) {
-        $http.delete("http://127.0.0.1:54618/api/Appointments/" + appointmentID)
+        $http.delete("http://127.0.0.1:54618/api/Appointments/" + appointmentID, {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(
             function (response) {
                 //succes

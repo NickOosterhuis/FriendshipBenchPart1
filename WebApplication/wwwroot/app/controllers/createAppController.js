@@ -1,7 +1,11 @@
 ﻿app.controller('createAppCtrl', function ($http, $scope, $location) {
 
     //retrieve all benches
-    $http.get('http://127.0.0.1:54618/api/benches')
+    $http.get('http://127.0.0.1:54618/api/benches', {
+        headers: {
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    })
         .then(function (response) {
             //first function handles succes
             $scope.benches = response.data;
@@ -39,7 +43,11 @@
         $scope.sendDataObject.healthworkerId = $scope.healthworkerId;
         console.log($scope.sendDataObject);
 
-        $http.post('http://127.0.0.1:54618/api/Appointments/', $scope.sendDataObject)
+        $http.post('http://127.0.0.1:54618/api/Appointments/', $scope.sendDataObject, {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(function (response) {
                 alert('appointment has been created');
                 $location.path('/appointments');

@@ -51,7 +51,11 @@ questionnaires.controller('questionnairesCtrl', function ($scope, $http, $locati
 
 
     $scope.listQuestionnaires = function () {
-        $http.get('http://127.0.0.1:54618/api/Questionnaires')
+        $http.get('http://127.0.0.1:54618/api/Questionnaires', {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(function (response) {
                 //succes
                 $scope.questionnaires = response.data;
@@ -68,7 +72,11 @@ questionnaires.controller('questionnairesCtrl', function ($scope, $http, $locati
 
     $scope.deleteQuestionnaire = function (questionnaireId) {
         //delete a questionnaire
-        $http.delete("http://127.0.0.1:54618/api/Questionnaires/" + questionnaireId)
+        $http.delete("http://127.0.0.1:54618/api/Questionnaires/" + questionnaireId, {
+            headers: {
+                'Authorization': "Bearer " + getCookie("JWT")
+            }
+        })
             .then(
             function (response) {
                 //succes
