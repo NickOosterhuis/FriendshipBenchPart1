@@ -52,51 +52,6 @@ namespace WebApi.Controllers
             return clients;
         }
 
-        [HttpGet("connected/{email}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IEnumerable<ClientViewModel> GetConnectedClients([FromRoute] string email)
-        {
-
-            var userId = "";
-
-            foreach (HealthWorkerUser hw_u in _context.HealthWorker)
-            {
-                if (hw_u.Email == email)
-                {
-                    userId = hw_u.Id;
-                }
-            }
-
-
-
-            if (userId == "")
-            {
-                return null;
-            }
-
-            List<ClientViewModel> clients = new List<ClientViewModel>();
-            foreach (ClientUser client in _context.Client)
-            {
-                if (client.HealthWorker_Id == userId)
-                {
-                    clients.Add(new ClientViewModel
-                    {
-                        id = client.Id,
-                        FirstName = client.FirstName,
-                        LastName = client.LastName,
-                        Gender = client.Gender,
-                        BirthDay = client.BirthDay,
-                        Email = client.Email,
-                        StreetName = client.StreetName,
-                        HouseNumber = client.HouseNumber,
-                        Province = client.Province,
-                        District = client.District
-                    });
-                }
-            }
-            return clients;
-        }
-
         // GET: api/Clients/5
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
