@@ -26,4 +26,6 @@
     <None Include="Views\Admin\index.cshtml" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties bower_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
