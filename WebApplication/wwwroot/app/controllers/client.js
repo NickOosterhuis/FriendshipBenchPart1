@@ -19,6 +19,7 @@ appClient.controller('clientsCtrl', function ($scope, $http, $location) {
         .then(function (response) {
             //first function handles succes
             $scope.clients = response.data;
+            console.log($scope.clients);
             $location.path("/clients");
 
         }, function (response) {
