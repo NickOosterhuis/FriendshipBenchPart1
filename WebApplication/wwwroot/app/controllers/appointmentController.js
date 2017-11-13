@@ -32,7 +32,7 @@ appointment.controller('appointmentcontroller', function ($scope, $http, $locati
             .then(
             function (response) {
                 console.log('canceled!');
-                //$scope.redirectToAppointments();
+                $scope.redirectToAppointments();
             },
             function (response) {
                 console.log('failed to cancel!');
