@@ -10,8 +10,23 @@
             console.log("something went wrong!");
         });   
 
-    $scope.sendData = function () {
+    var email = getCookie('Email');
 
+    //get logged in user
+    $http.get('http://127.0.0.1:54618/api/account/currentUser/' + email, {
+        headers: {
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    }).then(function (response) {
+        //success
+        $scope.healthworkerId = response.data.id;
+    }, function (response) {
+        //failure
+        alert('not able to retrieve current user details');
+    });
+
+    $scope.sendData = function () {
+        
         $scope.sendDataObject = {}
         
         $date = $scope.appointment.date;
@@ -21,7 +36,7 @@
         $scope.sendDataObject.time = $dateTime;
         $scope.sendDataObject.benchId = $scope.appointment.bench.id;
         $scope.sendDataObject.clientId = $scope.appointment.clientId;
-        $scope.sendDataObject.healthworkerId = "da249e00-6506-4c55-9d5d-ce42371b57e6";
+        $scope.sendDataObject.healthworkerId = $scope.healthworkerId;
         console.log($scope.sendDataObject);
 
         $http.post('http://127.0.0.1:54618/api/Appointments/', $scope.sendDataObject)

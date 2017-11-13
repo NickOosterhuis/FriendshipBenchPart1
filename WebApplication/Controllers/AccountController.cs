@@ -85,6 +85,7 @@ namespace WebApplication.Controllers
                 var data = (JObject)JsonConvert.DeserializeObject(responseJson);
                 string token = data["token"].Value<string>();
                 Response.Cookies.Append("JWT", token);
+                Response.Cookies.Append("Email", model.Email);
                 return RedirectToLocal(returnUrl);
             }
             else

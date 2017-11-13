@@ -10,18 +10,6 @@
             console.log(response.data);
             $scope.questionnaire = response.data;
 
-            //get client details
-            $http.get('http://127.0.0.1:54618/api/clients/' + $scope.questionnaire.client_id)
-                .then(function (response) {
-                    //succes
-                    $scope.questionnaire.client = response.data;
-                    //TODO redflag genereren
-                    $scope.questionnaire.redflag = true;
-                }, function (response) {
-                    //failure
-                    alert('could not retrieve client data');
-                });
-
             $location.path('/questionnaire/' + questionnaireId);
         }, function (response) {
             //failure

@@ -16,10 +16,10 @@
     <th></th>
     <tbody>
         <tr ng-repeat="questionnaire in questionnaires">
-            <td>{{ questionnaire.date }}</td>
+            <td>{{ questionnaire.time }}</td>
             <td>{{ questionnaire.client_id }}</td>
-            <td ng-show="questionnaires.redflag"><button type="button" class="btn btn-danger">YES</button></td>
-            <td ng-show="!questionnaires.redflag"><button type="button" class="btn btn-success">NO</button></td>
+            <td ng-show="questionnaire.redflag"><button type="button" class="btn btn-danger">YES</button></td>
+            <td ng-show="!questionnaire.redflag"><button type="button" class="btn btn-success">NO</button></td>
             <td><a ng-click="showAnswers(questionnaire.id)" class="btn btn-small btn-success">Show Answers</a></td>
             <td><a ng-click="deleteQuestionnaire(questionnaire.id)" class="btn btn-small btn-danger">Delete</a></td>
 

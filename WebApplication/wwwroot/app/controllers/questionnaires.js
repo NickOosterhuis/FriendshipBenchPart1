@@ -9,14 +9,52 @@ questionnaires.config(['$locationProvider', function ($locationProvider) {
 //controller
 questionnaires.controller('questionnairesCtrl', function ($scope, $http, $location) {
 
+    //get logged in user
+    var email = getCookie('Email');
+    
+    $http.get('http://127.0.0.1:54618/api/account/currentUser/' + email, {
+        headers: {  
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    }).then(function (response) {
+        //success
+        $scope.healthworkerId = response.data.id;
+    }, function (response) {
+        //failure
+        alert('not able to retrieve current user details');
+    });
+
+
+    ///get my clients
+
+    $http.get('http://127.0.0.1:54618/api/clients', {
+        headers: {
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    }).then(function (response) {
+        //success
+
+        var clients = response.data;
+        $scope.myClients = new Array();
+        for (var i = 0; i < clients.length; i++) {
+            if (clients[i].id == $scope.healthworkerId) {
+
+                $scope.myClients.push(clients[i].id);
+            }
+        }
+
+    }, function (response) {
+        //failure
+        alert('not able to retrieve current user details');
+    });
+
+
+
     $scope.listQuestionnaires = function () {
         $http.get('http://127.0.0.1:54618/api/Questionnaires')
             .then(function (response) {
                 //succes
-                console.log(response.data);
                 $scope.questionnaires = response.data;
-                //for now a default value of true. redflag should be retrieved from databasse in future
-                $scope.questionnaires.redflag = true;
 
                 $location.path('/questionnaires');
             }, function (response) {

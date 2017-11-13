@@ -13,12 +13,36 @@ app.controller('test', function ($scope) {
 //controller
 app.controller('appointmentCtrl', function ($scope, $http, $location) {
     //get all appointments
+
+    //get logged in user
+    var email = getCookie('Email');
+
+    //get logged in user
+    $http.get('http://127.0.0.1:54618/api/account/currentUser/' + email, {
+        headers: {
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    }).then(function (response) {
+        //success
+        $scope.healthworkerId = response.data.id;
+    }, function (response) {
+        //failure
+        alert('not able to retrieve current user details');
+    });
+
     $scope.listAppointments = function () {
         $http.get('http://127.0.0.1:54618/api/Appointments')
             .then(function (response) {
                 //first function handles succes
-                $scope.appointments = response.data;
-                console.log($scope.appointments);
+                var arr = response.data;
+                var userAppointments = new Array();
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].healthworker.id == $scope.healthworkerId) {
+                        userAppointments.push(arr[i]);
+                    }
+                }
+                console.log(userAppointments);
+                $scope.appointments = userAppointments;
                 $location.path("/appointments")
 
             }, function (response) {
@@ -29,8 +53,7 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
     };
 
     $scope.listAppointments();
-
-
+  
     // callback for ng-click 'cancelAppointment':
     $scope.cancelAppointment = function (appointmentID) {
         $http.get('http://127.0.0.1:54618/api/appointments/' + appointmentID)
@@ -45,7 +68,8 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
                 $scope.sendDataObject.statusId = 3;
                 $scope.sendDataObject.benchId = $appointment.bench.id
                 $scope.sendDataObject.clientId = $appointment.client.id
-                $scope.sendDataObject.healthworkerId = "da249e00-6506-4c55-9d5d-ce42371b57e6";
+                ///aaanapaaasseeen
+                $scope.sendDataObject.healthworkerId = $scope.healthworkerId;
                 console.log($scope.sendDataObject);
 
                 $http.put('http://127.0.0.1:54618/api/Appointments/' + appointmentID, $scope.sendDataObject)

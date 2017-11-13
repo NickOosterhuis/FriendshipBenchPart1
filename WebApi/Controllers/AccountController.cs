@@ -124,7 +124,7 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
