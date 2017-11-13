@@ -205,7 +205,7 @@ namespace WebApi.Controllers
                             issuer: _config["JWTSettings:Issuer"],
                             audience: _config["JWTSettings:Audience"],
                             claims: claims,
-                            expires: DateTime.Now.AddMinutes(30),
+                            expires: DateTime.Now.AddDays(1),
                             signingCredentials: creds);
 
                         return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
