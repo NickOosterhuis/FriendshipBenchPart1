@@ -18,6 +18,7 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
             .then(function (response) {
                 //first function handles succes
                 $scope.appointments = response.data;
+                console.log($scope.appointments);
                 $location.path("/appointments")
 
             }, function (response) {

@@ -23,7 +23,7 @@
             <td>{{ appointment.client.firstName + " " + appointment.client.lastName }}</td>
             <td>{{ appointment.status.name }}</td>
             <td>{{ appointment.bench.streetname + " " + appointment.bench.housenumber + ", " + appointment.bench.province + ", " + appointment.bench.district }}</td>
-            <td>{{ appointment.healthworker.firstname + " " + appointment.healthworker.lastname }}</td>
+            <td>{{ appointment.healthworker.firstName + " " + appointment.healthworker.lastName }}</td>
             <td><a ng-show="appointment.status.id != 3" ng-click="cancelAppointment(appointment.id)" class="btn btn-small btn-primary">cancel</a></td>
             <td><a ng-click="deleteAppointment(appointment.id)" class="btn btn-small btn-danger">delete</a></td>
 
