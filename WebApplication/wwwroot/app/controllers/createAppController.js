@@ -25,6 +25,7 @@
         .then(function (response) {
             //first function handles succes
             $scope.clients = response.data;
+            console.log($scope.clients);
         }, function (response) {
             //second function handles error
             console.log("something went wrong!");
