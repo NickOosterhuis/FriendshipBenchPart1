@@ -34,6 +34,8 @@ namespace MobileApp.Views
         // Fetch the Questionnaire.
         private async Task FetchQuestionnaire()
         {
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
             string apiResponse = await apiRequestHelper.GetRequest(Constants.questionnaireUrl + "/" + questionnaireId);
             if (apiResponse != null)

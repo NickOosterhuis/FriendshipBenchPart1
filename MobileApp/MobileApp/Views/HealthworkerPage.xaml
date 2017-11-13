@@ -11,7 +11,7 @@
                 <Label Text="Lastname:" FontAttributes="Bold" />
                 <Label Text="{Binding Lastname}" />
                 <Label Text="Day of birth:" FontAttributes="Bold"/>
-                <Label Text="{Binding Birthday}" />
+                <Label Text="{Binding DayOfBirth}" />
                 <Label Text="Gender:" FontAttributes="Bold"/>
                 <Label Text="{Binding GenderDisplayString}" />
                 <Label Text="Email:" FontAttributes="Bold"/>

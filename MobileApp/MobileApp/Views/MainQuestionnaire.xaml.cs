@@ -44,6 +44,8 @@ namespace MobileApp.Views
         // Fetch all the questionnaires and make a list of it.
         private async Task FetchQuestionnaires()
         {
+            // Send JWT Token With HTTPheader
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
             String apiResponse = await apiRequestHelper.GetRequest(Constants.questionnaireUrl);
             if (apiResponse != null)

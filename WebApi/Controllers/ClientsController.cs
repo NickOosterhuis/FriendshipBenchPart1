@@ -17,7 +17,6 @@ namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
@@ -38,7 +37,6 @@ namespace WebApi.Controllers
             {
                 clients.Add(new ClientViewModel
                 {
-                    id = client.Id,
                     FirstName = client.FirstName,
                     LastName = client.LastName,
                     Gender = client.Gender,

@@ -20,6 +20,7 @@ namespace MobileApp.Models
         public static string tokenUrl = "http://10.0.2.2:54618/api/account/generatetoken";
         public static string getCurrentUserUrl = "http://10.0.2.2:54618/api/account/currentUser";
         public static string editClientUrl = "http://10.0.2.2:54618/api/Account/edit";
+        public static string addHealthworkerToClientUrl = "http://10.0.2.2:54618/api/Account/addHealthworker";
 
     }
 }
