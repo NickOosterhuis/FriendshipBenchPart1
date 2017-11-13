@@ -16,7 +16,7 @@ namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
-    [Authorize(Roles = "admin, healthworker")]
+    //[Authorize(Roles = "admin, healthworker")]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
