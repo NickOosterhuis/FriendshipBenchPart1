@@ -57,6 +57,8 @@ namespace MobileApp.Views
         // Fetch all the questions and make a list of it.
         private async Task FetchQuestions()
         {
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
             string apiResponse = await apiRequestHelper.GetRequest(Constants.questionsUrl);
             if (apiResponse != null)
@@ -114,8 +116,11 @@ namespace MobileApp.Views
                 Redflag = (numberOfYesQuestions > 8 || suicideQuestion)
             };
 
+            
             // Do a POST request.
             string content = JsonConvert.SerializeObject(questionnaire);
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             string response = await apiRequestHelper.PostRequest(Constants.questionnaireUrl, content);
             if (response != null)
             {
@@ -129,6 +134,8 @@ namespace MobileApp.Views
 
                 // Do a POST request.
                 string answerContent = JsonConvert.SerializeObject(allAnswers);
+                // Send token with Http request
+                apiRequestHelper.SetTokenHeader();
                 string answerResponse = await apiRequestHelper.PostRequest(Constants.answerUrl, answerContent);
                 if (response != null)
                 {
@@ -146,7 +153,6 @@ namespace MobileApp.Views
                 // Display an error.
                 DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
             }
-
         }
     }
 }

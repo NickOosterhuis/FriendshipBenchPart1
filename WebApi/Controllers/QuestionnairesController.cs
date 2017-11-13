@@ -10,6 +10,8 @@ using WebApi.Models;
 using WebApi.ViewModels;
 using WebApi.ViewModels.Questionnaires;
 using WebApi.ViewModels.Clients;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
@@ -28,6 +30,7 @@ namespace WebApi.Controllers
 
         // GET: api/Questionnaires
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<Questionnaire> GetQuestionnaire()
         {
             return _context.Questionnaire;
@@ -35,6 +38,7 @@ namespace WebApi.Controllers
 
         // GET: api/Questionnaires/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetQuestionnaire([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -77,6 +81,7 @@ namespace WebApi.Controllers
 
         // PUT: api/Questionnaires/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutQuestionnaire([FromRoute] int id, [FromBody] Questionnaire questionnaire)
         {
             if (!ModelState.IsValid)
@@ -112,6 +117,7 @@ namespace WebApi.Controllers
 
         // POST: api/Questionnaires
         [HttpPost]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostQuestionnaire([FromBody] QuestionnairePostViewModel questionnaireViewModel)
         {
             if (!ModelState.IsValid)
@@ -134,6 +140,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/Questionnaires/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteQuestionnaire([FromRoute] int id)
         {
             if (!ModelState.IsValid)

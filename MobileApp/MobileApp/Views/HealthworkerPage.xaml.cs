@@ -24,7 +24,6 @@ namespace MobileApp.Views
     {
         APIRequestHelper apiRequestHelper;
         Healthworker healthworker;
-        string healthworkerId = "ab13d635-5952-4674-90a4-4d2f9906a1b6";
 
         // Initialize the page.
         public HealthworkerPage()
@@ -38,8 +37,10 @@ namespace MobileApp.Views
         // Fetch the Healthworker.
         private async Task FetchHealthworker()
         {
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
-            string apiResponse = await apiRequestHelper.GetRequest(Constants.healthWorkerUrl + "/" + healthworkerId);
+            string apiResponse = await apiRequestHelper.GetRequest(Constants.healthWorkerUrl + "/" + App.Current.Properties["healthworker_id"]);
             if (apiResponse != null)
             {
                 // Convert the API response into a JSON object.
@@ -48,7 +49,7 @@ namespace MobileApp.Views
                 // Create a new object from the appointments.
                 healthworker = new Healthworker
                 {
-                    Id = healthworkerId,
+                    Id = (string)App.Current.Properties["healthworker_id"],
                     Firstname = convertedJson.firstname,
                     Lastname = convertedJson.lastname,
                     Email = convertedJson.email,

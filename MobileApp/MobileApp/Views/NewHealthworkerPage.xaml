@@ -15,7 +15,7 @@
                 <Label Text="Gender:" FontAttributes="Bold"/>
                 <Label Text="{Binding GenderDisplayString}" />
                 <StackLayout x:Name="ButtonSpace" />
-                <Button x:Name="SetHealthworker" Style="{StaticResource PrimaryButton}" Clicked="set_healthworker" Text="Make this my healthworker"/>
+                <Button x:Name="SetHealthworker" Style="{StaticResource PrimaryButton}" Clicked="choose_healthworker" Text="Make this my healthworker"/>
                 <Button x:Name="PreviousHealthworker" Clicked="previous_healthworker" Text="Previous healthworker" />
                 <Button x:Name="NextHealthworker" Clicked="next_healthworker" Text="Next healthworker" />
             </StackLayout>

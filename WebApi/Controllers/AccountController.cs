@@ -30,19 +30,16 @@ namespace WebApi.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly JWTSettings _options;
         private readonly IConfiguration _config;
         private readonly UserDBContext _context;
 
         public AccountController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
-          IOptions<JWTSettings> optionsAccessor,
           IConfiguration config, UserDBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _options = optionsAccessor.Value;
             _config = config;
             _context = context;
         }
@@ -67,7 +64,6 @@ namespace WebApi.Controllers
             return Ok(user);
         }
 
-        [AllowAnonymous]
         [HttpPost("register/admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel Credentials)
         {
@@ -92,7 +88,6 @@ namespace WebApi.Controllers
 
         //POST /api/account/register/client
         [AllowAnonymous]
-
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
@@ -128,7 +123,6 @@ namespace WebApi.Controllers
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
-            
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
@@ -246,10 +240,10 @@ namespace WebApi.Controllers
             return BadRequest(); 
         }
 
-        [AllowAnonymous]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        
         // PUT: api/Account/edit/example@example.com
         [HttpPut("edit/{email}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutClientUserByEmail([FromRoute] string email, [FromBody] EditUserViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -289,6 +283,68 @@ namespace WebApi.Controllers
 
             _context.Entry(user).State = EntityState.Modified;
             
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClientUserExists(email))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [AllowAnonymous]
+        // PUT: api/Account/edit/example@example.com
+        [HttpPut("addHealthworker/{email}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PutHealthWorkerClientUserByEmail([FromRoute] string email, [FromBody] AddHealthworkerToUserViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dbUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
+
+            ClientUser user = new ClientUser
+            {
+                Email = dbUser.Email,
+                StreetName = dbUser.StreetName,
+                HouseNumber = dbUser.HouseNumber,
+                Province = dbUser.Province,
+                District = dbUser.District,
+                PasswordHash = dbUser.PasswordHash,
+                AccessFailedCount = dbUser.AccessFailedCount,
+                BirthDay = dbUser.BirthDay,
+                ConcurrencyStamp = dbUser.ConcurrencyStamp,
+                EmailConfirmed = dbUser.EmailConfirmed,
+                FirstName = dbUser.FirstName,
+                Gender = dbUser.Gender,
+                HealthWorker_Id = vm.HealthWorker_Id,
+                Id = dbUser.Id,
+                LastName = dbUser.LastName,
+                LockoutEnabled = dbUser.LockoutEnabled,
+                LockoutEnd = dbUser.LockoutEnd,
+                NormalizedEmail = dbUser.NormalizedEmail,
+                NormalizedUserName = dbUser.NormalizedUserName,
+                PhoneNumber = dbUser.PhoneNumber,
+                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
+                SecurityStamp = dbUser.SecurityStamp,
+                TwoFactorEnabled = dbUser.TwoFactorEnabled,
+                UserName = dbUser.UserName,
+            };
+
+            _context.Entry(user).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();

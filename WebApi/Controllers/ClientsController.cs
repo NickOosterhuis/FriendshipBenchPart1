@@ -17,7 +17,6 @@ namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
