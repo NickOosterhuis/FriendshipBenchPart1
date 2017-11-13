@@ -10,12 +10,13 @@ using WebApi.Models;
 using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.ViewModels.HealthWorkers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/HealthWorkers")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HealthWorkersController : Controller
     {
         private readonly UserDBContext _context;

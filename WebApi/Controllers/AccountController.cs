@@ -99,7 +99,7 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
@@ -193,7 +193,7 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/signout
-        [Authorize]
+        //[Authorize]
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
         {
@@ -203,7 +203,7 @@ namespace WebApi.Controllers
         }
 
         //GET api/account/user
-        [Authorize]
+        //[Authorize]
         [HttpGet("user")]
         public async Task<IActionResult> GetUser()
         {
