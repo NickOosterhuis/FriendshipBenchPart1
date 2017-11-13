@@ -42,20 +42,19 @@ namespace MobileApp.Views
             string apiResponse = await apiRequestHelper.GetRequest(Constants.healthWorkerUrl + "/" + healthworkerId);
             if (apiResponse != null)
             {
-                System.Diagnostics.Debug.WriteLine("In de IF!");
                 // Convert the API response into a JSON object.
                 dynamic convertedJson = JsonConvert.DeserializeObject(apiResponse);
-                System.Diagnostics.Debug.WriteLine("Na de converted json! ");
 
                 // Create a new object from the appointments.
                 healthworker = new Healthworker
                 {
-                    //Id = healthworkerId,
+                    Id = healthworkerId,
                     Firstname = convertedJson.firstname,
                     Lastname = convertedJson.lastname,
                     Email = convertedJson.email,
                     Birthday = convertedJson.birthday,
-                    Gender = convertedJson.gender
+                    Gender = convertedJson.gender,
+                    Phonenumber = convertedJson.phoneNumber
                 };
             }
             else
@@ -63,15 +62,8 @@ namespace MobileApp.Views
                 DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
             }
 
-            System.Diagnostics.Debug.WriteLine(healthworker.Firstname);
             // Update the page items.
             BindingContext = healthworker;
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            FetchHealthworker();
         }
     }
 }

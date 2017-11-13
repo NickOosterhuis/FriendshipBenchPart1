@@ -119,7 +119,7 @@ namespace WebApi
             // cors settings
             app.UseCors(builder =>
             builder.WithOrigins("https://localhost:44314").
-            AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthentication();
             app.UseMvc();

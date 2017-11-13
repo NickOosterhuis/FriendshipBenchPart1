@@ -13,9 +13,16 @@ namespace MobileApp.ViewModels
 
         public List<AnswerGetViewModel> Answers { get; set; }
 
+        public bool Redflag { get; set; }
+
         public string DateTime
         {
             get { return String.Format("{0:dd/MM/yyyy, hh:mm tt}", Time); }
+        }
+
+        public string RedflagString
+        {
+            get { return Redflag ? "Yes" : "No"; }
         }
     }
 }

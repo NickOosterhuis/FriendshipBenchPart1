@@ -59,6 +59,7 @@ namespace MobileApp.Views
                 {
                     Time = (DateTime)convertedJson.time,
                     Client_id = (string)convertedJson.client_id,
+                    Redflag = (bool)convertedJson.redflag,
                     Answers = answers
                 };
             }
@@ -75,6 +76,7 @@ namespace MobileApp.Views
         private void UpdateView()
         {
             Header.Text = questionnaire.DateTime;
+            Redflag.Text = questionnaire.RedflagString;
             foreach(AnswerGetViewModel answer in questionnaire.Answers)
             {
                 Label questionLabel = new Label { Text = answer.Question, FontAttributes = FontAttributes.Bold };
