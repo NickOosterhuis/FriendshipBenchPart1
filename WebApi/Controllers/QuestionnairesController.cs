@@ -9,6 +9,7 @@ using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
 using WebApi.ViewModels.Questionnaires;
+using WebApi.ViewModels.Clients;
 
 namespace WebApi.Controllers
 {
@@ -17,10 +18,12 @@ namespace WebApi.Controllers
     public class QuestionnairesController : Controller
     {
         private readonly QuestionnaireDBContext _context;
+        private readonly UserDBContext _userContext;
 
-        public QuestionnairesController(QuestionnaireDBContext context)
+        public QuestionnairesController(QuestionnaireDBContext context, UserDBContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         // GET: api/Questionnaires
@@ -59,11 +62,14 @@ namespace WebApi.Controllers
                 });
             }
 
+            ClientUser client = _userContext.Client.Find(questionnaire.Client_id);
+
             QuestionnaireWithAnswersViewModel questionnaireViewModel = new QuestionnaireWithAnswersViewModel
             {
-                Client_id = questionnaire.Client_id,
+                Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.Firstname, LastName = client.Lastname, BirthDay = client.Birthday, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
                 Time = questionnaire.Time,
-                Answers = answers
+                Answers = answers,
+                Redflag = questionnaire.Redflag
             };
 
             return Ok(questionnaireViewModel);

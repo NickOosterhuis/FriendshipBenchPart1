@@ -58,7 +58,8 @@ namespace MobileApp.Views
                     allQuestionnaires.Add(new QuestionnaireViewModel
                     {
                         Id = (int)questionnaire.id,
-                        Time = (DateTime)questionnaire.time
+                        Time = (DateTime)questionnaire.time,
+                        Redflag = (bool)questionnaire.redflag
                     });
                 }
             }
