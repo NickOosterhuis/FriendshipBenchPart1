@@ -6,6 +6,10 @@ app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.hashPrefix('');
 }]);
 
+app.controller('test', function ($scope) {
+    alert('test');
+});
+
 //controller
 app.controller('appointmentCtrl', function ($scope, $http, $location) {
     //get all appointments
@@ -39,8 +43,8 @@ app.controller('appointmentCtrl', function ($scope, $http, $location) {
                 $scope.sendDataObject.time = $appointment.time;
                 $scope.sendDataObject.statusId = 3;
                 $scope.sendDataObject.benchId = $appointment.bench.id
-                $scope.sendDataObject.clientId = $appointment.clientId
-                $scope.sendDataObject.healthworkerId = "0bba7a60-d5ff-4e53-bdf9-e00bc7552f10";
+                $scope.sendDataObject.clientId = $appointment.client.id
+                $scope.sendDataObject.healthworkerId = "da249e00-6506-4c55-9d5d-ce42371b57e6";
                 console.log($scope.sendDataObject);
 
                 $http.put('http://127.0.0.1:54618/api/Appointments/' + appointmentID, $scope.sendDataObject)
