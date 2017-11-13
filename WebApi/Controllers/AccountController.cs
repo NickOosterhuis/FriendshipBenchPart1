@@ -310,6 +310,67 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
+        // PUT: api/Account/edit/example@example.com
+        [HttpPut("addHealthworker/{email}")]
+        public async Task<IActionResult> PutHealthWorkerClientUserByEmail([FromRoute] string email, [FromBody] AddHealthworkerToUserViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dbUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
+
+            ClientUser user = new ClientUser
+            {
+                Email = dbUser.Email,
+                StreetName = dbUser.StreetName,
+                HouseNumber = dbUser.HouseNumber,
+                Province = dbUser.Province,
+                District = dbUser.District,
+                PasswordHash = dbUser.PasswordHash,
+                AccessFailedCount = dbUser.AccessFailedCount,
+                BirthDay = dbUser.BirthDay,
+                ConcurrencyStamp = dbUser.ConcurrencyStamp,
+                EmailConfirmed = dbUser.EmailConfirmed,
+                FirstName = dbUser.FirstName,
+                Gender = dbUser.Gender,
+                HealthWorker_Id = vm.HealthWorker_Id,
+                Id = dbUser.Id,
+                LastName = dbUser.LastName,
+                LockoutEnabled = dbUser.LockoutEnabled,
+                LockoutEnd = dbUser.LockoutEnd,
+                NormalizedEmail = dbUser.NormalizedEmail,
+                NormalizedUserName = dbUser.NormalizedUserName,
+                PhoneNumber = dbUser.PhoneNumber,
+                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
+                SecurityStamp = dbUser.SecurityStamp,
+                TwoFactorEnabled = dbUser.TwoFactorEnabled,
+                UserName = dbUser.UserName,
+            };
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClientUserExists(email))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         private JsonResult Errors(IdentityResult result)
         {
             var items = result.Errors

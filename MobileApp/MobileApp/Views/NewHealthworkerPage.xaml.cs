@@ -1,5 +1,6 @@
 ﻿using MobileApp.Helpers;
 using MobileApp.Models;
+using MobileApp.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -88,9 +89,24 @@ namespace MobileApp.Views
         }
 
         // Do a PUT request to update the clients healthworker
-        private void set_healthworker(object sender, EventArgs e)
+        private async Task choose_healthworker(object sender, EventArgs e)
         {
+            AddHealthworkerToUserViewModel addHealthworkerModel = new AddHealthworkerToUserViewModel { HealthWorker_Id = healthworkers[currentHealthworker].Id };
 
+            // Do a PUT request.
+            string content = JsonConvert.SerializeObject(addHealthworkerModel);
+            string response = await apiRequestHelper.PutRequest(Constants.addHealthworkerToClientUrl + "/" + App.Current.Properties["email"], content);
+            if (response != null)
+            {
+                DisplayAlert("Succesfull", healthworkers[currentHealthworker].Firstname + " is your new healthworker.", "Okay");
+                App.Current.Properties["healthworker_id"] = healthworkers[currentHealthworker].Id;
+                Navigation.PushAsync(new HealthworkerPage());
+            }
+            else
+            {
+                // Display an error.
+                DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
+            }
         }
     }
 }

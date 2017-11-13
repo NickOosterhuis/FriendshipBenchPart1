@@ -53,6 +53,7 @@
     <Compile Include="Services\IDataStore.cs" />
     <Compile Include="Services\MockDataStore.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="ViewModels\AddHealthworkerToUserViewModel.cs" />
     <Compile Include="ViewModels\AnswerGetViewModel.cs" />
     <Compile Include="ViewModels\AppointmentViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
