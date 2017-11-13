@@ -11,11 +11,10 @@ namespace WebApi.Models
         [Key]
         public int Id { get; set; }
 
-        public DateTime Date { get; set; }
-
         public DateTime Time { get; set; }
 
         public string Client_id { get; set; }
 
+        public bool Redflag { get; set; }
     }
 }

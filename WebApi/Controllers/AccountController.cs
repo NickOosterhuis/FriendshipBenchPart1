@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
 using WebApi.ViewModels.Account;
@@ -29,18 +31,40 @@ namespace WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly JWTSettings _options;
-        private readonly IConfiguration _config; 
+        private readonly IConfiguration _config;
+        private readonly UserDBContext _context;
 
         public AccountController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
           IOptions<JWTSettings> optionsAccessor,
-          IConfiguration config)
+          IConfiguration config, UserDBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _options = optionsAccessor.Value;
             _config = config;
+            _context = context;
+        }
+
+        //GET api/account/user
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUser()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
 
         [AllowAnonymous]
@@ -68,6 +92,7 @@ namespace WebApi.Controllers
 
         //POST /api/account/register/client
         [AllowAnonymous]
+
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
@@ -76,10 +101,10 @@ namespace WebApi.Controllers
                 var client = new ClientUser {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    Firstname = Credentials.FirstName,
-                    Lastname = Credentials.LastName,
+                    FirstName = Credentials.FirstName,
+                    LastName = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    Birthday = Credentials.BirthDay, 
+                    BirthDay = Credentials.BirthDay, 
                     StreetName = Credentials.StreetName,
                     HouseNumber = Credentials.HouseNumber,
                     Province = Credentials.Province,
@@ -99,25 +124,21 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
-        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return Unauthorized();
-            }
-
+            
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
                 {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    Firstname = Credentials.FirstName,
-                    Lastname = Credentials.LastName,
+                    FirstName = Credentials.FirstName,
+                    LastName = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    Birthday = Credentials.BirthDay,
+                    BirthDay = Credentials.BirthDay,
                     PhoneNumber = Credentials.PhoneNumber,
                 };
                 var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
@@ -181,7 +202,7 @@ namespace WebApi.Controllers
                             issuer: _config["JWTSettings:Issuer"],
                             audience: _config["JWTSettings:Audience"],
                             claims: claims,
-                            expires: DateTime.Now.AddMinutes(30),
+                            expires: DateTime.Now.AddDays(1),
                             signingCredentials: creds);
 
                         return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
@@ -193,33 +214,98 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/signout
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
         {
+            JsonResult logoutMessage = new JsonResult("User is Logged out");
+
             await _signInManager.SignOutAsync();
 
-            return new JsonResult("User is Logged out");
+            return Ok(logoutMessage); 
         }
 
-        //GET api/account/user
-        [Authorize]
-        [HttpGet("user")]
-        public async Task<IActionResult> GetUser()
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("currentUser/{email}")]
+        public async Task<IActionResult> GetCurrentUser([FromRoute] string email)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = await _userManager.FindByEmailAsync(email);
+
+                if (currentUser != null)
+                {
+                    return Ok(currentUser);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+              
+            return BadRequest(); 
+        }
+
+        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        // PUT: api/Account/edit/example@example.com
+        [HttpPut("edit/{email}")]
+        public async Task<IActionResult> PutClientUserByEmail([FromRoute] string email, [FromBody] EditUserViewModel vm)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.GetUserAsync(User); 
-
-            if (user == null)
+            var dbUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
+                    
+            ClientUser user = new ClientUser
             {
-                return NotFound();
+                Email = dbUser.Email,
+                StreetName = vm.StreetName,
+                HouseNumber = vm.HouseNumber,
+                Province = vm.Province,
+                District = vm.District,
+                PasswordHash = dbUser.PasswordHash,
+                AccessFailedCount = dbUser.AccessFailedCount,
+                BirthDay = dbUser.BirthDay,
+                ConcurrencyStamp = dbUser.ConcurrencyStamp,
+                EmailConfirmed = dbUser.EmailConfirmed,
+                FirstName = dbUser.FirstName,
+                Gender = dbUser.Gender,
+                HealthWorker_Id = dbUser.HealthWorker_Id,
+                Id = dbUser.Id,
+                LastName = dbUser.LastName,
+                LockoutEnabled = dbUser.LockoutEnabled,
+                LockoutEnd = dbUser.LockoutEnd,
+                NormalizedEmail = dbUser.NormalizedEmail,
+                NormalizedUserName = dbUser.NormalizedUserName,
+                PhoneNumber = dbUser.PhoneNumber,
+                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
+                SecurityStamp = dbUser.SecurityStamp,
+                TwoFactorEnabled = dbUser.TwoFactorEnabled,
+                UserName = dbUser.UserName,
+            };                       
+
+            _context.Entry(user).State = EntityState.Modified;
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClientUserExists(email))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return Ok(user);
+            return NoContent();
         }
 
         private JsonResult Errors(IdentityResult result)
@@ -241,5 +327,10 @@ namespace WebApi.Controllers
             TimeSpan diff = date.ToUniversalTime() - origin;
             return Math.Floor(diff.TotalSeconds);
         }
-    }
+
+        private bool ClientUserExists(string id)
+        {
+            return _context.Client.Any(e => e.Id == id);
+        }
+    }   
 }

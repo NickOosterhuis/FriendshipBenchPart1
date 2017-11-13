@@ -22,18 +22,16 @@
         <th>emailadres</th>
         <th>gender</th>
         <th>birthday</th>
-        <th>username</th>
         <th>phonenumber</th>
         </thead>
         <tbody>
             <tr ng-repeat="healthworker in healthworkers">
                 <td id="id">{{ healthworker.id }}</td>
-                <td>{{ healthworker.firstName }}</td>
-                <td>{{ healthworker.lastName }}</td>
+                <td>{{ healthworker.firstname }}</td>
+                <td>{{ healthworker.lastname }}</td>
                 <td>{{ healthworker.email }}</td>
                 <td>{{ healthworker.gender }}</td>
-                <td>{{ healthworker.birthDay }}</td>
-                <td>{{ healthworker.userName }}</td>
+                <td>{{ healthworker.birthday }}</td>
                 <td>{{ healthworker.phoneNumber }}</td>
                 <td><a href="@Url.Action(action: "Info", controller: "AdminHealthworkers")/{{healthworker.id}}"><button class="btn btn-primary">edit</button></a></td>
             </tr>

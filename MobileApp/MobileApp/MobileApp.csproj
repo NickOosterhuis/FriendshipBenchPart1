@@ -47,7 +47,6 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Healthworker.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\LoginToken.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Questionnaire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,12 +56,19 @@
     <Compile Include="ViewModels\AnswerGetViewModel.cs" />
     <Compile Include="ViewModels\AppointmentViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EditUserViewModel.cs" />
     <Compile Include="ViewModels\HealthWorkerViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireViewModel.cs" />
     <Compile Include="ViewModels\QuestionnaireGetViewModel.cs" />
+    <Compile Include="Views\UserEditPage.xaml.cs">
+      <DependentUpon>UserEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewHealthworkerPage.xaml.cs">
+      <DependentUpon>NewHealthworkerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HealthworkerPage.xaml.cs">
       <DependentUpon>HealthworkerPage.xaml</DependentUpon>
     </Compile>
@@ -218,6 +224,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\HealthworkerPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\NewHealthworkerPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\UserEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
