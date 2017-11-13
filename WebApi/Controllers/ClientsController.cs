@@ -37,6 +37,7 @@ namespace WebApi.Controllers
             {
                 clients.Add(new ClientViewModel
                 {
+                    id = client.Id,
                     FirstName = client.FirstName,
                     LastName = client.LastName,
                     Gender = client.Gender,

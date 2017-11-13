@@ -16,7 +16,7 @@ healthworker.controller('healthworkercontroller', function ($scope, $http, $loca
     // method to save healthworker to the API and redirects to healthworker list.
     $scope.savehealthworker = function (method) {
         if (method == "put") {
-            $http.put('http://127.0.0.1:54618/api/healthworkers/' + location.pathname.split("/").pop(), $scope.healthworker, {
+            $http.put('http://127.0.0.1:54618/api/healthworkers/edit/' + location.pathname.split("/").pop(), $scope.healthworker, {
                 headers: {
                     'Authorization': "Bearer " + getCookie("JWT")
                 }
@@ -24,7 +24,7 @@ healthworker.controller('healthworkercontroller', function ($scope, $http, $loca
                 .then(
                 function (response) {
                     console.log('edited!');
-                    $scope.redirectTohealthworkers();
+                    $scope.redirectToHealthworkers();
                 },
                 function (response) {
                     console.log('failed!');
