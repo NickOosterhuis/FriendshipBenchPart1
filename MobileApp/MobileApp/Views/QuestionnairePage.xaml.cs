@@ -24,6 +24,8 @@ namespace MobileApp.Views
         private List<Question> allQuestions;
         private List<Answers> allAnswers = new List<Answers>();
         private int questionNumber = -1;
+        private int numberOfYesQuestions = 0;
+        private bool suicideQuestion;
 
         // Initialize the page.
         public QuestionnairePage ()
@@ -37,6 +39,11 @@ namespace MobileApp.Views
         private void button_yes(object sender, EventArgs e)
         {
             SaveAnswer("Yes");
+            numberOfYesQuestions++;
+            if (allQuestions[questionNumber].Id == 11)
+            {
+                suicideQuestion = true;
+            }
             ShowQuestionOrComplete();
         }
 
@@ -102,8 +109,9 @@ namespace MobileApp.Views
             // Create a new questionnaire model.
             Questionnaire questionnaire = new Questionnaire
             {
-                Client_id = "1",
-                Time = DateTime.Now
+                Client_id = (string)App.Current.Properties["id"],
+                Time = DateTime.Now,
+                Redflag = (numberOfYesQuestions > 8 || suicideQuestion)
             };
 
             // Do a POST request.

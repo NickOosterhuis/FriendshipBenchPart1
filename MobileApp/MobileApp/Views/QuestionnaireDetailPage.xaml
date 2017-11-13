@@ -7,6 +7,8 @@
         <ScrollView>
             <StackLayout x:Name="StackPanel" Padding="16">
                 <Label x:Name="Header" Style="{StaticResource LabelPageHeadingStyle}" />
+                <Label FontAttributes="Bold" Text="Red flag:"/>
+                <Label x:Name="Redflag" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

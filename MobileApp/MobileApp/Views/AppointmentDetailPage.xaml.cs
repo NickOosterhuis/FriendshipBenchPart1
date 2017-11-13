@@ -56,7 +56,6 @@ namespace MobileApp.Views
                 DisplayAlert("Error", "Sorry, something went wrong. Please try again later.", "Okay");
             }
 
-            Debug.WriteLine(appointment.Client.Id);
             // Update the page items.
             BindingContext = appointment;
             UpdateButtons();
