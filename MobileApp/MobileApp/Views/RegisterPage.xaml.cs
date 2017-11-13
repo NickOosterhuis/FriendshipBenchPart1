@@ -1,4 +1,5 @@
-﻿using MobileApp.Models;
+﻿using MobileApp.Helpers;
+using MobileApp.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RegisterPage : ContentPage
     {
-
+        APIRequestHelper apiRequestHelper;
         DateTime now = DateTime.Now.AddYears(-10); 
 
         List<string> genderList = new List<string>
@@ -26,6 +27,7 @@ namespace MobileApp.Views
 
         public RegisterPage()
         {
+            apiRequestHelper = new APIRequestHelper();
             InitializeComponent();
 
             var email = new Entry
@@ -157,35 +159,24 @@ namespace MobileApp.Views
 
         public async Task Register(Client user)
         {
+            
             var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(user);
+            var content = JsonConvert.SerializeObject(user);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            string readableContent = await content.ReadAsStringAsync();
+            apiRequestHelper.SetTokenHeader();
+            var apiResponse = apiRequestHelper.PostRequest(Constants.registerUrl, content);
 
-            var response = new HttpResponseMessage();
-
-            try
-            {
-                response = await client.PostAsync(Constants.registerUrl, content);
-            }
-            catch (Exception e)
-            {
-                await DisplayAlert("ERROR", e.Message, "Cancel");
-                Debug.WriteLine("HTTP ERROR: " + e.Message);
-            }
-
-            if (response.IsSuccessStatusCode)
+            if (apiResponse != null)
             {
                 Debug.WriteLine(@" User Successfully registered in");
-                Debug.WriteLine(readableContent);
+                Debug.WriteLine(apiResponse);
                 await Navigation.PushAsync(new SignInPage());
             }
             else
             {
                 await DisplayAlert("Invalid login", "The username or password is incorrect.", "Cancel");
                 Debug.WriteLine("Er is iets fout gegaan :(");
-                Debug.WriteLine(response.Headers);
+                Debug.WriteLine(apiResponse);
             }
         }
     

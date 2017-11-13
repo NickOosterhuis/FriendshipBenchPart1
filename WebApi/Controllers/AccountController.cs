@@ -30,19 +30,16 @@ namespace WebApi.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly JWTSettings _options;
         private readonly IConfiguration _config;
         private readonly UserDBContext _context;
 
         public AccountController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
-          IOptions<JWTSettings> optionsAccessor,
           IConfiguration config, UserDBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _options = optionsAccessor.Value;
             _config = config;
             _context = context;
         }
@@ -67,7 +64,7 @@ namespace WebApi.Controllers
             return Ok(user);
         }
 
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel Credentials)
         {
@@ -92,7 +89,6 @@ namespace WebApi.Controllers
 
         //POST /api/account/register/client
         [AllowAnonymous]
-
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
@@ -128,7 +124,11 @@ namespace WebApi.Controllers
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
-            
+            if (!User.IsInRole("admin"))
+            {
+                return Unauthorized();
+            }
+
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
@@ -246,7 +246,6 @@ namespace WebApi.Controllers
             return BadRequest(); 
         }
 
-        [AllowAnonymous]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         // PUT: api/Account/edit/example@example.com
         [HttpPut("edit/{email}")]

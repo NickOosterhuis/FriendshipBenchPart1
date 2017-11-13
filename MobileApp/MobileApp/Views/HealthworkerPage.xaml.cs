@@ -38,6 +38,8 @@ namespace MobileApp.Views
         // Fetch the Healthworker.
         private async Task FetchHealthworker()
         {
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
             string apiResponse = await apiRequestHelper.GetRequest(Constants.healthWorkerUrl + "/" + healthworkerId);
             if (apiResponse != null)

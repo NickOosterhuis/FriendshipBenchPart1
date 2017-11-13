@@ -50,7 +50,10 @@ namespace MobileApp.Views
         {
             apiRequestHelper = new APIRequestHelper();
             string email = App.Current.Properties["email"] as string;
+            
+            // Set JWT token in header
             apiRequestHelper.SetTokenHeader();
+            // Do getRequest
             string apiResponse = await apiRequestHelper.GetRequest(Constants.getCurrentUserUrl + "/" + email);
             dynamic convertedJson = JsonConvert.DeserializeObject(apiResponse);
             App.Current.Properties["id"] = (string)convertedJson.id;

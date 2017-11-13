@@ -48,6 +48,8 @@ namespace MobileApp.Views
         // Fetch all the appointments and make a list of it.
         private async Task FetchAppointments()
         {
+            // Send token with Http request
+            apiRequestHelper.SetTokenHeader();
             // Send a GET request to the API.
             String apiResponse = await apiRequestHelper.GetRequest(Constants.appointmentsUrl);
             if (apiResponse != null)

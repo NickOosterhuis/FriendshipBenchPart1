@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
 using WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
@@ -24,6 +26,7 @@ namespace WebApi.Controllers
 
         // GET: api/Answers
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<Answers> GetAnswers()
         {
             return _context.Answers;
@@ -31,6 +34,7 @@ namespace WebApi.Controllers
 
         // GET: api/Answers/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAnswers([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -50,6 +54,7 @@ namespace WebApi.Controllers
 
         // PUT: api/Answers/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutAnswers([FromRoute] int id, [FromBody] Answers answers)
         {
             if (!ModelState.IsValid)
@@ -85,6 +90,7 @@ namespace WebApi.Controllers
 
         // POST: api/Answers
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostAnswers([FromBody] List<AnswerPostViewModel> answerViewModels)
         {
             if (!ModelState.IsValid)
@@ -110,6 +116,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/Answers/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteAnswers([FromRoute] int id)
         {
             if (!ModelState.IsValid)

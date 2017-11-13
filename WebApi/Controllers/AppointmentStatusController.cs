@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts;
 using WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +25,7 @@ namespace WebApi.Controllers
 
         // GET: api/AppointmentStatus
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<AppointmentStatus> GetAppointmentStatuses()
         {
             return _context.AppointmentStatuses;
@@ -30,6 +33,7 @@ namespace WebApi.Controllers
 
         // GET: api/AppointmentStatus/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAppointmentStatus([FromRoute] int id)
         {
             if (!ModelState.IsValid)
