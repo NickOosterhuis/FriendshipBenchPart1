@@ -16,7 +16,6 @@
         <form name="myForm">
             <table id="example" class="table">
                 <thead>
-                    <th>ID</th>
                     <th>firstname</th>
                     <th>lastname</th>
                     <th>emailadres</th>
@@ -28,12 +27,8 @@
                     <th>district</th>
                     <th></th>
                     <th></th>
-                    <th></th>
-
-                </th>
                 <tbody>
                     <tr ng-model="client">
-                        <td><input ng-model="client.id" name="id" value={{client.id}} /></td>
                         <td><input ng-model="client.firstName" name="firstName" value={{client.firstName}} /></td>
                         <td><input ng-model="client.lastName" name="lastName" value={{client.lastName}} /></td>
                         <td><input ng-model="client.email" name="email" value={{client.email}} /></td>
@@ -43,12 +38,12 @@
                         <td><input ng-model="client.houseNumber" name="houseNumber" value={{client.houseNumber}} /></td>
                         <td><input ng-model="client.province" name="province" value={{client.province}} /></td>
                         <td><input ng-model="client.district" name="district" value={{client.district}} /></td>
-                        <td><input type="button" class="btn btn-danger" value="reset password" ng-click="deleteclient()"></td>
                         <td><input type="button" class="btn btn-danger" value="delete" ng-click="deleteclient()"></td>
                         <td><input type="button" class="btn btn-success" value="save" ng-click="saveclient('put')"></td>
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" ng-model="client.id" name="id" value={{client.id}} />
         </form>
     </div>
 
