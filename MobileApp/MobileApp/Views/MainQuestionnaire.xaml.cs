@@ -55,11 +55,15 @@ namespace MobileApp.Views
                 // Loop through all the appointments in the JSON object and create appointment objects.
                 foreach (var questionnaire in convertedJson)
                 {
-                    allQuestionnaires.Add(new QuestionnaireViewModel
+                    if (questionnaire.client_id == (string)App.Current.Properties["id"])
                     {
-                        Id = (int)questionnaire.id,
-                        Time = (DateTime)questionnaire.time
-                    });
+                        allQuestionnaires.Add(new QuestionnaireViewModel
+                        {
+                            Id = (int)questionnaire.id,
+                            Time = (DateTime)questionnaire.time,
+                            Redflag = (bool)questionnaire.redflag
+                        });
+                    }
                 }
             }
             else

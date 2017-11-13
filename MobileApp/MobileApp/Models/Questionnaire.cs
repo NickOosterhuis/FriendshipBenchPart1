@@ -13,5 +13,7 @@ namespace MobileApp.Models
 
         public string Client_id { get; set; }
 
+        public bool Redflag { get; set; }
+
     }
 }

@@ -7,10 +7,11 @@ namespace WebApi.ViewModels.Questionnaires
 {
     public class QuestionnairePostViewModel
     {
+        public string Client_id { get; set; }
 
         public DateTime Time { get; set; }
 
-        public string Client_id { get; set; }
+        public bool Redflag { get; set; }
 
     }
 }
