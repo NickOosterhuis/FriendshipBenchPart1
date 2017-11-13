@@ -66,7 +66,7 @@ namespace WebApi.Controllers
 
             QuestionnaireWithAnswersViewModel questionnaireViewModel = new QuestionnaireWithAnswersViewModel
             {
-                Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.Firstname, LastName = client.Lastname, BirthDay = client.Birthday, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
+                Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.FirstName, LastName = client.LastName, BirthDay = client.BirthDay, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
                 Time = questionnaire.Time,
                 Answers = answers,
                 Redflag = questionnaire.Redflag
