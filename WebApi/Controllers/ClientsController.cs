@@ -10,6 +10,7 @@ using WebApi.Models;
 using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.ViewModels.Clients;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Controllers
 {
@@ -19,6 +20,8 @@ namespace WebApi.Controllers
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
+       
+
 
         public ClientsController(UserDBContext context)
         {
@@ -65,7 +68,7 @@ namespace WebApi.Controllers
 
             return Ok(clientUser);
         }
-
+            
         // PUT: api/Clients/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClientUser([FromRoute] string id, [FromBody] ClientUser clientUser)

@@ -24,7 +24,6 @@ namespace MobileApp.Views
             "Female"
         };
 
-
         public RegisterPage()
         {
             InitializeComponent();
@@ -151,7 +150,7 @@ namespace MobileApp.Views
                     StreetName = streetName.Text,
                     HouseNumber = houseNumber.Text,
                     Province = province.Text,
-                    District = district.Text,              
+                    District = district.Text,   
                 });
             };
         }
@@ -180,7 +179,7 @@ namespace MobileApp.Views
             {
                 Debug.WriteLine(@" User Successfully registered in");
                 Debug.WriteLine(readableContent);
-                await Navigation.PushAsync(new AboutPage());
+                await Navigation.PushAsync(new SignInPage());
             }
             else
             {
