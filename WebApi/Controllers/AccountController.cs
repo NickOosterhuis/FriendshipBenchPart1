@@ -119,7 +119,7 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
@@ -302,7 +302,6 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        [AllowAnonymous]
         // PUT: api/Account/edit/example@example.com
         [HttpPut("addHealthworker/{email}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

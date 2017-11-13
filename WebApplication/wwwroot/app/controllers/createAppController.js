@@ -16,6 +16,20 @@
 
     var email = getCookie('Email');
 
+    //retrieve all connected clients
+    $http.get('http://127.0.0.1:54618/api/clients/connected/' + getCookie('Email'), {
+        headers: {
+            'Authorization': "Bearer " + getCookie("JWT")
+        }
+    })
+        .then(function (response) {
+            //first function handles succes
+            $scope.clients = response.data;
+        }, function (response) {
+            //second function handles error
+            console.log("something went wrong!");
+        });
+
     //get logged in user
     $http.get('http://127.0.0.1:54618/api/account/currentUser/' + email, {
         headers: {

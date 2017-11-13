@@ -39,15 +39,20 @@ namespace WebApi.Controllers
             {
                 ClientUser client = _userContext.Client.Find(appointment.ClientId);
                 HealthWorkerUser healthworker = _userContext.HealthWorker.Find(appointment.HealthworkerId);
-                appointments.Add(new AppointmentGetViewModel
+
+                if (healthworker != null && client != null)
                 {
-                    Id = appointment.Id,
-                    Time = appointment.Time,
-                    Status = _context.AppointmentStatuses.Find(appointment.StatusId),
-                    Bench = _context.Benches.Find(appointment.BenchId),
-                    Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.FirstName, LastName = client.LastName, BirthDay = client.BirthDay, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
-                    Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email, PhoneNumber = healthworker.PhoneNumber}
-                });
+                    appointments.Add(new AppointmentGetViewModel
+                    {
+                        Id = appointment.Id,
+                        Time = appointment.Time,
+                        Status = _context.AppointmentStatuses.Find(appointment.StatusId),
+                        Bench = _context.Benches.Find(appointment.BenchId),
+                        Client = new ClientViewModel { id = client.Id, Email = client.Email, FirstName = client.FirstName, LastName = client.LastName, BirthDay = client.BirthDay, District = client.District, Gender = client.Gender, HouseNumber = client.HouseNumber, Province = client.Province, StreetName = client.StreetName },
+                        Healthworker = new HealthWorkerViewModel { Id = healthworker.Id, Firstname = healthworker.FirstName, Lastname = healthworker.LastName, Birthday = healthworker.BirthDay, Gender = healthworker.Gender, Email = healthworker.Email, PhoneNumber = healthworker.PhoneNumber }
+                    });
+                }
+                else return null;               
             }
 
             return appointments;
