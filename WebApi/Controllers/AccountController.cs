@@ -64,7 +64,6 @@ namespace WebApi.Controllers
             return Ok(user);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel Credentials)
         {
@@ -124,11 +123,6 @@ namespace WebApi.Controllers
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return Unauthorized();
-            }
-
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
@@ -246,9 +240,10 @@ namespace WebApi.Controllers
             return BadRequest(); 
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        
         // PUT: api/Account/edit/example@example.com
         [HttpPut("edit/{email}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutClientUserByEmail([FromRoute] string email, [FromBody] EditUserViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -310,6 +305,7 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         // PUT: api/Account/edit/example@example.com
         [HttpPut("addHealthworker/{email}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutHealthWorkerClientUserByEmail([FromRoute] string email, [FromBody] AddHealthworkerToUserViewModel vm)
         {
             if (!ModelState.IsValid)

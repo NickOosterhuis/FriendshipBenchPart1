@@ -117,7 +117,7 @@ namespace WebApi.Controllers
 
         // POST: api/Questionnaires
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostQuestionnaire([FromBody] QuestionnairePostViewModel questionnaireViewModel)
         {
             if (!ModelState.IsValid)
