@@ -86,7 +86,7 @@ namespace MobileApp.Helpers
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
-                    Debug.WriteLine("Post Request to " + url + " failed: " + response.StatusCode);
+                    Debug.WriteLine("Put Request to " + url + " failed: " + response.StatusCode);
                     Debug.WriteLine("Invalid JSON: " + content);
                     return null;
                 }

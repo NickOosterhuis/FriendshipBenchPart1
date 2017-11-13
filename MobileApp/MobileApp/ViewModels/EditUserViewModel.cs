@@ -10,8 +10,6 @@ namespace MobileApp.ViewModels
     {
         public string Email { get; set; }
 
-        public string Password { get; set; }
-
         public string StreetName { get; set; }
         
         public string HouseNumber { get; set; }
