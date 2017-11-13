@@ -48,10 +48,10 @@ namespace MobileApp.Views
                 user = new Client
                 {
                     Email = (string)convertedJson.email,
-                    FirstName = (string)convertedJson.firstname,
-                    LastName = (string)convertedJson.lastname,
+                    FirstName = (string)convertedJson.firstName,
+                    LastName = (string)convertedJson.lastName,
                     Gender = (string)convertedJson.gender,
-                    BirthDay = (DateTime)convertedJson.birthday,
+                    BirthDay = (DateTime)convertedJson.birthDay,
                     StreetName = (string)convertedJson.streetName,
                     District = (string)convertedJson.district,
                     Province = (string)convertedJson.province,
