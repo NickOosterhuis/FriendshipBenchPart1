@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkers()
         {
             if(!ModelState.IsValid)
@@ -53,7 +53,7 @@ namespace WebApi.Controllers
 
         // GET: api/HealthWorkers/5
         [HttpGet("{id}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -83,7 +83,7 @@ namespace WebApi.Controllers
 
         // PUT: api/Account/edit/1
         [HttpPut("edit/{id}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutClientUserByEmail([FromRoute] string id, [FromBody] EditHealthWorkerViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -140,7 +140,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/HealthWorkers/5
         [HttpDelete("{id}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
