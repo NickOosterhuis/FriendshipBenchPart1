@@ -40,10 +40,10 @@ namespace WebApi.Controllers
                 healthWorkers.Add(new HealthWorkerViewModel
                 {
                     Id = healthWorker.Id,
-                    Firstname = healthWorker.Firstname,
-                    Lastname = healthWorker.Lastname,
+                    Firstname = healthWorker.FirstName,
+                    Lastname = healthWorker.LastName,
                     Gender = healthWorker.Gender,
-                    Birthday = healthWorker.Birthday,
+                    Birthday = healthWorker.BirthDay,
                     Email = healthWorker.Email,
                     PhoneNumber = healthWorker.PhoneNumber,
                 });
@@ -71,10 +71,10 @@ namespace WebApi.Controllers
             HealthWorkerViewModel vm = new HealthWorkerViewModel();
 
             vm.Id = healthWorkerUser.Id;
-            vm.Firstname = healthWorkerUser.Firstname;
-            vm.Lastname = healthWorkerUser.Lastname;
+            vm.Firstname = healthWorkerUser.FirstName;
+            vm.Lastname = healthWorkerUser.LastName;
             vm.Email = healthWorkerUser.Email;
-            vm.Birthday = healthWorkerUser.Birthday;
+            vm.Birthday = healthWorkerUser.BirthDay;
             vm.Gender = healthWorkerUser.Gender;
             vm.PhoneNumber = healthWorkerUser.PhoneNumber;
             

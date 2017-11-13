@@ -38,10 +38,10 @@ namespace WebApi.Controllers
             {
                 clients.Add(new ClientViewModel
                 {
-                    FirstName = client.Firstname,
-                    LastName = client.Lastname,
+                    FirstName = client.FirstName,
+                    LastName = client.LastName,
                     Gender = client.Gender,
-                    BirthDay = client.Birthday,
+                    BirthDay = client.BirthDay,
                     Email = client.Email,
                     StreetName = client.StreetName,
                     HouseNumber = client.HouseNumber,

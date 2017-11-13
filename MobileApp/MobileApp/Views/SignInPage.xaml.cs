@@ -86,7 +86,6 @@ namespace MobileApp.Views
 
             if (apiResponse != null)
             {
-                apiRequestHelper.SetTokenHeader();
                 Debug.WriteLine(@" User Successfully logged in");
                 await Navigation.PushAsync(new LandingPage());
             }

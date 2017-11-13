@@ -31,18 +31,6 @@ namespace MobileApp.Views
                 Text = user.Email,
             };
 
-            var password = new Entry
-            {
-                Placeholder = "Password",
-                IsPassword = true,
-            };
-
-            var confirmPassword = new Entry
-            {
-                Placeholder = "Confirm Password",
-                IsPassword = true,
-            };
-
             var streetName = new Entry
             {
                 Text = user.StreetName
@@ -74,10 +62,7 @@ namespace MobileApp.Views
                 Spacing = 10,
                 Children =
                 {
-                    new Label {Text = "Edit", FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
-                    email,
-                    password,
-                    confirmPassword,
+                    new Label {Text = "Edit: " + email.Text, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
                     streetName,
                     houseNumber,
                     province,
@@ -90,55 +75,25 @@ namespace MobileApp.Views
 
             editButton.Clicked += async (object sender, EventArgs e) =>
             {
-                if (!password.Text.Equals(confirmPassword.Text))
-                {
-                    await DisplayAlert("Error", "Confirm password doesn't match password", "Cencel");
-                }
-
+               
                 await UpdateUserAsync(user = new Client
                 {
-                    Password = password.Text,
-                    ConfirmPassword = confirmPassword.Text,
+                    Email = email.Text,
                     StreetName = streetName.Text,
                     HouseNumber = houseNumber.Text,
                     Province = province.Text,
                     District = district.Text,
                 });
             };
-        }
-
-        protected async void OnDisappearing()
-        {
-            if (user.Email != null && user.Password != null)
-            {
-                LoginViewModel vm = new LoginViewModel
-                {
-                    Email = user.Email,
-                    Password = user.Password,
-                };
-
-                var content = JsonConvert.SerializeObject(vm);
-                var tokenJson = await apiRequestHelper.GetAccessToken(content);
-
-                dynamic token = JsonConvert.DeserializeObject(tokenJson);
-
-                Debug.WriteLine((string)token.token);
-
-                App.Current.Properties["email"] = user.Email;
-                App.Current.Properties["token"] = (string)token.token;
-                App.Current.Properties["password"] = user.Password;
-
-                App.Current.SavePropertiesAsync();
-            }
-        }
+        }       
 
         private async Task UpdateUserAsync(Client user)
         {
             EditUserViewModel vm = new EditUserViewModel
             {
+                Email = user.Email,
                 District = user.District,
                 StreetName = user.StreetName,
-                Password = user.Password,
                 Province = user.Province,
                 HouseNumber = user.HouseNumber
             };
@@ -151,7 +106,7 @@ namespace MobileApp.Views
             if (response != null)
             {
                 DisplayAlert("Update message", "User updated successfully", "Okay");
-                
+                Navigation.PushAsync(new UserDetailPage());                
             }
             else
             {

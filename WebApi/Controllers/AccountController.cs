@@ -101,10 +101,10 @@ namespace WebApi.Controllers
                 var client = new ClientUser {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    Firstname = Credentials.FirstName,
-                    Lastname = Credentials.LastName,
+                    FirstName = Credentials.FirstName,
+                    LastName = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    Birthday = Credentials.BirthDay, 
+                    BirthDay = Credentials.BirthDay, 
                     StreetName = Credentials.StreetName,
                     HouseNumber = Credentials.HouseNumber,
                     Province = Credentials.Province,
@@ -135,10 +135,10 @@ namespace WebApi.Controllers
                 {
                     UserName = Credentials.Email,
                     Email = Credentials.Email,
-                    Firstname = Credentials.FirstName,
-                    Lastname = Credentials.LastName,
+                    FirstName = Credentials.FirstName,
+                    LastName = Credentials.LastName,
                     Gender = Credentials.Gender,
-                    Birthday = Credentials.BirthDay,
+                    BirthDay = Credentials.BirthDay,
                     PhoneNumber = Credentials.PhoneNumber,
                 };
                 var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
@@ -202,7 +202,7 @@ namespace WebApi.Controllers
                             issuer: _config["JWTSettings:Issuer"],
                             audience: _config["JWTSettings:Audience"],
                             claims: claims,
-                            expires: DateTime.Now.AddMinutes(30),
+                            expires: DateTime.Now.AddDays(1),
                             signingCredentials: creds);
 
                         return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
@@ -266,16 +266,16 @@ namespace WebApi.Controllers
                 HouseNumber = vm.HouseNumber,
                 Province = vm.Province,
                 District = vm.District,
-                PasswordHash = vm.Password,
+                PasswordHash = dbUser.PasswordHash,
                 AccessFailedCount = dbUser.AccessFailedCount,
-                Birthday = dbUser.Birthday,
+                BirthDay = dbUser.BirthDay,
                 ConcurrencyStamp = dbUser.ConcurrencyStamp,
                 EmailConfirmed = dbUser.EmailConfirmed,
-                Firstname = dbUser.Firstname,
+                FirstName = dbUser.FirstName,
                 Gender = dbUser.Gender,
                 HealthWorker_Id = dbUser.HealthWorker_Id,
                 Id = dbUser.Id,
-                Lastname = dbUser.Lastname,
+                LastName = dbUser.LastName,
                 LockoutEnabled = dbUser.LockoutEnabled,
                 LockoutEnd = dbUser.LockoutEnd,
                 NormalizedEmail = dbUser.NormalizedEmail,
@@ -285,18 +285,10 @@ namespace WebApi.Controllers
                 SecurityStamp = dbUser.SecurityStamp,
                 TwoFactorEnabled = dbUser.TwoFactorEnabled,
                 UserName = dbUser.UserName,
-            };
-
-            //await _userManager.ChangePasswordAsync(user, dbUser.PasswordHash, user.PasswordHash);
-
-
-            var hashedPassword = _userManager.PasswordHasher.HashPassword(user, user.PasswordHash);
-            user.PasswordHash = hashedPassword; 
-                       
+            };                       
 
             _context.Entry(user).State = EntityState.Modified;
-
-
+            
             try
             {
                 await _context.SaveChangesAsync();

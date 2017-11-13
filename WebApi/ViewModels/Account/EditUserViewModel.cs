@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 namespace WebApi.ViewModels.Account
 {
     public class EditUserViewModel
-    {
-        public string Email { get; set; }
-
-        
-        public string Password { get; set; }
-
-        
+    {        
         public string StreetName { get; set; }
 
         
