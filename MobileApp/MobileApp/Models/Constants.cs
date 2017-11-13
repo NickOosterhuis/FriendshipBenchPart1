@@ -17,6 +17,8 @@ namespace MobileApp.Models
         public static string questionnaireUrl = "http://10.0.2.2:54618/api/questionnaires";
         public static string answerUrl = "http://10.0.2.2:54618/api/answers";
         public static string tokenUrl = "http://10.0.2.2:54618/api/account/generatetoken";
+        public static string getCurrentUserUrl = "http://10.0.2.2:54618/api/account/currentUser";
+        public static string editClientUrl = "http://10.0.2.2:54618/api/Account/edit"; 
 
     }
 }

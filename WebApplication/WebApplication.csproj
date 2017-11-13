@@ -26,6 +26,12 @@
     <None Include="Views\Admin\index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\AdminClients\index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties bower_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

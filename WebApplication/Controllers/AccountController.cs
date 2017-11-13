@@ -13,6 +13,12 @@ using Microsoft.Extensions.Options;
 using WebApplication.Models;
 using WebApplication.Models.AccountViewModels;
 using WebApplication.Services;
+using System.Diagnostics;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
+using Models;
+using Newtonsoft.Json.Linq;
 
 namespace WebApplication.Controllers
 {
@@ -56,6 +62,38 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            //@todo: Cleanup this method....
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(model);
+            ViewBag.id = json;
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string readableContent = await content.ReadAsStringAsync();
+            var response = new HttpResponseMessage();
+            try
+            {
+                response = await client.PostAsync("http://127.0.0.1:54618/api/Account/signin", content);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("HTTP ERROR: " + e.Message);
+            }
+            Debug.WriteLine("STATUSCODE: " + response.StatusCode.ToString());
+            if (response.IsSuccessStatusCode)
+            {                
+                response = await client.PostAsync("http://127.0.0.1:54618/api/Account/generatetoken", content);
+                string responseJson = await response.Content.ReadAsStringAsync();
+                var data = (JObject)JsonConvert.DeserializeObject(responseJson);
+                string token = data["token"].Value<string>();
+                Response.Cookies.Append("JWT", token);
+                return RedirectToLocal(returnUrl);
+            }
+            else
+            {
+                Debug.WriteLine("Er is iets fout gegaan :(");
+                Debug.WriteLine(response.Headers);
+                return View(model);
+            }
+            /*
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -82,6 +120,8 @@ namespace WebApplication.Controllers
                     return View(model);
                 }
             }
+
+    */
 
             // If we got this far, something failed, redisplay form
             return View(model);

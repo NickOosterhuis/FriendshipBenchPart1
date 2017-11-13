@@ -10,12 +10,13 @@ using WebApi.Models;
 using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.ViewModels.HealthWorkers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/HealthWorkers")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HealthWorkersController : Controller
     {
         private readonly UserDBContext _context;
@@ -39,10 +40,10 @@ namespace WebApi.Controllers
                 healthWorkers.Add(new HealthWorkerViewModel
                 {
                     Id = healthWorker.Id,
-                    Firstname = healthWorker.Firstname,
-                    Lastname = healthWorker.Lastname,
+                    Firstname = healthWorker.FirstName,
+                    Lastname = healthWorker.LastName,
                     Gender = healthWorker.Gender,
-                    Birthday = healthWorker.Birthday,
+                    Birthday = healthWorker.BirthDay,
                     Email = healthWorker.Email,
                     PhoneNumber = healthWorker.PhoneNumber,
                 });
@@ -52,6 +53,7 @@ namespace WebApi.Controllers
 
         // GET: api/HealthWorkers/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -69,10 +71,10 @@ namespace WebApi.Controllers
             HealthWorkerViewModel vm = new HealthWorkerViewModel();
 
             vm.Id = healthWorkerUser.Id;
-            vm.Firstname = healthWorkerUser.Firstname;
-            vm.Lastname = healthWorkerUser.Lastname;
+            vm.Firstname = healthWorkerUser.FirstName;
+            vm.Lastname = healthWorkerUser.LastName;
             vm.Email = healthWorkerUser.Email;
-            vm.Birthday = healthWorkerUser.Birthday;
+            vm.Birthday = healthWorkerUser.BirthDay;
             vm.Gender = healthWorkerUser.Gender;
             vm.PhoneNumber = healthWorkerUser.PhoneNumber;
             
@@ -81,7 +83,7 @@ namespace WebApi.Controllers
 
         // PUT: api/HealthWorkers/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin, healthworker")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutHealthWorkerUser([FromRoute] string id, [FromBody] HealthWorkerViewModel healthWorkerUser)
         {
             if (!ModelState.IsValid)
@@ -117,7 +119,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/HealthWorkers/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin, healthworker")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)

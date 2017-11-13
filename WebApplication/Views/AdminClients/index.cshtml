@@ -4,177 +4,42 @@
 }
 <script type="text/javascript" src="~/js/metro.js"></script>
 <link rel="stylesheet" type="text/css" href="~/css/metro.css" />
-<h2>Admin control panel</h2>
+<h2>Healthworker control panel.</h2>
 
-<div class="content">
-    <div class="container dynamicTile">
-        <div id="row">
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile1" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    Manage
-                                </div>
-                                <div class="icontext">
-                                    Clients
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile4" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    Manage
-                                </div>
-                                <div class="icontext">
-                                    Healthworkers
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile8" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    Manage
-                                </div>
-                                <div class="icontext">
-                                    Benches
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile2" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a asp-area="" asp-controller="Appointments" asp-action="Index">
-                                <div class="item text-center">
-                                    <BR><BR>
-                                    <div class="icontext">
-                                        Manage
-                                    </div>
-                                    <div class="icontext">
-                                        Appointments
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div ng-app="clients" ng-controller="clientscontroller">
 
-    <div class="container dynamicTile">
-        <div id="row">
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile1" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    View
-                                </div>
-                                <div class="icontext">
-                                    Questionlist?
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile4" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    ?
-                                </div>
-                                <div class="icontext">
-                                    ?
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile8" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    ?
-                                </div>
-                                <div class="icontext">
-                                    ?
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <div id="tile2" class="tile">
-                    <div class="carousel slide" data-ride="carousel">
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <a href="" />
-                            <div class="item text-center">
-                                <BR><BR>
-                                <div class="icontext">
-                                    ?
-                                </div>
-                                <div class="icontext">
-                                    ?
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <a href="@Url.Action(action: "Add", controller: "AdminHealthworkers")"><button class="btn btn-success" style="margin-bottom: 1.5em">New Healthworker</button></a>
+    <table id="example" class="table">
+        <thead>
+        <th>ID</th>
+        <th>firstname</th>
+        <th>lastname</th>
+        <th>emailadres</th>
+        <th>gender</th>
+        <th>birthday</th>
+        <th>streetName</th>
+        <th>houseNumber</th>
+        <th>province</th>
+        <th>district</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="client in clients">
+                <td id="id">{{ client.id }}</td>
+                <td>{{ client.firstName }}</td>
+                <td>{{ client.lastName }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.gender }}</td>
+                <td>{{ client.birthDay }}</td>
+                <td>{{ client.streetName }}</td>
+                <td>{{ client.province }}</td>
+                <td>{{ client.district }}</td>
+                <td><a href="@Url.Action(action: "Info", controller: "AdminClients")/{{client.id}}"><button class="btn btn-primary">edit</button></a></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
