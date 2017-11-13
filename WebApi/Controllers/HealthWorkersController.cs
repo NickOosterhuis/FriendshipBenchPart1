@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkers()
         {
             if(!ModelState.IsValid)
@@ -53,7 +53,7 @@ namespace WebApi.Controllers
 
         // GET: api/HealthWorkers/5
         [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -81,23 +81,42 @@ namespace WebApi.Controllers
             return Ok(vm);
         }
 
-        // PUT: api/HealthWorkers/5
-        [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(Roles = "admin, healthworker")]
-        public async Task<IActionResult> PutHealthWorkerUser([FromRoute] string id, [FromBody] HealthWorkerViewModel healthWorkerUser)
+        // PUT: api/Account/edit/1
+        [HttpPut("edit/{id}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PutClientUserByEmail([FromRoute] string id, [FromBody] EditHealthWorkerViewModel vm)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != healthWorkerUser.Id)
-            {
-                return BadRequest();
-            }
+            var dbUser = _context.HealthWorker.AsNoTracking().SingleOrDefault(x => x.Id == id);
 
-            _context.Entry(healthWorkerUser).State = EntityState.Modified;
+            HealthWorkerUser user = new HealthWorkerUser
+            {
+                Email = dbUser.Email,
+                PasswordHash = dbUser.PasswordHash,
+                AccessFailedCount = dbUser.AccessFailedCount,
+                BirthDay = vm.BirthDay,
+                ConcurrencyStamp = dbUser.ConcurrencyStamp,
+                EmailConfirmed = dbUser.EmailConfirmed,
+                FirstName = vm.FirstName,
+                Gender = vm.Gender,
+                Id = dbUser.Id,
+                LastName = vm.LastName,
+                LockoutEnabled = dbUser.LockoutEnabled,
+                LockoutEnd = dbUser.LockoutEnd,
+                NormalizedEmail = dbUser.NormalizedEmail,
+                NormalizedUserName = dbUser.NormalizedUserName,
+                PhoneNumber = vm.PhoneNumber,
+                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
+                SecurityStamp = dbUser.SecurityStamp,
+                TwoFactorEnabled = dbUser.TwoFactorEnabled,
+                UserName = dbUser.UserName,
+            };
+
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -118,9 +137,10 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
+
         // DELETE: api/HealthWorkers/5
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)

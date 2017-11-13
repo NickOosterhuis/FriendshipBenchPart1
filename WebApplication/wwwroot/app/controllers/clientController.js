@@ -33,11 +33,11 @@ client.controller('clientcontroller', function ($scope, $http, $location, $windo
     }
     // method to delete client from the API and redirects to client list.
     $scope.deleteclient = function () {
-        $http.delete('http://127.0.0.1:54618/api/Clients/' + $scope.client.id), {
+        $http.delete('http://127.0.0.1:54618/api/Clients/' + $scope.client.id, {
             headers: {
                 'Authorization': "Bearer " + getCookie("JWT")
             }
-        }
+        })
             .then(
             function (response) {
                 console.log('deleted!');
