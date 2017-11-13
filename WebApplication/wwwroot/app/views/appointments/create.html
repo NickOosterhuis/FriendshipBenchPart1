@@ -31,7 +31,7 @@
             <div class="form-group" ng-model="appointment">
                 <label class="col-md-4 control-label" for="date">ClientID:</label>
                 <div class="col-md-5">
-                    <select ng-options="client as client.firstName +' '+client.lastName for client in clients track by client.id" ng-model="appointment.clientId" id="benchs" name="bench" type="text" placeholder="hh:mm" class="form-control input-md" required="" />
+                    <select ng-options="client.id as client.firstName +' '+client.lastName for client in clients track by client.id" ng-model="appointment.clientId" id="benchs" name="bench" type="text" placeholder="hh:mm" class="form-control input-md" required="" />
 </div>
             </div>
 
