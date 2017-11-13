@@ -11,12 +11,13 @@ using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.ViewModels.Clients;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
-    //[Authorize(Roles = "admin, healthworker")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
