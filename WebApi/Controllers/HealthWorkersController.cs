@@ -53,6 +53,7 @@ namespace WebApi.Controllers
 
         // GET: api/HealthWorkers/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -82,7 +83,7 @@ namespace WebApi.Controllers
 
         // PUT: api/HealthWorkers/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin, healthworker")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutHealthWorkerUser([FromRoute] string id, [FromBody] HealthWorkerViewModel healthWorkerUser)
         {
             if (!ModelState.IsValid)
@@ -118,7 +119,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/HealthWorkers/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin, healthworker")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)

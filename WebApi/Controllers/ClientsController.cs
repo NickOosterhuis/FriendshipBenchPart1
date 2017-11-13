@@ -11,12 +11,13 @@ using WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.ViewModels.Clients;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Clients")]
-    //[Authorize(Roles = "admin, healthworker")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClientsController : Controller
     {
         private readonly UserDBContext _context;
@@ -29,6 +30,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<ClientViewModel> GetClients()
         {
             List<ClientViewModel> clients = new List<ClientViewModel>();
@@ -52,6 +54,7 @@ namespace WebApi.Controllers
 
         // GET: api/Clients/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetClientUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -71,6 +74,7 @@ namespace WebApi.Controllers
             
         // PUT: api/Clients/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutClientUser([FromRoute] string id, [FromBody] ClientUser clientUser)
         {
             if (!ModelState.IsValid)
@@ -106,6 +110,7 @@ namespace WebApi.Controllers
 
         // DELETE: api/Clients/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteClientUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)

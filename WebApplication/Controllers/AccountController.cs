@@ -79,21 +79,19 @@ namespace WebApplication.Controllers
             }
             Debug.WriteLine("STATUSCODE: " + response.StatusCode.ToString());
             if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine(@" User Successfully logged in");          
-                //LoginToken token = JsonConvert.DeserializeObject<LoginToken>(responseJson);
-                
+            {                
                 response = await client.PostAsync("http://127.0.0.1:54618/api/Account/generatetoken", content);
                 string responseJson = await response.Content.ReadAsStringAsync();
                 var data = (JObject)JsonConvert.DeserializeObject(responseJson);
                 string token = data["token"].Value<string>();
                 Response.Cookies.Append("JWT", token);
-
+                return RedirectToLocal(returnUrl);
             }
             else
             {
                 Debug.WriteLine("Er is iets fout gegaan :(");
                 Debug.WriteLine(response.Headers);
+                return View(model);
             }
             /*
             ViewData["ReturnUrl"] = returnUrl;

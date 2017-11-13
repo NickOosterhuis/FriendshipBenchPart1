@@ -48,7 +48,7 @@ namespace WebApi.Controllers
         }
 
         //GET api/account/user
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("user")]
         public async Task<IActionResult> GetUser()
         {
@@ -92,6 +92,7 @@ namespace WebApi.Controllers
 
         //POST /api/account/register/client
         [AllowAnonymous]
+
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
@@ -123,15 +124,11 @@ namespace WebApi.Controllers
         }
 
         //POST /api/account/register/healthworker
-        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return Unauthorized();
-            }
-
+            
             if (ModelState.IsValid)
             {
                 var healthWorker = new HealthWorkerUser
@@ -250,6 +247,7 @@ namespace WebApi.Controllers
         }
 
         [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         // PUT: api/Account/edit/example@example.com
         [HttpPut("edit/{email}")]
         public async Task<IActionResult> PutClientUserByEmail([FromRoute] string email, [FromBody] EditUserViewModel vm)
