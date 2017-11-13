@@ -25,67 +25,37 @@ namespace MobileApp.Views
         {
             apiRequestHelper = new APIRequestHelper();
             InitializeComponent();
+            BindingContext = user;
 
-            var email = new Label
-            {
-                Text = user.Email,
-            };
+            UpdateButtons();
+        }
 
-            var streetName = new Entry
-            {
-                Text = user.StreetName
-            };
+        private void UpdateButtons()
+        {
+            // Remove existing buttons.
+            ButtonSpace.Children.Clear();
 
-            var houseNumber = new Entry
-            {
-                Text = user.HouseNumber
-            };
+            // Create a accept and a cancel button.
+            Button editButton = new Button { Text = "Edit" };
 
-            var district = new Entry
-            {
-                Text = user.District
-            };
 
-            var province = new Entry
+            // Add listeners to these buttons.
+            editButton.Clicked += (object sender, EventArgs e) =>
             {
-                Text = user.Province
-            };
-
-            var editButton = new Button
-            {
-                Text = "Edit"
-            };
-
-            var stack = new StackLayout
-            {
-                Padding = 30,
-                Spacing = 10,
-                Children =
+                UpdateUserAsync(user = new Client
                 {
-                    new Label {Text = "Edit: " + email.Text, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
-                    streetName,
-                    houseNumber,
-                    province,
-                    district,
-                    editButton
-                }
-            };
-
-            Content = new ScrollView { Content = stack };
-
-            editButton.Clicked += async (object sender, EventArgs e) =>
-            {
-               
-                await UpdateUserAsync(user = new Client
-                {
-                    Email = email.Text,
-                    StreetName = streetName.Text,
-                    HouseNumber = houseNumber.Text,
-                    Province = province.Text,
-                    District = district.Text,
+                    Email = emailField.Text,
+                    StreetName = streetnameField.Text,
+                    HouseNumber = houseNumberField.Text,
+                    Province = provinceField.Text,
+                    District = districtField.Text,
                 });
             };
-        }       
+            editButton.BackgroundColor = (Color)Application.Current.Resources["Primary"];
+            editButton.TextColor = Color.White;
+
+            ButtonSpace.Children.Add(editButton);
+        }
 
         private async Task UpdateUserAsync(Client user)
         {
