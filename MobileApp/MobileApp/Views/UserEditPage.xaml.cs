@@ -62,7 +62,7 @@ namespace MobileApp.Views
                 Spacing = 10,
                 Children =
                 {
-                    new Label {Text = "Edit" + email, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
+                    new Label {Text = "Edit: " + email.Text, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), HorizontalOptions = LayoutOptions.Center},
                     streetName,
                     houseNumber,
                     province,
@@ -78,6 +78,7 @@ namespace MobileApp.Views
                
                 await UpdateUserAsync(user = new Client
                 {
+                    Email = email.Text,
                     StreetName = streetName.Text,
                     HouseNumber = houseNumber.Text,
                     Province = province.Text,
@@ -115,6 +116,7 @@ namespace MobileApp.Views
         {
             EditUserViewModel vm = new EditUserViewModel
             {
+                Email = user.Email,
                 District = user.District,
                 StreetName = user.StreetName,
                 Province = user.Province,
