@@ -17,6 +17,36 @@
             console.log(response.data);
         });
 
+    $scope.setRedFlag = function () {
+        console.log(questionnaireId);
+        $http.get('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId)
+            .then(function (response) {
+               //success
+                var questionnaire = response.data;
+                console.log(questionnaire);
+                $scope.sendDataObject = {};
+                $scope.sendDataObject.id = questionnaireId;
+                $scope.sendDataObject.time = questionnaire.time;
+                $scope.sendDataObject.client_id = questionnaire.client.id;
+                $scope.sendDataObject.redflag = true;
+                console.log($scope.sendDataObject);
+                $http.put('http://127.0.0.1:54618/api/Questionnaires/' + questionnaireId, $scope.sendDataObject)
+                    .then(function (response) {
+                        //success
+                        alert('updatet red flag!');
+                        $location.path('/questionnaires');
+
+                    }, function (response) {
+                        //failure
+                        alert('not able to update questionnaire');
+                    });
+
+            }, function (response) {
+                //failure
+                alert('not able to retrieve questionnaire data');
+            });
+    }
+
 
 
 });

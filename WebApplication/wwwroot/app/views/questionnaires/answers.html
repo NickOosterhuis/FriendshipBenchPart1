@@ -15,6 +15,7 @@
                             </tr>
                             <tr ng-show="questionnaire.redflag"><td>Red Flag:</td><td><button type="button" class="btn btn-danger" >YES</button></td></tr>
                             <tr ng-show="!questionnaire.redflag"><td>Red Flag:</td><td><button type="button" class="btn btn-success">NO</button></td></tr>
+                            <tr ng-show="!questionnaire.redflag"><td>Manually set red flag?:</td><td><a ng-click="setRedFlag()" class="btn btn-small btn-danger">YES</a></td></tr>
                         </tbody>
                     </table>
 
