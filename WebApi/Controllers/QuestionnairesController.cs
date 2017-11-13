@@ -115,7 +115,6 @@ namespace WebApi.Controllers
 
             Questionnaire questionnaire = new Questionnaire
             {
-                Date = questionnaireViewModel.Time,
                 Time = questionnaireViewModel.Time,
                 Client_id = questionnaireViewModel.Client_id
             };

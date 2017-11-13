@@ -88,7 +88,7 @@ namespace MobileApp.Views
         }
 
         // Do a PUT request to update the clients healthworker
-        private void set_althworker(object sender, EventArgs e)
+        private void set_healthworker(object sender, EventArgs e)
         {
 
         }

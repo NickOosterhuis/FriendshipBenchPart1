@@ -11,9 +11,10 @@ using WebApi.Contexts;
 namespace WebApi.Migrations.QuestionnaireDB
 {
     [DbContext(typeof(QuestionnaireDBContext))]
-    partial class QuestionnaireDBContextModelSnapshot : ModelSnapshot
+    [Migration("20171113094546_addedRedflag")]
+    partial class addedRedflag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,6 +43,8 @@ namespace WebApi.Migrations.QuestionnaireDB
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Client_id");
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<bool>("Redflag");
 
