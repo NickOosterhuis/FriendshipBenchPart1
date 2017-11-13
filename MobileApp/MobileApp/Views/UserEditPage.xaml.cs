@@ -85,32 +85,7 @@ namespace MobileApp.Views
                     District = district.Text,
                 });
             };
-        }
-
-        //protected async void OnDisappearing()
-        //{
-        //    if (user.Email != null && user.Password != null)
-        //    {
-        //        LoginViewModel vm = new LoginViewModel
-        //        {
-        //            Email = user.Email,
-        //            Password = user.Password,
-        //        };
-
-        //        var content = JsonConvert.SerializeObject(vm);
-        //        var tokenJson = await apiRequestHelper.GetAccessToken(content);
-
-        //        dynamic token = JsonConvert.DeserializeObject(tokenJson);
-
-        //        Debug.WriteLine((string)token.token);
-
-        //        App.Current.Properties["email"] = user.Email;
-        //        App.Current.Properties["token"] = (string)token.token;
-        //        App.Current.Properties["password"] = user.Password;
-
-        //        App.Current.SavePropertiesAsync();
-        //    }
-        //}
+        }       
 
         private async Task UpdateUserAsync(Client user)
         {
@@ -131,7 +106,7 @@ namespace MobileApp.Views
             if (response != null)
             {
                 DisplayAlert("Update message", "User updated successfully", "Okay");
-                
+                Navigation.PushAsync(new UserDetailPage());                
             }
             else
             {
