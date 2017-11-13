@@ -9,7 +9,7 @@ appClient.config(['$locationProvider', function ($locationProvider) {
 //controller
 appClient.controller('clientsCtrl', function ($scope, $http, $location) {
     var cookie = getCookie("JWT");
-    var email = getCookie("email");
+    var email = getCookie("Email");
     //get all clients connected to the logged in healthworker
     $http.get('http://127.0.0.1:54618/api/Clients/connected/' + email, {
         headers: {
